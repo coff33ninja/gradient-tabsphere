@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Apps } from 'lucide-react';
+import { AppWindow } from 'lucide-react';
 
 interface AppShortcutsProps {
   apps: AppShortcut[];
@@ -17,7 +17,7 @@ export const AppShortcuts = ({ apps }: AppShortcutsProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="fixed top-4 right-4">
-          <Apps className="h-[1.2rem] w-[1.2rem]" />
+          <AppWindow className="h-[1.2rem] w-[1.2rem]" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
