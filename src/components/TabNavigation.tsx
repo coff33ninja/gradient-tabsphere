@@ -15,14 +15,14 @@ interface TabNavigationProps {
 
 export const TabNavigation = ({ tabs, activeTab, onTabChange }: TabNavigationProps) => {
   return (
-    <div className="flex flex-wrap gap-2 p-4 bg-secondary/20 rounded-lg">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 p-4 bg-secondary/20 rounded-lg">
       {tabs.map((tab) => (
         <DropdownMenu key={tab.id}>
           <DropdownMenuTrigger asChild>
             <button
               onClick={() => onTabChange(tab)}
               className={cn(
-                "px-4 py-2 rounded-md transition-all duration-300 whitespace-nowrap",
+                "w-full px-4 py-2 rounded-md transition-all duration-300 whitespace-nowrap",
                 activeTab?.id === tab.id
                   ? "relative gradient-border bg-primary/20 text-primary"
                   : "hover:bg-secondary/40 text-muted-foreground"
