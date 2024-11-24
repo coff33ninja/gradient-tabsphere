@@ -40,6 +40,10 @@
   .gradient-border {
     @apply relative before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-purple-400 before:via-pink-500 before:to-purple-600 before:animate-gradient before:bg-[length:200%_200%];
   }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
 }
  
 @layer base {
@@ -48,5 +52,16 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

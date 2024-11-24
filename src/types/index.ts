@@ -2,7 +2,7 @@ export interface Tab {
   id: string;
   title: string;
   icon?: string;
-  content: string;
+  content?: string;
 }
 
 export interface AppShortcut {
