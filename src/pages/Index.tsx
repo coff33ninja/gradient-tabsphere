@@ -5,8 +5,35 @@ import { Settings } from '@/components/Settings';
 import { SearchBar } from '@/components/SearchBar';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Tab } from '@/types';
-import { Loader2 } from 'lucide-react';
+import { Tab, AppShortcut } from '@/types';
+import { Loader2, MonitorPlay, Film, Radar, Download } from 'lucide-react';
+
+const defaultApps: AppShortcut[] = [
+  {
+    id: '1',
+    name: 'Sonarr',
+    icon: '📺',
+    url: 'http://localhost:8989'
+  },
+  {
+    id: '2',
+    name: 'Radarr',
+    icon: '🎬',
+    url: 'http://localhost:7878'
+  },
+  {
+    id: '3',
+    name: 'Prowlarr',
+    icon: '🔍',
+    url: 'http://localhost:9696'
+  },
+  {
+    id: '4',
+    name: 'qBittorrent',
+    icon: '⬇️',
+    url: 'http://localhost:8080'
+  }
+];
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
@@ -114,7 +141,7 @@ const Index = () => {
         </div>
       </div>
 
-      <AppShortcuts />
+      <AppShortcuts apps={defaultApps} />
       <Settings />
     </div>
   );
