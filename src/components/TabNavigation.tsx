@@ -22,13 +22,13 @@ export const TabNavigation = ({ tabs, activeTab, onTabChange }: TabNavigationPro
             <button
               onClick={() => onTabChange(tab)}
               className={cn(
-                "w-full px-4 py-2 rounded-md transition-all duration-300 whitespace-nowrap",
+                "w-full min-h-[3rem] px-4 py-3 rounded-md transition-all duration-300 break-words",
                 activeTab?.id === tab.id
                   ? "relative gradient-border bg-primary/20 text-primary"
                   : "hover:bg-secondary/40 text-muted-foreground"
               )}
             >
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="relative z-10 flex items-center gap-2 justify-center">
                 {tab.icon} {tab.title}
               </span>
             </button>
