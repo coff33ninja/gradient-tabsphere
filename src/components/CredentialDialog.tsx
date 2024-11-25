@@ -24,6 +24,17 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
     e.preventDefault();
     setIsLoading(true);
 
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({
+        title: "Error saving credentials",
+        description: "You must be logged in to save credentials",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
     const credential = {
       service: formData.get("service") as ServiceType,
@@ -32,6 +43,7 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
       username: formData.get("username") as string | null,
       password: formData.get("password") as string | null,
       api_key: formData.get("api_key") as string | null,
+      user_id: user.id,
     };
 
     const { error } = await supabase.from("credentials").insert(credential);

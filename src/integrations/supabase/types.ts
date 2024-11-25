@@ -34,6 +34,7 @@ export type Database = {
           service: Database["public"]["Enums"]["service_type"]
           updated_at: string | null
           url: string
+          user_id: string | null
           username: string | null
         }
         Insert: {
@@ -45,6 +46,7 @@ export type Database = {
           service: Database["public"]["Enums"]["service_type"]
           updated_at?: string | null
           url: string
+          user_id?: string | null
           username?: string | null
         }
         Update: {
@@ -56,9 +58,18 @@ export type Database = {
           service?: Database["public"]["Enums"]["service_type"]
           updated_at?: string | null
           url?: string
+          user_id?: string | null
           username?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "credentials_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       links: {
         Row: {
@@ -103,6 +114,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+        }
+        Relationships: []
       }
     }
     Views: {
