@@ -6,7 +6,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab, AppShortcut } from '@/types';
-import { Loader2, MonitorPlay, Film, Radar, Download } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 const defaultApps: AppShortcut[] = [
   {
@@ -89,55 +89,57 @@ const Index = () => {
       <div className="max-w-7xl mx-auto space-y-8">
         <SearchBar />
         
-        {categories && categories.length > 0 && (
-          <TabNavigation 
-            tabs={categories} 
-            activeTab={activeTab}
-            onTabChange={setActiveTab} 
-          />
-        )}
-        
-        <div className="p-6 bg-card rounded-lg shadow-lg animate-fade-in">
-          {activeTab && (
-            <>
-              <h2 className="text-2xl font-bold mb-4">{activeTab.title}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {links?.map((link) => (
-                  <a
-                    key={link.id}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-4 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors group"
-                  >
-                    <div className="flex items-center gap-3">
-                      {link.icon_url && (
-                        <img
-                          src={link.icon_url}
-                          alt=""
-                          className="w-6 h-6 rounded"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = link.icon_backup_url || '/placeholder.svg';
-                          }}
-                        />
-                      )}
-                      <div>
-                        <h3 className="font-medium group-hover:text-primary transition-colors">
-                          {link.title}
-                        </h3>
-                        {link.description && (
-                          <p className="text-sm text-muted-foreground line-clamp-2">
-                            {link.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </>
+        <div className="flex gap-8">
+          {categories && categories.length > 0 && (
+            <TabNavigation 
+              tabs={categories} 
+              activeTab={activeTab}
+              onTabChange={setActiveTab} 
+            />
           )}
+          
+          <div className="flex-1 p-6 bg-card rounded-lg shadow-lg animate-fade-in">
+            {activeTab && (
+              <>
+                <h2 className="text-2xl font-bold mb-4">{activeTab.title}</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {links?.map((link) => (
+                    <a
+                      key={link.id}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-4 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors group"
+                    >
+                      <div className="flex items-center gap-3">
+                        {link.icon_url && (
+                          <img
+                            src={link.icon_url}
+                            alt=""
+                            className="w-6 h-6 rounded"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = link.icon_backup_url || '/placeholder.svg';
+                            }}
+                          />
+                        )}
+                        <div>
+                          <h3 className="font-medium group-hover:text-primary transition-colors">
+                            {link.title}
+                          </h3>
+                          {link.description && (
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {link.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
