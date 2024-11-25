@@ -8,27 +8,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Settings2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
 
 export const Settings = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: 'Error signing out',
-        description: error.message,
-        variant: 'destructive',
-      });
-    } else {
-      navigate('/auth');
-    }
-  };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -43,12 +24,9 @@ export const Settings = () => {
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel>Settings</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate('/credentials')}>
-          Credentials
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleSignOut}>
-          Sign Out
-        </DropdownMenuItem>
+        <DropdownMenuItem>Layout</DropdownMenuItem>
+        <DropdownMenuItem>Theme</DropdownMenuItem>
+        <DropdownMenuItem>Preferences</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
