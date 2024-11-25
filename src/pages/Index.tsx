@@ -85,11 +85,11 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
+      <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8">
         <SearchBar />
         
-        <div className="flex gap-8">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8">
           {categories && categories.length > 0 && (
             <TabNavigation 
               tabs={categories} 
@@ -98,11 +98,11 @@ const Index = () => {
             />
           )}
           
-          <div className="flex-1 p-6 bg-card rounded-lg shadow-lg animate-fade-in">
+          <div className="flex-1 p-4 md:p-6 bg-card rounded-lg shadow-lg animate-fade-in min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-12rem)]">
             {activeTab && (
               <>
-                <h2 className="text-2xl font-bold mb-4">{activeTab.title}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <h2 className="text-xl md:text-2xl font-bold mb-4">{activeTab.title}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {links?.map((link) => (
                     <a
                       key={link.id}
