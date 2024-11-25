@@ -1,0 +1,7 @@
+
+
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/test.weboasis.co.za/
+    - /bin/cp -R images $DEPLOYPATH
