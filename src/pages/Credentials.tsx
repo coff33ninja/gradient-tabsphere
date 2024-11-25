@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Database } from "@/components/ui/database";
 import { Key, Lock, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { CredentialDialog } from "@/components/CredentialDialog";
 import { useToast } from "@/components/ui/use-toast";
-import type { Database as DbType } from "@/integrations/supabase/types";
+import type { Database } from "@/integrations/supabase/types";
 
-type Credential = DbType["public"]["Tables"]["credentials"]["Row"];
+type Credential = Database["public"]["Tables"]["credentials"]["Row"];
 
 export default function Credentials() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

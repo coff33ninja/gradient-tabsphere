@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type ServiceType = Database["public"]["Enums"]["service_type"];
 
 interface CredentialDialogProps {
   open: boolean;
@@ -23,15 +26,15 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
 
     const formData = new FormData(e.currentTarget);
     const credential = {
-      service: formData.get("service"),
-      name: formData.get("name"),
-      url: formData.get("url"),
-      username: formData.get("username") || null,
-      password: formData.get("password") || null,
-      api_key: formData.get("api_key") || null,
+      service: formData.get("service") as ServiceType,
+      name: formData.get("name") as string,
+      url: formData.get("url") as string,
+      username: formData.get("username") as string | null,
+      password: formData.get("password") as string | null,
+      api_key: formData.get("api_key") as string | null,
     };
 
-    const { error } = await supabase.from("credentials").insert([credential]);
+    const { error } = await supabase.from("credentials").insert(credential);
 
     if (error) {
       toast({
