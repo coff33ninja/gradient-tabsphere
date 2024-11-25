@@ -24,6 +24,42 @@ export type Database = {
         }
         Relationships: []
       }
+      credentials: {
+        Row: {
+          api_key: string | null
+          created_at: string | null
+          id: number
+          name: string
+          password: string | null
+          service: Database["public"]["Enums"]["service_type"]
+          updated_at: string | null
+          url: string
+          username: string | null
+        }
+        Insert: {
+          api_key?: string | null
+          created_at?: string | null
+          id?: number
+          name: string
+          password?: string | null
+          service: Database["public"]["Enums"]["service_type"]
+          updated_at?: string | null
+          url: string
+          username?: string | null
+        }
+        Update: {
+          api_key?: string | null
+          created_at?: string | null
+          id?: number
+          name?: string
+          password?: string | null
+          service?: Database["public"]["Enums"]["service_type"]
+          updated_at?: string | null
+          url?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
       links: {
         Row: {
           category_id: number | null
@@ -76,7 +112,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      service_type: "sonarr" | "radarr" | "prowlarr" | "qbittorrent"
     }
     CompositeTypes: {
       [_ in never]: never
