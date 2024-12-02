@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
 import { Loader2 } from 'lucide-react';
+import { mockApps } from '@/services/mockData';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
@@ -118,7 +119,7 @@ const Index = () => {
         </div>
       </div>
 
-      <AppShortcuts />
+      <AppShortcuts apps={mockApps} />
       <Settings />
     </div>
   );
