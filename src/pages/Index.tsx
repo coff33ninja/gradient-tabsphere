@@ -56,8 +56,8 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 p-4 md:p-8">
-      <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16">
+      <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
         <SearchBar />
         
         <div className="flex flex-col md:flex-row gap-4 md:gap-8">
