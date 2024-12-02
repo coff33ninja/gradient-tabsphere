@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
 import { Loader2 } from 'lucide-react';
+import { scraper } from './scraper';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
@@ -40,6 +41,28 @@ const Index = () => {
       return data;
     }
   });
+
+const saveLinkWithDownloadedIcon = async (url, categoryId) => {
+    const iconUrl = await scrapeAndDownloadIcon(url);
+
+    // Save the link and icon URL to your database
+    const { error } = await supabase
+        .from('links')
+        .insert([
+            {
+                id: undefined, // or generate an ID if necessary
+                url,
+                category_id: categoryId,
+                icon_url: iconUrl, // Use the correct property name
+            },
+        ]);
+
+    if (error) {
+        console.error('Error saving link to database:', error);
+    } else {
+        console.log('Link saved successfully:', url);
+    }
+};
 
   useEffect(() => {
     if (categories && categories.length > 0 && !activeTab) {
