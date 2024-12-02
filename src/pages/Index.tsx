@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
 import { TabNavigation } from '@/components/TabNavigation';
-import { AppShortcuts } from '@/components/AppShortcuts';
-import { Settings } from '@/components/Settings';
 import { SearchBar } from '@/components/SearchBar';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
 import { Loader2 } from 'lucide-react';
-import { mockApps } from '@/services/mockData';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
@@ -118,9 +115,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-
-      <AppShortcuts apps={mockApps} />
-      <Settings />
     </div>
   );
 };
