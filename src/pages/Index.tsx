@@ -5,35 +5,8 @@ import { Settings } from '@/components/Settings';
 import { SearchBar } from '@/components/SearchBar';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Tab, AppShortcut } from '@/types';
+import { Tab } from '@/types';
 import { Loader2 } from 'lucide-react';
-
-const defaultApps: AppShortcut[] = [
-  {
-    id: '1',
-    name: 'Sonarr',
-    icon: '📺',
-    url: 'http://localhost:8989'
-  },
-  {
-    id: '2',
-    name: 'Radarr',
-    icon: '🎬',
-    url: 'http://localhost:7878'
-  },
-  {
-    id: '3',
-    name: 'Prowlarr',
-    icon: '🔍',
-    url: 'http://localhost:9696'
-  },
-  {
-    id: '4',
-    name: 'qBittorrent',
-    icon: '⬇️',
-    url: 'http://localhost:8080'
-  }
-];
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
@@ -78,14 +51,14 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-screen items-center justify-center bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 p-4 md:p-8">
       <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8">
         <SearchBar />
         
@@ -98,10 +71,12 @@ const Index = () => {
             />
           )}
           
-          <div className="flex-1 p-4 md:p-6 bg-card rounded-lg shadow-lg animate-fade-in min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-12rem)]">
+          <div className="flex-1 p-4 md:p-6 bg-background/40 backdrop-blur-sm rounded-lg shadow-lg animate-fade-in min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-12rem)]">
             {activeTab && (
               <>
-                <h2 className="text-xl md:text-2xl font-bold mb-4">{activeTab.title}</h2>
+                <h2 className="text-xl md:text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                  {activeTab.title}
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {links?.map((link) => (
                     <a
@@ -109,7 +84,7 @@ const Index = () => {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-4 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors group"
+                      className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
                     >
                       <div className="flex items-center gap-3">
                         {link.icon_url && (
@@ -143,7 +118,7 @@ const Index = () => {
         </div>
       </div>
 
-      <AppShortcuts apps={defaultApps} />
+      <AppShortcuts />
       <Settings />
     </div>
   );
