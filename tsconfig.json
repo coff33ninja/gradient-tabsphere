@@ -5,6 +5,9 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "jsx": "react-jsx", // or "react" for older versions
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types", "./@types"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -14,6 +17,8 @@
     "skipLibCheck": true,
     "allowJs": true,
     "noUnusedLocals": false,
-    "strictNullChecks": false
+    "strict": true, // Enable strict mode
+    "strictNullChecks": true, // Enable strict null checks
+    "forceConsistentCasingInFileNames": true // Added option
   }
 }
