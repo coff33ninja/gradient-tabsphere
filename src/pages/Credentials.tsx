@@ -5,11 +5,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import { RoleBasedContent } from '@/components/RoleBasedContent';
+import { useToast } from '@/components/ui/use-toast';
 
 const Credentials = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  // Check if user is an admin
   const { data: profile, isLoading } = useQuery({
     queryKey: ['user-profile'],
     queryFn: async () => {
@@ -22,11 +24,16 @@ const Credentials = () => {
 
       const { data: profileData, error } = await supabase
         .from('profiles')
-        .select('is_admin')
+        .select('role')
         .eq('id', user.id)
         .single();
 
-      if (error || !profileData?.is_admin) {
+      if (error) {
+        toast({
+          title: "Error",
+          description: "You don't have permission to access this page",
+          variant: "destructive",
+        });
         navigate('/');
         return null;
       }
@@ -43,14 +50,12 @@ const Credentials = () => {
     );
   }
 
-  if (!profile?.is_admin) {
-    return null;
-  }
-
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-      <AdminLinkManager />
+      <RoleBasedContent allowedRoles={['admin', 'moderator']}>
+        <AdminLinkManager />
+      </RoleBasedContent>
     </div>
   );
 };

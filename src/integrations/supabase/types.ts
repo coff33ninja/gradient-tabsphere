@@ -121,18 +121,21 @@ export type Database = {
           email: string | null
           id: string
           is_admin: boolean | null
+          role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
           created_at?: string | null
           email?: string | null
           id: string
           is_admin?: boolean | null
+          role?: Database["public"]["Enums"]["user_role"]
         }
         Update: {
           created_at?: string | null
           email?: string | null
           id?: string
           is_admin?: boolean | null
+          role?: Database["public"]["Enums"]["user_role"]
         }
         Relationships: []
       }
@@ -145,6 +148,7 @@ export type Database = {
     }
     Enums: {
       service_type: "sonarr" | "radarr" | "prowlarr" | "qbittorrent"
+      user_role: "viewer" | "moderator" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never

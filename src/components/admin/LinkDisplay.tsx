@@ -1,18 +1,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Edit, RefreshCw, Upload } from 'lucide-react';
-
-interface Link {
-  id: number;
-  title: string | null;
-  url: string | null;
-  icon_url: string | null;
-}
+import { Edit, RefreshCw, Upload, Trash2 } from 'lucide-react';
+import { RoleBasedContent } from '@/components/RoleBasedContent';
+import { Link } from '@/types';
 
 interface LinkDisplayProps {
   link: Link;
   onEdit: () => void;
+  onDelete?: () => void;
   onRescrape: () => void;
   onIconFileChange: (file: File | null) => void;
   onIconUpload: () => void;
@@ -22,6 +18,7 @@ interface LinkDisplayProps {
 export const LinkDisplay = ({ 
   link, 
   onEdit, 
+  onDelete,
   onRescrape, 
   onIconFileChange,
   onIconUpload,
@@ -43,48 +40,63 @@ export const LinkDisplay = ({
         </div>
       </div>
       <div className="flex space-x-2">
-        <Button 
-          variant="outline" 
-          size="icon" 
-          onClick={onEdit}
-          title="Edit Link"
-        >
-          <Edit className="h-4 w-4" />
-        </Button>
-        <Button 
-          variant="outline" 
-          size="icon" 
-          onClick={onRescrape}
-          title="Rescrape Metadata"
-        >
-          <RefreshCw className="h-4 w-4" />
-        </Button>
-        <div>
-          <Input 
-            type="file" 
-            accept="image/*"
-            onChange={(e) => onIconFileChange(e.target.files?.[0] || null)}
-            className="hidden"
-            id={`icon-upload-${link.id}`}
-          />
-          <label htmlFor={`icon-upload-${link.id}`}>
+        <RoleBasedContent allowedRoles={['admin']}>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={onEdit}
+            title="Edit Link"
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+          {onDelete && (
             <Button 
               variant="outline" 
               size="icon"
-              title="Upload Icon"
+              onClick={onDelete}
+              className="text-destructive"
+              title="Delete Link"
             >
-              <Upload className="h-4 w-4" />
-            </Button>
-          </label>
-          {iconFile && (
-            <Button 
-              onClick={onIconUpload}
-              className="ml-2"
-            >
-              Save Icon
+              <Trash2 className="h-4 w-4" />
             </Button>
           )}
-        </div>
+        </RoleBasedContent>
+        <RoleBasedContent allowedRoles={['admin', 'moderator']}>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={onRescrape}
+            title="Rescrape Metadata"
+          >
+            <RefreshCw className="h-4 w-4" />
+          </Button>
+          <div>
+            <Input 
+              type="file" 
+              accept="image/*"
+              onChange={(e) => onIconFileChange(e.target.files?.[0] || null)}
+              className="hidden"
+              id={`icon-upload-${link.id}`}
+            />
+            <label htmlFor={`icon-upload-${link.id}`}>
+              <Button 
+                variant="outline" 
+                size="icon"
+                title="Upload Icon"
+              >
+                <Upload className="h-4 w-4" />
+              </Button>
+            </label>
+            {iconFile && (
+              <Button 
+                onClick={onIconUpload}
+                className="ml-2"
+              >
+                Save Icon
+              </Button>
+            )}
+          </div>
+        </RoleBasedContent>
       </div>
     </div>
   );
