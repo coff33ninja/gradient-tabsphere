@@ -80,6 +80,7 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
               name="service"
               className="w-full rounded-md border border-input bg-background px-3 py-2"
               required
+              aria-label="Select a service"
             >
               <option value="sonarr">Sonarr</option>
               <option value="radarr">Radarr</option>

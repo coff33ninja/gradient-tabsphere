@@ -55,7 +55,7 @@ export const AdminLinkManager = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="p-6 space-y-4 z-10 relative">
       <h2 className="text-2xl font-bold mb-4">Admin Link Management</h2>
       {links?.map((link) => (
         <div 
