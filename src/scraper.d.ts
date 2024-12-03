@@ -1,4 +1,3 @@
 declare module './scraper' {
-    const scraper: never; // Replace 'any' with the appropriate type
-    export default scraper;
+    export function scrapeAndDownloadIcon(url: string): Promise<string | null>;
 }

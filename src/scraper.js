@@ -11,7 +11,7 @@ if (!fs.existsSync(iconsDir)) {
 
 // Function to download the icon
 const downloadIcon = async (iconUrl, iconName) => {
-    const iconPath = path.resolve(iconsDir, iconName); // Path to save the icon
+    const iconPath = path.resolve(iconsDir, iconName);
 
     const response = await axios({
         url: iconUrl,
@@ -34,24 +34,32 @@ export const scrapeAndDownloadIcon = async (url) => {
         const $ = cheerio.load(data);
 
         // Find the icon link
-        let iconLink = $('link[rel="icon"]').attr('href') || $('link[rel="shortcut icon"]').attr('href');
+        let iconLink = $('link[rel="icon"]').attr('href') || 
+                      $('link[rel="shortcut icon"]').attr('href') ||
+                      $('link[rel="apple-touch-icon"]').attr('href');
 
         // Make the icon link absolute if it's relative
         if (iconLink && !iconLink.startsWith('http')) {
             const parsedUrl = new URL(url);
-            iconLink = `${parsedUrl.protocol}//${parsedUrl.host}${iconLink}`;
+            if (iconLink.startsWith('//')) {
+                iconLink = `https:${iconLink}`;
+            } else if (iconLink.startsWith('/')) {
+                iconLink = `${parsedUrl.protocol}//${parsedUrl.host}${iconLink}`;
+            } else {
+                iconLink = `${parsedUrl.protocol}//${parsedUrl.host}/${iconLink}`;
+            }
         }
 
         // Download the icon if a valid link is found
         if (iconLink) {
-            const iconName = path.basename(iconLink); // Use the original file name
+            const iconName = `${Buffer.from(url).toString('base64').slice(0, 32)}.ico`;
             const savedIconPath = await downloadIcon(iconLink, iconName);
-            return savedIconPath; // Return the local path of the saved icon
+            return savedIconPath;
         }
 
         return null;
     } catch (error) {
         console.error(`Error scraping icon from ${url}:`, error);
-        return null; // Return null if scraping fails
+        return null;
     }
 };

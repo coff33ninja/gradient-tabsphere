@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
 import { Loader2 } from 'lucide-react';
-import { scraper } from './scraper';
+import { scrapeAndDownloadIcon } from '../scraper';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
@@ -16,7 +16,7 @@ const Index = () => {
       const { data, error } = await supabase
         .from('categories')
         .select('*')
-      .order('id', { ascending: true });
+        .order('id', { ascending: true });
       
       if (error) throw error;
       return data.map(category => ({
@@ -42,27 +42,26 @@ const Index = () => {
     }
   });
 
-const saveLinkWithDownloadedIcon = async (url, categoryId) => {
-    const iconUrl = await scrapeAndDownloadIcon(url);
-
-    // Save the link and icon URL to your database
-    const { error } = await supabase
+  const saveLinkWithIcon = async (url: string, categoryId: string) => {
+    try {
+      const iconPath = await scrapeAndDownloadIcon(url);
+      
+      const { error } = await supabase
         .from('links')
         .insert([
-            {
-                id: undefined, // or generate an ID if necessary
-                url,
-                category_id: categoryId,
-                icon_url: iconUrl, // Use the correct property name
-            },
+          {
+            url,
+            category_id: categoryId,
+            icon_url: iconPath,
+            last_scraped_at: new Date().toISOString()
+          }
         ]);
 
-    if (error) {
-        console.error('Error saving link to database:', error);
-    } else {
-        console.log('Link saved successfully:', url);
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error saving link:', error);
     }
-};
+  };
 
   useEffect(() => {
     if (categories && categories.length > 0 && !activeTab) {
