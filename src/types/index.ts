@@ -19,3 +19,12 @@ export interface SearchResult {
   url: string;
   icon?: string;
 }
+
+export interface Link {
+  id: number;
+  title: string | null;
+  url: string | null;
+  description: string | null;
+  icon_url: string | null;
+  category_id: number | null;
+}

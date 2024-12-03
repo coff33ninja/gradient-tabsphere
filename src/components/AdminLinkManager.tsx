@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Upload, RefreshCw, Edit, Check, X } from 'lucide-react';
+import { Upload, RefreshCw, Edit } from 'lucide-react';
 import { scrapeAndDownloadIcon } from '@/scraper';
 import { useToast } from '@/components/ui/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-interface Link {
-  id: number;
-  title: string | null;
-  url: string | null;
-  description: string | null;
-  icon_url: string | null;
-  category_id: number | null;
-}
+import { Link } from '@/types';
+import { LinkEditor } from './admin/LinkEditor';
+import { LinkDisplay } from './admin/LinkDisplay';
 
 export const AdminLinkManager = () => {
   const { toast } = useToast();
@@ -80,21 +72,19 @@ export const AdminLinkManager = () => {
       if (uploadError) throw uploadError;
 
       // Get public URL
-      const { data: { publicUrl }, error: urlError } = supabase.storage
+      const { data } = supabase.storage
         .from('link_icons')
         .getPublicUrl(fileName);
-      
-      if (urlError) throw urlError;
 
       // Update link with new icon URL
       const { error: updateError } = await supabase
         .from('links')
-        .update({ icon_url: publicUrl })
+        .update({ icon_url: data.publicUrl })
         .eq('id', linkId);
       
       if (updateError) throw updateError;
 
-      return publicUrl;
+      return data.publicUrl;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-links'] });
@@ -184,99 +174,21 @@ export const AdminLinkManager = () => {
           className="border rounded-lg p-4 mb-4 bg-white/5 backdrop-blur-sm"
         >
           {editingLink?.id === link.id ? (
-            <div className="space-y-4">
-              <Input 
-                value={editingLink.title || ''} 
-                onChange={(e) => setEditingLink({...editingLink, title: e.target.value})}
-                placeholder="Link Title"
-              />
-              <Input 
-                value={editingLink.url || ''} 
-                onChange={(e) => setEditingLink({...editingLink, url: e.target.value})}
-                placeholder="URL"
-              />
-              <Textarea 
-                value={editingLink.description || ''} 
-                onChange={(e) => setEditingLink({...editingLink, description: e.target.value})}
-                placeholder="Description"
-              />
-              <div className="flex space-x-2">
-                <Button 
-                  onClick={handleSaveLink}
-                  className="flex items-center gap-2"
-                >
-                  <Check className="h-4 w-4" /> Save
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setEditingLink(null)}
-                  className="flex items-center gap-2"
-                >
-                  <X className="h-4 w-4" /> Cancel
-                </Button>
-              </div>
-            </div>
+            <LinkEditor
+              link={editingLink}
+              onSave={handleSaveLink}
+              onCancel={() => setEditingLink(null)}
+              onChange={setEditingLink}
+            />
           ) : (
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                {link.icon_url && (
-                  <img 
-                    src={link.icon_url} 
-                    alt="Link Icon" 
-                    className="w-12 h-12 rounded"
-                  />
-                )}
-                <div>
-                  <h3 className="font-semibold">{link.title}</h3>
-                  <p className="text-muted-foreground">{link.url}</p>
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  onClick={() => handleEditLink(link)}
-                  title="Edit Link"
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  onClick={() => handleRescrape(link.url || '')}
-                  title="Rescrape Metadata"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                </Button>
-                <div>
-                  <Input 
-                    type="file" 
-                    accept="image/*"
-                    onChange={(e) => setIconFile(e.target.files?.[0] || null)}
-                    className="hidden"
-                    id={`icon-upload-${link.id}`}
-                  />
-                  <label htmlFor={`icon-upload-${link.id}`}>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      as="span"
-                      title="Upload Icon"
-                    >
-                      <Upload className="h-4 w-4" />
-                    </Button>
-                  </label>
-                  {iconFile && (
-                    <Button 
-                      onClick={() => handleIconUpload(link)}
-                      className="ml-2"
-                    >
-                      Save Icon
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
+            <LinkDisplay
+              link={link}
+              onEdit={() => handleEditLink(link)}
+              onRescrape={() => handleRescrape(link.url || '')}
+              onIconFileChange={setIconFile}
+              onIconUpload={() => handleIconUpload(link)}
+              iconFile={iconFile}
+            />
           )}
         </div>
       ))}
