@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
 import { Loader2 } from 'lucide-react';
-import { scrapeAndDownloadIcon } from '../scraper';
+import { scrapeAndDownloadIcon } from './scraper';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
@@ -44,7 +44,7 @@ const Index = () => {
 
   const saveLinkWithIcon = async (url: string, categoryId: string) => {
     try {
-      const iconPath = await scrapeAndDownloadIcon(url);
+      const iconUrl = await scrapeAndDownloadIcon(url);
       
       // Get the next ID for the links table
       const { data: maxIdData, error: maxIdError } = await supabase
@@ -63,8 +63,8 @@ const Index = () => {
           {
             id: nextId,
             url,
-            category_id: parseInt(categoryId, 10), // Convert string to number
-            icon_url: iconPath,
+            category_id: parseInt(categoryId, 10),
+            icon_url: iconUrl,
             last_scraped_at: new Date().toISOString()
           }
         ]);
