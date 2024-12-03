@@ -1,91 +1,58 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { Key, Lock, Settings } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { CredentialDialog } from "@/components/CredentialDialog";
-import { useToast } from "@/components/ui/use-toast";
-import type { Database } from "@/integrations/supabase/types";
+import React from 'react';
+import { AdminLinkManager } from '@/components/AdminLinkManager';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
-type Credential = Database["public"]["Tables"]["credentials"]["Row"];
+const Credentials = () => {
+  const navigate = useNavigate();
 
-export default function Credentials() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast } = useToast();
-
-  const { data: credentials, isLoading } = useQuery({
-    queryKey: ["credentials"],
+  // Check if user is an admin
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ['user-profile'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("credentials")
-        .select("*")
-        .order("service", { ascending: true });
-
-      if (error) {
-        toast({
-          title: "Error fetching credentials",
-          description: error.message,
-          variant: "destructive",
-        });
-        throw error;
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        navigate('/auth');
+        return null;
       }
 
-      return data as Credential[];
-    },
+      const { data: profileData, error } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+
+      if (error || !profileData?.is_admin) {
+        navigate('/');
+        return null;
+      }
+
+      return profileData;
+    }
   });
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="animate-spin">
-          <Settings className="h-8 w-8 text-primary" />
-        </div>
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
+  if (!profile?.is_admin) {
+    return null;
+  }
+
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Service Credentials</h1>
-        <Button onClick={() => setIsDialogOpen(true)}>
-          <Key className="mr-2 h-4 w-4" />
-          Add Credentials
-        </Button>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {credentials?.map((cred) => (
-          <div
-            key={cred.id}
-            className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <Lock className="h-4 w-4" />
-              <h3 className="font-semibold">{cred.name}</h3>
-            </div>
-            <div className="space-y-1 text-sm">
-              <p className="text-muted-foreground">Service: {cred.service}</p>
-              <p className="text-muted-foreground truncate">URL: {cred.url}</p>
-              {cred.username && (
-                <p className="text-muted-foreground">
-                  Username: {cred.username}
-                </p>
-              )}
-              {cred.api_key && (
-                <p className="text-muted-foreground">
-                  API Key: {cred.api_key.slice(0, 8)}...
-                </p>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <CredentialDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-      />
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <AdminLinkManager />
     </div>
   );
-}
+};
+
+export default Credentials;
