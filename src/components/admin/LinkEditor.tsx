@@ -3,13 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Check, X } from 'lucide-react';
-
-interface Link {
-  id: number;
-  title: string | null;
-  url: string | null;
-  description: string | null;
-}
+import { Link } from '@/types';
 
 interface LinkEditorProps {
   link: Link;
@@ -19,21 +13,28 @@ interface LinkEditorProps {
 }
 
 export const LinkEditor = ({ link, onSave, onCancel, onChange }: LinkEditorProps) => {
+  const handleChange = (field: keyof Link, value: string) => {
+    onChange({
+      ...link,
+      [field]: value
+    });
+  };
+
   return (
     <div className="space-y-4">
       <Input 
         value={link.title || ''} 
-        onChange={(e) => onChange({...link, title: e.target.value})}
+        onChange={(e) => handleChange('title', e.target.value)}
         placeholder="Link Title"
       />
       <Input 
         value={link.url || ''} 
-        onChange={(e) => onChange({...link, url: e.target.value})}
+        onChange={(e) => handleChange('url', e.target.value)}
         placeholder="URL"
       />
       <Textarea 
         value={link.description || ''} 
-        onChange={(e) => onChange({...link, description: e.target.value})}
+        onChange={(e) => handleChange('description', e.target.value)}
         placeholder="Description"
       />
       <div className="flex space-x-2">

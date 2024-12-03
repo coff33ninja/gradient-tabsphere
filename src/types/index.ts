@@ -26,5 +26,6 @@ export interface Link {
   url: string | null;
   description: string | null;
   icon_url: string | null;
+  icon_backup_url: string | null;
   category_id: number | null;
 }
