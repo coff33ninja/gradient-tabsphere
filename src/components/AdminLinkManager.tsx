@@ -139,6 +139,10 @@ export const AdminLinkManager = () => {
     setEditingLink(link);
   };
 
+  const handleUpdateLink = (updatedLink: Link) => {
+    setEditingLink(updatedLink);
+  };
+
   const handleSaveLink = () => {
     if (editingLink) {
       updateLinkMutation.mutate({
@@ -178,7 +182,7 @@ export const AdminLinkManager = () => {
               link={editingLink}
               onSave={handleSaveLink}
               onCancel={() => setEditingLink(null)}
-              onChange={setEditingLink}
+              onChange={handleUpdateLink}
             />
           ) : (
             <LinkDisplay
