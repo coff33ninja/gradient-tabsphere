@@ -46,12 +46,24 @@ const Index = () => {
     try {
       const iconPath = await scrapeAndDownloadIcon(url);
       
+      // Get the next ID for the links table
+      const { data: maxIdData, error: maxIdError } = await supabase
+        .from('links')
+        .select('id')
+        .order('id', { ascending: false })
+        .limit(1);
+      
+      if (maxIdError) throw maxIdError;
+      
+      const nextId = maxIdData && maxIdData.length > 0 ? maxIdData[0].id + 1 : 1;
+      
       const { error } = await supabase
         .from('links')
         .insert([
           {
+            id: nextId,
             url,
-            category_id: categoryId,
+            category_id: parseInt(categoryId, 10), // Convert string to number
             icon_url: iconPath,
             last_scraped_at: new Date().toISOString()
           }
