@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
 import { Loader2 } from 'lucide-react';
-import { scrapeAndDownloadIcon } from './scraper';
+import { scrapeAndDownloadIcon } from '@/scraper';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
