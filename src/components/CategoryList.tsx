@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { Icons } from './icons';
 
 type CategoryListProps = {
   categories: any[];
@@ -11,7 +11,7 @@ export const CategoryList = ({ categories, isLoading }: CategoryListProps) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <Loader2 className="animate-spin h-6 w-6" />
+        <Icons.spinner className="animate-spin h-6 w-6" />
       </div>
     );
   }

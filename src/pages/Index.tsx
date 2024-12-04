@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryList } from '@/components/CategoryList';
 import { LinkGrid } from '@/components/LinkGrid';
@@ -6,8 +8,18 @@ import { Tab } from '@/types';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
-  const [categories] = useState([]);
-  const [isLoading] = useState(false);
+  
+  const { data: categories = [], isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('*');
+      
+      if (error) throw error;
+      return data || [];
+    }
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16">
