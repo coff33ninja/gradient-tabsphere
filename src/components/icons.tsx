@@ -1,16 +1,16 @@
 import {
-  type Icon as LucideIcon,
+  type LucideProps,
   ArrowRight,
   Check,
   ChevronLeft,
   ChevronRight,
   ChevronDown,
   Circle,
-  Command,
-  FileText,
-  Github,
+  CommandIcon as Command,
+  FileTextIcon as FileText,
+  GithubIcon as Github,
   HelpCircle,
-  Image as ImageIcon,
+  ImageIcon as Image,
   Laptop,
   Loader2,
   Moon,
@@ -20,11 +20,11 @@ import {
   Settings2,
   SunMedium,
   Trash2,
-  Twitter,
+  TwitterIcon as Twitter,
   X,
   RefreshCw,
   Globe2,
-  Menu as MenuIcon,
+  MenuIcon as Menu,
   AlertCircle,
   Download,
   Music2,
@@ -37,7 +37,7 @@ import {
   Tv2
 } from "lucide-react";
 
-export type Icon = LucideIcon;
+export type Icon = React.ForwardRefExoticComponent<LucideProps>;
 
 export const Icons = {
   logo: Command,
@@ -51,7 +51,7 @@ export const Icons = {
   settings: Settings2,
   user: Circle,
   plus: Plus,
-  menu: MenuIcon,
+  menu: Menu,
   moon: Moon,
   sun: SunMedium,
   help: HelpCircle,
@@ -61,7 +61,7 @@ export const Icons = {
   circle: Circle,
   file: FileText,
   fileText: FileText,
-  image: ImageIcon,
+  image: Image,
   laptop: Laptop,
   moreVertical: MoreVertical,
   arrowRight: ArrowRight,
