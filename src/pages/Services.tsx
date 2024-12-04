@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ServiceGrid } from "@/components/services/ServiceGrid";
+import { SearchBar } from "@/components/SearchBar";
 
 export default function Services() {
   const navigate = useNavigate();
@@ -36,11 +37,9 @@ export default function Services() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#8B5CF6]/20 via-[#D946EF]/20 to-[#8B5CF6]/20 pt-16">
-      <div className="max-w-[2000px] mx-auto p-4 md:p-8">
-        <h1 className="text-3xl font-bold mb-8 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-transparent bg-clip-text">
-          Services
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16">
+      <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
+        <SearchBar />
         <ServiceGrid credentials={credentials || []} />
       </div>
     </div>

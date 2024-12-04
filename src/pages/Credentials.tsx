@@ -6,17 +6,11 @@ import { Button } from "@/components/ui/button";
 import { CredentialDialog } from "@/components/CredentialDialog";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { SonarrSection } from "@/components/services/SonarrSection";
-import { RadarrSection } from "@/components/services/RadarrSection";
-import { ProwlarrSection } from "@/components/services/ProwlarrSection";
-import { QbittorrentSection } from "@/components/services/QbittorrentSection";
-import { LidarrSection } from "@/components/services/LidarrSection";
-import { ReadarrSection } from "@/components/services/ReadarrSection";
-import { TransmissionSection } from "@/components/services/TransmissionSection";
-import { DelugeSection } from "@/components/services/DelugeSection";
-import { RtorrentSection } from "@/components/services/RtorrentSection";
+import { SearchBar } from "@/components/SearchBar";
+import { SERVICE_CONFIGS } from "@/components/services/ServiceConfig";
+import { ServiceCard } from "@/components/services/ServiceCard";
 
-export default function Services() {
+export default function Credentials() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -47,43 +41,34 @@ export default function Services() {
     return <LoadingSpinner />;
   }
 
-  const getCredentialsByService = (service) => {
-    return credentials?.find(cred => cred.service === service) || null;
-  };
-
-  const sonarrCreds = getCredentialsByService('sonarr');
-  const radarrCreds = getCredentialsByService('radarr');
-  const prowlarrCreds = getCredentialsByService('prowlarr');
-  const qbittorrentCreds = getCredentialsByService('qbittorrent');
-  const lidarrCreds = getCredentialsByService('lidarr');
-  const readarrCreds = getCredentialsByService('readarr');
-  const transmissionCreds = getCredentialsByService('transmission');
-  const delugeCreds = getCredentialsByService('deluge');
-  const rtorrentCreds = getCredentialsByService('rtorrent');
-
   return (
-    <div className="container mx-auto p-4 space-y-6 pt-16">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Services</h1>
-        <Button onClick={() => setIsDialogOpen(true)}>Add Service</Button>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16">
+      <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
+        <SearchBar />
+        
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+            Account Settings
+          </h1>
+          <Button 
+            onClick={() => setIsDialogOpen(true)}
+            className="bg-gradient-to-r from-purple-400 to-pink-500 text-white hover:opacity-90 transition-opacity"
+          >
+            Add Service
+          </Button>
+        </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {sonarrCreds && <SonarrSection credentials={sonarrCreds} />}
-        {radarrCreds && <RadarrSection credentials={radarrCreds} />}
-        {prowlarrCreds && <ProwlarrSection credentials={prowlarrCreds} />}
-        {lidarrCreds && <LidarrSection credentials={lidarrCreds} />}
-        {readarrCreds && <ReadarrSection credentials={readarrCreds} />}
-        {qbittorrentCreds && <QbittorrentSection credentials={qbittorrentCreds} />}
-        {transmissionCreds && <TransmissionSection credentials={transmissionCreds} />}
-        {delugeCreds && <DelugeSection credentials={delugeCreds} />}
-        {rtorrentCreds && <RtorrentSection credentials={rtorrentCreds} />}
-      </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {credentials?.map((credential) => (
+            <ServiceCard key={credential.id} credentials={credential} />
+          ))}
+        </div>
 
-      <CredentialDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-      />
+        <CredentialDialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+        />
+      </div>
     </div>
   );
 }

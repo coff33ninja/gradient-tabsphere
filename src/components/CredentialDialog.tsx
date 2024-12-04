@@ -8,8 +8,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { SERVICE_CONFIGS } from "./services/ServiceConfig";
+import { ServiceSelect } from "./credentials/ServiceSelect";
+import { ConnectionFields } from "./credentials/ConnectionFields";
+import { AuthFields } from "./credentials/AuthFields";
 
-type ServiceType = keyof typeof SERVICE_CONFIGS;
+type ServiceType = Database["public"]["Enums"]["service_type"];
 
 interface CredentialDialogProps {
   open: boolean;
@@ -55,11 +58,11 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
     const url = constructUrl(
       formData.get("domain") as string,
       formData.get("port") as string,
-      formData.get("service") as ServiceType
+      selectedService
     );
 
     const credential = {
-      service: formData.get("service") as ServiceType,
+      service: selectedService,
       name: formData.get("name") as string,
       url,
       username: formData.get("username") as string | null,
@@ -68,7 +71,9 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
       user_id: user.id,
     };
 
-    const { error } = await supabase.from("credentials").insert(credential);
+    const { error } = await supabase
+      .from("credentials")
+      .insert(credential as any); // Type assertion needed due to ServiceType complexity
 
     if (error) {
       toast({
@@ -97,74 +102,27 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
           <DialogTitle>Add Service Credentials</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="service">Service</Label>
-            <select
-              id="service"
-              name="service"
-              className="w-full rounded-md border border-input bg-background px-3 py-2"
-              required
-              value={selectedService}
-              onChange={(e) => setSelectedService(e.target.value as ServiceType)}
-              aria-label="Select a service"
-            >
-              {Object.keys(SERVICE_CONFIGS).map((service) => (
-                <option key={service} value={service}>
-                  {service.charAt(0).toUpperCase() + service.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
+          <ServiceSelect 
+            selectedService={selectedService}
+            onServiceChange={(service) => setSelectedService(service as ServiceType)}
+          />
 
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input id="name" name="name" required />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="domain">Domain/IP</Label>
-            <Input 
-              id="domain" 
-              name="domain" 
-              placeholder="e.g., localhost or 192.168.1.100"
-              value={domain}
-              onChange={(e) => setDomain(e.target.value)}
-              required 
-            />
-          </div>
+          <ConnectionFields
+            domain={domain}
+            port={port}
+            onDomainChange={setDomain}
+            onPortChange={setPort}
+          />
 
-          <div className="space-y-2">
-            <Label htmlFor="port">Port</Label>
-            <Input 
-              id="port" 
-              name="port" 
-              type="number"
-              value={port}
-              onChange={(e) => setPort(e.target.value)}
-              required 
-            />
-          </div>
-
-          {serviceConfig.requiresAuth && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" name="username" required />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" name="password" type="password" required />
-              </div>
-            </>
-          )}
-
-          {serviceConfig.requiresApiKey && (
-            <div className="space-y-2">
-              <Label htmlFor="api_key">API Key</Label>
-              <Input id="api_key" name="api_key" required />
-            </div>
-          )}
+          <AuthFields
+            requiresAuth={serviceConfig.requiresAuth}
+            requiresApiKey={serviceConfig.requiresApiKey}
+          />
 
           <div className="flex justify-end gap-2">
             <Button
