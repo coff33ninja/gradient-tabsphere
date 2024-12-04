@@ -46,10 +46,14 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
                   className="w-5 h-5 object-contain"
                   onError={(e) => {
                     e.currentTarget.src = link.icon_backup_url || '';
+                    if (!link.icon_backup_url) {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
+                    }
                   }}
                 />
               ) : (
-                <Icons.globe className="w-5 h-5 text-muted-foreground" />
+                <Icons.globe className="w-5 h-5 text-muted-foreground fallback-icon" />
               )}
               <div>
                 <h3 className="font-medium group-hover:text-primary transition-colors">

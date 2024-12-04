@@ -20,7 +20,7 @@ export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
   },
   radarr: {
     category: "Media",
-    icon: "film",
+    icon: "play",
     defaultPort: 7878,
     requiresApiKey: true,
     requiresAuth: false
