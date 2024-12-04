@@ -9,9 +9,10 @@ export const QbittorrentSection = ({ credentials }: Props) => (
   <div className="p-4 rounded-lg border">
     <h2 className="text-xl font-semibold mb-4">qBittorrent</h2>
     <AddTorrentForm 
-      qbittorrentApiUrl={credentials.url}
+      torrentApiUrl={credentials.url}
       username={credentials.username}
       password={credentials.password}
+      client="qbittorrent"
     />
   </div>
 );

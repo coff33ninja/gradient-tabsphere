@@ -85,7 +85,12 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
               <option value="sonarr">Sonarr</option>
               <option value="radarr">Radarr</option>
               <option value="prowlarr">Prowlarr</option>
+              <option value="lidarr">Lidarr</option>
+              <option value="readarr">Readarr</option>
               <option value="qbittorrent">qBittorrent</option>
+              <option value="transmission">Transmission</option>
+              <option value="deluge">Deluge</option>
+              <option value="rtorrent">rTorrent</option>
             </select>
           </div>
 

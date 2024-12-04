@@ -1,63 +1,89 @@
-import React from 'react';
-import { AdminLinkManager } from '@/components/AdminLinkManager';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
-import { Loader } from 'lucide-react';
-import { RoleBasedContent } from '@/components/RoleBasedContent';
-import { useToast } from '@/components/ui/use-toast';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { CredentialDialog } from "@/components/CredentialDialog";
+import { useState } from "react";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { SonarrSection } from "@/components/services/SonarrSection";
+import { RadarrSection } from "@/components/services/RadarrSection";
+import { ProwlarrSection } from "@/components/services/ProwlarrSection";
+import { QbittorrentSection } from "@/components/services/QbittorrentSection";
+import { LidarrSection } from "@/components/services/LidarrSection";
+import { ReadarrSection } from "@/components/services/ReadarrSection";
+import { TransmissionSection } from "@/components/services/TransmissionSection";
+import { DelugeSection } from "@/components/services/DelugeSection";
+import { RtorrentSection } from "@/components/services/RtorrentSection";
 
-const Credentials = () => {
+export default function Services() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ['user-profile'],
-    queryFn: async () => {
+  useEffect(() => {
+    const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      
       if (!user) {
-        navigate('/auth');
-        return null;
+        navigate("/auth");
       }
+    };
+    checkAuth();
+  }, [navigate]);
 
-      const { data: profileData, error } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-
-      if (error) {
-        toast({
-          title: "Error",
-          description: "You don't have permission to access this page",
-          variant: "destructive",
-        });
-        navigate('/');
-        return null;
-      }
-
-      return profileData;
-    }
+  const { data: credentials, isLoading } = useQuery({
+    queryKey: ["credentials"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("credentials")
+        .select("*")
+        .order("service");
+      
+      if (error) throw error;
+      return data;
+    },
   });
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
+  const getCredentialsByService = (service) => {
+    return credentials?.find(cred => cred.service === service) || null;
+  };
+
+  const sonarrCreds = getCredentialsByService('sonarr');
+  const radarrCreds = getCredentialsByService('radarr');
+  const prowlarrCreds = getCredentialsByService('prowlarr');
+  const qbittorrentCreds = getCredentialsByService('qbittorrent');
+  const lidarrCreds = getCredentialsByService('lidarr');
+  const readarrCreds = getCredentialsByService('readarr');
+  const transmissionCreds = getCredentialsByService('transmission');
+  const delugeCreds = getCredentialsByService('deluge');
+  const rtorrentCreds = getCredentialsByService('rtorrent');
+
   return (
-    <div className="container mx-auto px-4 py-8 pt-16">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-      <RoleBasedContent allowedRoles={['admin', 'moderator']}>
-        <AdminLinkManager />
-      </RoleBasedContent>
+    <div className="container mx-auto p-4 space-y-6 pt-16">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Services</h1>
+        <Button onClick={() => setIsDialogOpen(true)}>Add Service</Button>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {sonarrCreds && <SonarrSection credentials={sonarrCreds} />}
+        {radarrCreds && <RadarrSection credentials={radarrCreds} />}
+        {prowlarrCreds && <ProwlarrSection credentials={prowlarrCreds} />}
+        {lidarrCreds && <LidarrSection credentials={lidarrCreds} />}
+        {readarrCreds && <ReadarrSection credentials={readarrCreds} />}
+        {qbittorrentCreds && <QbittorrentSection credentials={qbittorrentCreds} />}
+        {transmissionCreds && <TransmissionSection credentials={transmissionCreds} />}
+        {delugeCreds && <DelugeSection credentials={delugeCreds} />}
+        {rtorrentCreds && <RtorrentSection credentials={rtorrentCreds} />}
+      </div>
+
+      <CredentialDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   );
-};
-
-export default Credentials;
+}

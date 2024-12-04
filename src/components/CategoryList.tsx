@@ -1,46 +1,27 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { Tab } from '@/types';
-import { Loader } from 'lucide-react';
-import { TabNavigation } from './TabNavigation';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
-interface CategoryListProps {
-  activeTab: Tab | null;
-  setActiveTab: (tab: Tab | null) => void;
-}
-
-export const CategoryList = ({ activeTab, setActiveTab }: CategoryListProps) => {
-  const { data: categories, isLoading } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .order('id', { ascending: true });
-      
-      if (error) throw error;
-      return data.map(category => ({
-        id: category.id.toString(),
-        title: category.name,
-        icon: '📁',
-        content: `Content for ${category.name}`
-      }));
-    }
-  });
-
+const CategoryList = ({ categories, isLoading }) => {
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex justify-center items-center h-full">
+        <Loader2 className="animate-spin h-6 w-6" />
       </div>
     );
   }
 
-  return categories && categories.length > 0 ? (
-    <TabNavigation 
-      tabs={categories} 
-      activeTab={activeTab}
-      onTabChange={setActiveTab} 
-    />
-  ) : null;
+  return (
+    <div className="grid grid-cols-1 gap-4">
+      {categories.map((category) => (
+        <Link key={category.id} to={`/category/${category.id}`}>
+          <div className="p-4 rounded-lg border hover:bg-gray-100">
+            <h2 className="text-lg font-semibold">{category.name}</h2>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
 };
+
+export default CategoryList;
