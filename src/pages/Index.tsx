@@ -9,7 +9,7 @@ import { AdminLinkManager } from '@/components/AdminLinkManager';
 import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { Button } from '@/components/ui/button';
 import { Tab } from '@/types';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
 const Index = () => {
@@ -29,9 +29,12 @@ const Index = () => {
     }
   });
 
-  const { data: services = [] } = useQuery({
+  const { data: services = [], isLoading: isServicesLoading } = useQuery({
     queryKey: ['credentials'],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+      
       const { data, error } = await supabase
         .from('credentials')
         .select('*');
@@ -68,7 +71,7 @@ const Index = () => {
               className="flex items-center gap-2 md:hidden mb-2"
               onClick={() => setActiveCategory(null)}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <Icons.chevronLeft className="h-4 w-4" />
               Back to Categories
             </Button>
           )}
@@ -98,9 +101,9 @@ const Index = () => {
             onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
           >
             {isCategoryMenuOpen ? (
-              <ChevronLeft className="h-4 w-4" />
+              <Icons.chevronLeft className="h-4 w-4" />
             ) : (
-              <ChevronRight className="h-4 w-4" />
+              <Icons.chevronRight className="h-4 w-4" />
             )}
           </Button>
 
@@ -113,23 +116,35 @@ const Index = () => {
             ) : (
               !isCategoryMenuOpen && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 animate-fade-in">
-                  {services.map((service) => (
-                    <div
-                      key={service.id}
-                      className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div>
-                          <h3 className="font-medium group-hover:text-primary transition-colors">
-                            {service.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground line-clamp-2">
-                            {service.service}
-                          </p>
+                  {services.length === 0 ? (
+                    <div className="col-span-full flex flex-col items-center justify-center p-8 text-center">
+                      <Icons.alert className="h-12 w-12 text-muted-foreground mb-4" />
+                      <h3 className="text-lg font-semibold text-muted-foreground">
+                        No services found
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Sign in to add and manage your services
+                      </p>
+                    </div>
+                  ) : (
+                    services.map((service) => (
+                      <div
+                        key={service.id}
+                        className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div>
+                            <h3 className="font-medium group-hover:text-primary transition-colors">
+                              {service.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {service.service}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               )
             )}

@@ -40,13 +40,15 @@ export default function Credentials() {
 
   // Group services by category
   const categories = Array.from(new Set(Object.values(SERVICE_CONFIGS).map(config => config.category)));
-  const categoryList = categories.map(category => ({
-    id: category,
+
+  // Update the categories mapping to use numbers for IDs
+  const categoryList = categories.map((category, index) => ({
+    id: index + 1,
     name: category
   }));
 
   const filteredCredentials = credentials?.filter(cred => 
-    !selectedCategory || SERVICE_CONFIGS[cred.service].category === selectedCategory
+    !selectedCategory || SERVICE_CONFIGS[cred.service].category === categories[parseInt(selectedCategory.toString()) - 1]
   );
 
   if (isLoading) {
