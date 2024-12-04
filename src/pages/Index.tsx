@@ -9,17 +9,31 @@ import { AdminLinkManager } from '@/components/AdminLinkManager';
 import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { Button } from '@/components/ui/button';
 import { Tab } from '@/types';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [isAdminDialogOpen, setIsAdminDialogOpen] = useState(false);
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(true);
   
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('categories')
+        .select('*');
+      
+      if (error) throw error;
+      return data || [];
+    }
+  });
+
+  const { data: services = [] } = useQuery({
+    queryKey: ['credentials'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('credentials')
         .select('*');
       
       if (error) throw error;
@@ -47,7 +61,7 @@ const Index = () => {
           </RoleBasedContent>
         </div>
         
-        <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 relative">
           {activeCategory && (
             <Button
               variant="ghost"
@@ -59,17 +73,66 @@ const Index = () => {
             </Button>
           )}
           
-          <div className={`${activeCategory ? 'hidden md:block' : 'block'}`}>
-            <CategoryList 
-              categories={categories}
-              isLoading={isLoading}
-              activeCategory={activeCategory}
-              onCategorySelect={setActiveCategory}
-            />
+          <div className={cn(
+            "transition-all duration-300 ease-in-out",
+            isCategoryMenuOpen ? "md:w-64" : "md:w-0",
+            activeCategory ? 'hidden md:block' : 'block'
+          )}>
+            <div className={cn(
+              "relative",
+              !isCategoryMenuOpen && "md:hidden"
+            )}>
+              <CategoryList 
+                categories={categories}
+                isLoading={isLoading}
+                activeCategory={activeCategory}
+                onCategorySelect={setActiveCategory}
+              />
+            </div>
           </div>
 
-          <div className={`flex-1 ${!activeCategory && 'hidden md:block'}`}>
-            <LinkGrid activeTab={activeTab} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hidden md:flex absolute -right-12 top-2"
+            onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
+          >
+            {isCategoryMenuOpen ? (
+              <ChevronLeft className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </Button>
+
+          <div className={cn(
+            "flex-1",
+            !activeCategory && 'hidden md:block'
+          )}>
+            {activeTab ? (
+              <LinkGrid activeTab={activeTab} />
+            ) : (
+              !isCategoryMenuOpen && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 animate-fade-in">
+                  {services.map((service) => (
+                    <div
+                      key={service.id}
+                      className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div>
+                          <h3 className="font-medium group-hover:text-primary transition-colors">
+                            {service.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {service.service}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            )}
           </div>
         </div>
 

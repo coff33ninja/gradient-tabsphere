@@ -7,10 +7,10 @@ import {
   RefreshCw,
   PlusCircle,
   Check,
-  Edit,
-  Trash2,
-  Upload,
+  ChevronsUpDown,
+  ChevronUp,
   ChevronDown,
+  Upload,
   LogOut,
   Settings2 as Settings,
   Menu,
@@ -24,7 +24,8 @@ import {
   Inbox,
   Search,
   Tv2 as Tv,
-  Github
+  Github,
+  ChevronRight
 } from "lucide-react";
 
 export const Icons = {
@@ -36,14 +37,15 @@ export const Icons = {
   refresh: RefreshCw,
   plusCircle: PlusCircle,
   check: Check,
-  edit: Edit,
-  trash: Trash2,
-  upload: Upload,
+  chevronsUpDown: ChevronsUpDown,
+  chevronUp: ChevronUp,
   chevronDown: ChevronDown,
+  upload: Upload,
   logout: LogOut,
   settings: Settings,
   menu: Menu,
   chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
   play: Play,
   download: Download,
   music: Music,
