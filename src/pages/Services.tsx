@@ -36,9 +36,13 @@ export default function Services() {
   }
 
   return (
-    <div className="container mx-auto p-4 space-y-6 pt-16">
-      <h1 className="text-2xl font-bold">Services</h1>
-      <ServiceGrid credentials={credentials || []} />
+    <div className="min-h-screen bg-gradient-to-br from-[#8B5CF6]/20 via-[#D946EF]/20 to-[#8B5CF6]/20 pt-16">
+      <div className="max-w-[2000px] mx-auto p-4 md:p-8">
+        <h1 className="text-3xl font-bold mb-8 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-transparent bg-clip-text">
+          Services
+        </h1>
+        <ServiceGrid credentials={credentials || []} />
+      </div>
     </div>
   );
 }

@@ -12,11 +12,13 @@ export const ServiceCard = ({ credentials }: Props) => {
   const Icon = Icons[config.icon as keyof typeof Icons];
 
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className="group hover:shadow-lg transition-all duration-300 border border-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 bg-white/5 backdrop-blur-sm">
       <CardHeader className="space-y-1">
         <CardTitle className="flex items-center space-x-2">
-          <Icon className="w-5 h-5" />
-          <span>{credentials.name}</span>
+          <Icon className="w-5 h-5 text-[#8B5CF6] group-hover:text-[#D946EF] transition-colors" />
+          <span className="bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] bg-clip-text text-transparent">
+            {credentials.name}
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent>

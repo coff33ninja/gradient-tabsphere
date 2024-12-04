@@ -20,12 +20,13 @@ export const ServiceGrid = ({ credentials }: Props) => {
     : credentials.filter(cred => SERVICE_CONFIGS[cred.service].category === selectedCategory);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div className="flex gap-2 overflow-x-auto pb-2">
           <Button
             variant={selectedCategory === "All" ? "default" : "outline"}
             onClick={() => setSelectedCategory("All")}
+            className="gradient-border before:opacity-50 hover:before:opacity-100 transition-all"
           >
             All
           </Button>
@@ -34,12 +35,18 @@ export const ServiceGrid = ({ credentials }: Props) => {
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
+              className="gradient-border before:opacity-50 hover:before:opacity-100 transition-all"
             >
               {category}
             </Button>
           ))}
         </div>
-        <Button onClick={() => setIsDialogOpen(true)}>Add Service</Button>
+        <Button 
+          onClick={() => setIsDialogOpen(true)}
+          className="bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white hover:opacity-90 transition-opacity"
+        >
+          Add Service
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

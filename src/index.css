@@ -38,14 +38,14 @@
 
 @layer utilities {
   .gradient-border {
-    @apply relative before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-purple-400 before:via-pink-500 before:to-purple-600 before:animate-gradient before:bg-[length:200%_200%];
+    @apply relative before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-[#8B5CF6] before:via-[#D946EF] before:to-[#8B5CF6] before:animate-gradient before:bg-[length:200%_200%];
   }
 
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
