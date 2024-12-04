@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import { Edit, RefreshCw, Upload, Trash2 } from 'lucide-react';
 import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { Link } from '@/types';
 
 interface LinkDisplayProps {
   link: Link;
+  categoryName?: string;
   onEdit: () => void;
   onDelete?: () => void;
   onRescrape: () => void;
@@ -17,6 +19,7 @@ interface LinkDisplayProps {
 
 export const LinkDisplay = ({ 
   link, 
+  categoryName,
   onEdit, 
   onDelete,
   onRescrape, 
@@ -26,10 +29,15 @@ export const LinkDisplay = ({
 }: LinkDisplayProps) => {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-start space-x-4">
         <div>
           <h3 className="font-semibold">{link.title}</h3>
           <p className="text-muted-foreground">{link.url}</p>
+          {categoryName && (
+            <Badge variant="secondary" className="mt-2">
+              {categoryName}
+            </Badge>
+          )}
         </div>
       </div>
       <div className="flex space-x-2">

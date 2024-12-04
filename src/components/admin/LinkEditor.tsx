@@ -2,18 +2,20 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Check, X } from 'lucide-react';
 import { Link } from '@/types';
 
 interface LinkEditorProps {
   link: Link;
+  categories: { id: number; name: string; }[];
   onSave: () => void;
   onCancel: () => void;
   onChange: (updatedLink: Link) => void;
 }
 
-export const LinkEditor = ({ link, onSave, onCancel, onChange }: LinkEditorProps) => {
-  const handleChange = (field: keyof Link, value: string) => {
+export const LinkEditor = ({ link, categories, onSave, onCancel, onChange }: LinkEditorProps) => {
+  const handleChange = (field: keyof Link, value: any) => {
     onChange({
       ...link,
       [field]: value
@@ -37,6 +39,21 @@ export const LinkEditor = ({ link, onSave, onCancel, onChange }: LinkEditorProps
         onChange={(e) => handleChange('description', e.target.value)}
         placeholder="Description"
       />
+      <Select
+        value={link.category_id?.toString() || ''}
+        onValueChange={(value) => handleChange('category_id', parseInt(value))}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Select category" />
+        </SelectTrigger>
+        <SelectContent>
+          {categories.map((category) => (
+            <SelectItem key={category.id} value={category.id.toString()}>
+              {category.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       <div className="flex space-x-2">
         <Button 
           onClick={onSave}
