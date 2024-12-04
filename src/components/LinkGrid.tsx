@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
+import { Icons } from './icons';
 
 interface LinkGridProps {
   activeTab: Tab | null;
@@ -38,6 +39,18 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
             className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
           >
             <div className="flex items-center gap-3">
+              {link.icon_url ? (
+                <img 
+                  src={link.icon_url} 
+                  alt=""
+                  className="w-5 h-5 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = link.icon_backup_url || '';
+                  }}
+                />
+              ) : (
+                <Icons.globe className="w-5 h-5 text-muted-foreground" />
+              )}
               <div>
                 <h3 className="font-medium group-hover:text-primary transition-colors">
                   {link.title}
@@ -48,6 +61,14 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
                   </p>
                 )}
               </div>
+            </div>
+            <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+              {link.last_scraped_at && (
+                <span className="flex items-center gap-1">
+                  <Icons.refresh className="w-3 h-3" />
+                  {new Date(link.last_scraped_at).toLocaleDateString()}
+                </span>
+              )}
             </div>
           </a>
         ))}
