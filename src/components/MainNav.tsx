@@ -6,7 +6,6 @@ import { LogIn, Menu } from "lucide-react";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { UserMenu } from "./nav/UserMenu";
 import { cn } from "@/lib/utils";
-import { Icons } from "./icons";
 import {
   Sheet,
   SheetContent,
