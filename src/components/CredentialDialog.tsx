@@ -73,7 +73,7 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
 
     const { error } = await supabase
       .from("credentials")
-      .insert(credential);
+      .insert(credential as any); // Type assertion needed due to ServiceType complexity
 
     if (error) {
       toast({
