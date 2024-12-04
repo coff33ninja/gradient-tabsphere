@@ -4,14 +4,27 @@ A modern web application for managing and accessing your self-hosted services. W
 
 ## Features 🌟
 
-- **Service Management**: Easily manage your self-hosted services
+- **Service Management**: 
+  - Easily manage your self-hosted services
+  - Integration with popular services:
+    - Media Management: Sonarr, Radarr, Lidarr
+    - Download Clients: qBittorrent, Transmission, Deluge
+    - Indexers: Prowlarr, Jackett
+    - Media Servers: Plex, Jellyfin, Emby
+    - Subtitle Management: Bazarr
+    - Request Management: Overseerr, Ombi
 - **Custom Icons**: Support for custom service icons (authenticated users only)
 - **Responsive Design**: 
   - Works seamlessly on desktop and mobile devices
   - Mobile-friendly navigation with hamburger menu
   - Adaptive category view with back navigation
 - **Dark Mode**: Built-in dark mode support
-- **Authentication**: Secure access to your services
+- **Authentication**: 
+  - Secure access to your services
+  - Role-based access control:
+    - Viewer: Basic access to view services
+    - Moderator: Can add and manage content
+    - Admin: Full system control
 - **Category Management**: 
   - Organize links into categories
   - Add new categories on the fly
@@ -21,6 +34,14 @@ A modern web application for managing and accessing your self-hosted services. W
   - Automatic metadata scraping
   - Custom icon support
   - Edit and update link details
+- **Search Functionality**:
+  - Quick search across all services
+  - Filter by categories
+  - Real-time search results
+- **API Integration**:
+  - Support for service APIs
+  - Automatic service discovery
+  - Secure credential storage
 - **Home Page Customization**: Authenticated users can customize the home page content
 
 ## Authentication Features 🔐

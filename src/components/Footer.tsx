@@ -1,5 +1,5 @@
 import React from "react";
-import { Github } from "lucide-react";
+import { Icons } from "./icons";
 import { Button } from "./ui/button";
 
 export const Footer = () => {
@@ -18,7 +18,7 @@ export const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Github className="h-4 w-4" />
+            <Icons.github className="h-4 w-4" />
             Report on GitHub
           </a>
         </Button>
@@ -34,7 +34,7 @@ export const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Github className="h-4 w-4" />
+            <Icons.github className="h-4 w-4" />
             Fork me on GitHub
           </a>
         </Button>

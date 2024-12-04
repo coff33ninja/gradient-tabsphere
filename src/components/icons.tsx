@@ -3,7 +3,7 @@ import {
   Plus,
   X,
   User,
-  Globe,
+  Globe2 as Globe,
   RefreshCw,
   PlusCircle,
   Check,
@@ -12,18 +12,19 @@ import {
   Upload,
   ChevronDown,
   LogOut,
-  Settings,
+  Settings2 as Settings,
   Menu,
   ChevronLeft,
-  Play,
+  PlayCircle as Play,
   Download,
-  Music,
-  Book,
+  Music2 as Music,
+  BookOpen as Book,
   Languages,
   Activity,
   Inbox,
   Search,
-  Tv
+  Tv2 as Tv,
+  Github
 } from "lucide-react";
 
 export const Icons = {
@@ -51,7 +52,8 @@ export const Icons = {
   activity: Activity,
   inbox: Inbox,
   search: Search,
-  tv: Tv
+  tv: Tv,
+  github: Github
 };
 
 export type Icon = keyof typeof Icons;
