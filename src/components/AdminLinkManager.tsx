@@ -10,20 +10,32 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Plus, X } from 'lucide-react';
 import { toast } from './ui/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 export const AdminLinkManager = () => {
+  const navigate = useNavigate();
   const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   
-  const { data: links, isLoading } = useLinks();
+  const { data: linksData, isLoading } = useLinks();
   const { 
     updateLinkMutation, 
     uploadIconMutation, 
     rescrapeMetadataMutation 
   } = useLinkMutations();
+
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/auth');
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
@@ -109,8 +121,8 @@ export const AdminLinkManager = () => {
   };
 
   const filteredLinks = selectedCategory 
-    ? links?.filter(link => link.category_id === selectedCategory)
-    : links;
+    ? linksData?.filter(link => link.category_id === selectedCategory)
+    : linksData;
 
   if (isLoading) return <div>Loading...</div>;
 

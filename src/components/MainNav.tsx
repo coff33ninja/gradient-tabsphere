@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { LogIn, Menu } from "lucide-react";
+import { LogIn } from "lucide-react";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { UserMenu } from "./nav/UserMenu";
 import { cn } from "@/lib/utils";
+import { Icons } from "./icons";
 import {
   Sheet,
   SheetContent,
@@ -66,7 +67,7 @@ export function MainNav() {
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5" />
+                <Icons.menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="left">

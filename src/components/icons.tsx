@@ -21,21 +21,20 @@ import {
   SunMedium,
   Trash2,
   Twitter,
-  User,
   X,
   RefreshCw,
   Globe2,
   Menu as MenuIcon,
   AlertCircle,
   Download,
-  Music,
+  Music2,
   BookOpen,
   Search,
-  Play,
+  PlayCircle,
   Activity,
   Inbox,
   Languages,
-  Tv
+  Tv2
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -50,7 +49,7 @@ export const Icons = {
   chevronsUpDown: ChevronDown,
   trash: Trash2,
   settings: Settings2,
-  user: User,
+  user: Circle,
   plus: Plus,
   menu: MenuIcon,
   moon: Moon,
@@ -71,12 +70,12 @@ export const Icons = {
   alert: AlertCircle,
   github: Github,
   download: Download,
-  music: Music,
+  music: Music2,
   book: BookOpen,
   search: Search,
-  play: Play,
+  play: PlayCircle,
   activity: Activity,
   inbox: Inbox,
   languages: Languages,
-  tv: Tv
+  tv: Tv2
 };
