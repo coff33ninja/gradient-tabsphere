@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainNav } from "@/components/MainNav";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Services from "./pages/Services";
 import AdminZone from "./pages/AdminZone";
 
 const queryClient = new QueryClient();
@@ -20,7 +19,6 @@ const App = () => (
         <MainNav />
         <Routes>
           <Route path="/auth" element={<Auth />} />
-          <Route path="/services" element={<Services />} />
           <Route path="/admin" element={<AdminZone />} />
           <Route path="/" element={<Index />} />
         </Routes>
