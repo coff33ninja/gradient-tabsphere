@@ -11,10 +11,19 @@ import { Settings2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { useState } from 'react';
+import { ThemeSettings } from './ThemeSettings';
 
 export const Settings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isThemeDialogOpen, setIsThemeDialogOpen] = useState(false);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -30,26 +39,40 @@ export const Settings = () => {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="fixed bottom-4 right-4"
-        >
-          <Settings2 className="h-[1.2rem] w-[1.2rem]" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel>Settings</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate('/credentials')}>
-          Credentials
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleSignOut}>
-          Sign Out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="fixed bottom-4 right-4"
+          >
+            <Settings2 className="h-[1.2rem] w-[1.2rem]" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuLabel>Settings</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setIsThemeDialogOpen(true)}>
+            Theme Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate('/credentials')}>
+            Credentials
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSignOut}>
+            Sign Out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={isThemeDialogOpen} onOpenChange={setIsThemeDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Theme Settings</DialogTitle>
+          </DialogHeader>
+          <ThemeSettings />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

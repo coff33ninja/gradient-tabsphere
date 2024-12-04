@@ -139,6 +139,53 @@ export type Database = {
         }
         Relationships: []
       }
+      user_themes: {
+        Row: {
+          accent_color: string | null
+          created_at: string | null
+          font_family: string | null
+          font_size: string | null
+          id: number
+          primary_color: string | null
+          secondary_color: string | null
+          theme_preset: Database["public"]["Enums"]["theme_preset"] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          accent_color?: string | null
+          created_at?: string | null
+          font_family?: string | null
+          font_size?: string | null
+          id?: number
+          primary_color?: string | null
+          secondary_color?: string | null
+          theme_preset?: Database["public"]["Enums"]["theme_preset"] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          accent_color?: string | null
+          created_at?: string | null
+          font_family?: string | null
+          font_size?: string | null
+          id?: number
+          primary_color?: string | null
+          secondary_color?: string | null
+          theme_preset?: Database["public"]["Enums"]["theme_preset"] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_themes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -167,6 +214,7 @@ export type Database = {
         | "tautulli"
         | "overseerr"
         | "ombi"
+      theme_preset: "default" | "dark" | "light" | "forest" | "ocean" | "sunset"
       user_role: "viewer" | "moderator" | "admin"
     }
     CompositeTypes: {
