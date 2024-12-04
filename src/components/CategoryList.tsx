@@ -1,13 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Icons } from './icons';
+import { cn } from '@/lib/utils';
 
 type CategoryListProps = {
   categories: any[];
   isLoading: boolean;
+  activeCategory?: number | null;
+  onCategorySelect: (categoryId: number) => void;
 }
 
-export const CategoryList = ({ categories, isLoading }: CategoryListProps) => {
+export const CategoryList = ({ 
+  categories, 
+  isLoading, 
+  activeCategory,
+  onCategorySelect 
+}: CategoryListProps) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -17,13 +24,23 @@ export const CategoryList = ({ categories, isLoading }: CategoryListProps) => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="flex flex-col space-y-1 w-full md:w-64 bg-secondary/20 p-4 rounded-lg h-auto md:h-[calc(100vh-12rem)] overflow-y-auto">
       {categories.map((category) => (
-        <Link key={category.id} to={`/category/${category.id}`}>
-          <div className="p-4 rounded-lg border hover:bg-gray-100">
-            <h2 className="text-lg font-semibold">{category.name}</h2>
-          </div>
-        </Link>
+        <button
+          key={category.id}
+          onClick={() => onCategorySelect(category.id)}
+          className={cn(
+            "w-full px-4 py-3 rounded-md transition-all duration-300 text-left",
+            "hover:bg-secondary/40",
+            activeCategory === category.id
+              ? "bg-primary/20 text-primary relative gradient-border"
+              : "text-muted-foreground"
+          )}
+        >
+          <span className="relative z-10">
+            {category.name}
+          </span>
+        </button>
       ))}
     </div>
   );

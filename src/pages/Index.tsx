@@ -7,7 +7,7 @@ import { LinkGrid } from '@/components/LinkGrid';
 import { Tab } from '@/types';
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState<Tab | null>(null);
+  const [activeCategory, setActiveCategory] = useState<number | null>(null);
   
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ['categories'],
@@ -21,6 +21,11 @@ const Index = () => {
     }
   });
 
+  const activeTab = activeCategory ? {
+    id: activeCategory.toString(),
+    title: categories.find(c => c.id === activeCategory)?.name || ''
+  } as Tab : null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16">
       <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
@@ -30,6 +35,8 @@ const Index = () => {
           <CategoryList 
             categories={categories}
             isLoading={isLoading}
+            activeCategory={activeCategory}
+            onCategorySelect={setActiveCategory}
           />
           <LinkGrid activeTab={activeTab} />
         </div>
