@@ -32,7 +32,7 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
   if (!activeTab) return null;
 
   return (
-    <div className="flex-1 p-4 md:p-6 bg-background/40 backdrop-blur-sm rounded-lg shadow-lg animate-fade-in min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-12rem)]">
+    <div className="flex-1 p-4 md:p-6 bg-background/95 backdrop-blur-sm rounded-lg shadow-lg animate-fade-in min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-12rem)]">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
           {activeTab.title}
@@ -67,7 +67,7 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
+            className="p-4 rounded-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 group border border-white/20 hover:border-white/30 shadow-lg"
           >
             <div className="flex items-center gap-3">
               {link.icon_url ? (
@@ -87,11 +87,11 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
                 <Icons.globe className="w-5 h-5 text-muted-foreground fallback-icon" />
               )}
               <div>
-                <h3 className="font-medium group-hover:text-primary transition-colors">
+                <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
                   {link.title}
                 </h3>
                 {link.description && (
-                  <p className="text-sm text-muted-foreground line-clamp-2">
+                  <p className="text-sm text-muted-foreground/90 line-clamp-2">
                     {link.description}
                   </p>
                 )}
