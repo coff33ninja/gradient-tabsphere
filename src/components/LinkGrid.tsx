@@ -38,17 +38,6 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
             className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
           >
             <div className="flex items-center gap-3">
-              {link.icon_url && (
-                <img
-                  src={link.icon_url}
-                  alt=""
-                  className="w-6 h-6 rounded"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = link.icon_backup_url || '/placeholder.svg';
-                  }}
-                />
-              )}
               <div>
                 <h3 className="font-medium group-hover:text-primary transition-colors">
                   {link.title}

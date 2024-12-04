@@ -15,15 +15,15 @@ export const TabNavigation = ({ tabs, activeTab, onTabChange }: TabNavigationPro
           key={tab.id}
           onClick={() => onTabChange(tab)}
           className={cn(
-            "w-full px-4 py-3 rounded-md transition-all duration-300 text-left flex items-center gap-2",
+            "w-full px-4 py-3 rounded-md transition-all duration-300 text-left",
             "hover:bg-secondary/40",
             activeTab?.id === tab.id
               ? "bg-primary/20 text-primary relative gradient-border"
               : "text-muted-foreground"
           )}
         >
-          <span className="relative z-10 flex items-center gap-2 break-words">
-            {tab.icon} {tab.title}
+          <span className="relative z-10 break-words">
+            {tab.title}
           </span>
         </button>
       ))}
