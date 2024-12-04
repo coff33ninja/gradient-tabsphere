@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { CredentialDialog } from "@/components/CredentialDialog";
 import { useState } from "react";
-import { Loader } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import AddShowForm from "@/components/AddShowForm";
 import AddMovieForm from "@/components/AddMovieForm";
 import AddIndexerForm from "@/components/AddIndexerForm";
@@ -41,7 +41,7 @@ export default function Services() {
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Loader className="h-8 w-8 animate-spin text-primary" />
+        <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
