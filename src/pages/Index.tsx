@@ -9,6 +9,7 @@ import { AdminLinkManager } from '@/components/AdminLinkManager';
 import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { Button } from '@/components/ui/button';
 import { Tab } from '@/types';
+import { ChevronLeft } from 'lucide-react';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
@@ -47,13 +48,32 @@ const Index = () => {
         </div>
         
         <div className="flex flex-col md:flex-row gap-4 md:gap-8">
-          <CategoryList 
-            categories={categories}
-            isLoading={isLoading}
-            activeCategory={activeCategory}
-            onCategorySelect={setActiveCategory}
-          />
-          <LinkGrid activeTab={activeTab} />
+          {/* Mobile Back Button */}
+          {activeCategory && (
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 md:hidden mb-2"
+              onClick={() => setActiveCategory(null)}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Back to Categories
+            </Button>
+          )}
+          
+          {/* Categories List - Hidden on mobile when category is selected */}
+          <div className={`${activeCategory ? 'hidden md:block' : 'block'}`}>
+            <CategoryList 
+              categories={categories}
+              isLoading={isLoading}
+              activeCategory={activeCategory}
+              onCategorySelect={setActiveCategory}
+            />
+          </div>
+
+          {/* Links Grid - Full width on mobile when category is selected */}
+          <div className={`flex-1 ${!activeCategory && 'hidden md:block'}`}>
+            <LinkGrid activeTab={activeTab} />
+          </div>
         </div>
 
         <Dialog open={isAdminDialogOpen} onOpenChange={setIsAdminDialogOpen}>
