@@ -97,7 +97,26 @@ export type Database = {
       }
     }
     Enums: {
-      service_type: "sonarr" | "radarr" | "prowlarr" | "qbittorrent"
+      service_type: 
+        | "sonarr"
+        | "radarr"
+        | "prowlarr"
+        | "qbittorrent"
+        | "lidarr"
+        | "readarr"
+        | "transmission"
+        | "deluge"
+        | "rtorrent"
+        | "bazarr"
+        | "nzbget"
+        | "sabnzbd"
+        | "jackett"
+        | "plex"
+        | "jellyfin"
+        | "emby"
+        | "tautulli"
+        | "overseerr"
+        | "ombi"
       user_role: "viewer" | "moderator" | "admin"
     }
   }
