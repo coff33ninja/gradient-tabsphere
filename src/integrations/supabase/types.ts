@@ -147,7 +147,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      service_type: "sonarr" | "radarr" | "prowlarr" | "qbittorrent"
+      service_type:
+        | "sonarr"
+        | "radarr"
+        | "prowlarr"
+        | "qbittorrent"
+        | "lidarr"
+        | "readarr"
+        | "transmission"
+        | "deluge"
+        | "rtorrent"
       user_role: "viewer" | "moderator" | "admin"
     }
     CompositeTypes: {

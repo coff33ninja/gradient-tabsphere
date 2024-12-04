@@ -31,9 +31,36 @@ export const addIndexerToProwlarr = async (apiUrl, apiKey, indexerData) => {
   return response.data;
 };
 
-// qBittorrent API
-export const addTorrentToQbittorrent = async (apiUrl, username, password, torrentData) => {
-  const response = await axios.post(`${apiUrl}/api/v2/torrents/add`, torrentData, {
+// Lidarr API
+export const addArtistToLidarr = async (apiUrl, apiKey, artistData) => {
+  const response = await axios.post(`${apiUrl}/api/v1/artist`, artistData, {
+    headers: {
+      'X-Api-Key': apiKey,
+    },
+  });
+  return response.data;
+};
+
+// Readarr API
+export const addBookToReadarr = async (apiUrl, apiKey, bookData) => {
+  const response = await axios.post(`${apiUrl}/api/v1/book`, bookData, {
+    headers: {
+      'X-Api-Key': apiKey,
+    },
+  });
+  return response.data;
+};
+
+// Generic torrent client API
+export const addTorrentToClient = async (apiUrl, username, password, torrentData, client) => {
+  const endpoints = {
+    transmission: '/transmission/rpc',
+    deluge: '/json',
+    rtorrent: '/RPC2',
+    qbittorrent: '/api/v2/torrents/add'
+  };
+
+  const response = await axios.post(`${apiUrl}${endpoints[client]}`, torrentData, {
     auth: {
       username,
       password,

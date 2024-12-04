@@ -1,26 +1,37 @@
 import React, { useState } from 'react';
-import { addTorrentToQbittorrent } from '@/services/mediaService';
+import { addTorrentToClient } from '@/services/mediaService';
 import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-const AddTorrentForm = ({ qbittorrentApiUrl, username, password }) => {
-  const [torrentFile, setTorrentFile] = useState(null);
+type TorrentClient = 'qbittorrent' | 'transmission' | 'deluge' | 'rtorrent';
+
+interface AddTorrentFormProps {
+  torrentApiUrl: string;
+  username: string | null;
+  password: string | null;
+  client: TorrentClient;
+}
+
+const AddTorrentForm = ({ torrentApiUrl, username, password, client }: AddTorrentFormProps) => {
+  const [torrentFile, setTorrentFile] = useState<File | null>(null);
   const { toast } = useToast();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!torrentFile || !username || !password) return;
+
     const formData = new FormData();
     formData.append('torrents', torrentFile);
 
     try {
-      await addTorrentToQbittorrent(qbittorrentApiUrl, username, password, formData);
+      await addTorrentToClient(torrentApiUrl, username, password, formData, client);
       toast({
         title: 'Success',
-        description: 'Torrent added to qBittorrent!',
+        description: 'Torrent added successfully!',
       });
       setTorrentFile(null);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'Error',
         description: error.message,
@@ -34,7 +45,7 @@ const AddTorrentForm = ({ qbittorrentApiUrl, username, password }) => {
       <div className="space-y-2">
         <Input
           type="file"
-          onChange={(e) => setTorrentFile(e.target.files[0])}
+          onChange={(e) => setTorrentFile(e.target.files?.[0] || null)}
           required
           accept=".torrent"
         />
