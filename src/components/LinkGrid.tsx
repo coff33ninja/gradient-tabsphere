@@ -2,13 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
 import { Icons } from './icons';
+import { AddLinkForm } from './admin/AddLinkForm';
+import { RoleBasedContent } from './RoleBasedContent';
 
 interface LinkGridProps {
   activeTab: Tab | null;
 }
 
 export const LinkGrid = ({ activeTab }: LinkGridProps) => {
-  const { data: links } = useQuery({
+  const { data: links, refetch } = useQuery({
     queryKey: ['links', activeTab?.id],
     enabled: !!activeTab?.id,
     queryFn: async () => {
@@ -26,9 +28,17 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
 
   return (
     <div className="flex-1 p-4 md:p-6 bg-background/40 backdrop-blur-sm rounded-lg shadow-lg animate-fade-in min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-12rem)]">
-      <h2 className="text-xl md:text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-        {activeTab.title}
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+          {activeTab.title}
+        </h2>
+        <RoleBasedContent allowedRoles={['admin', 'moderator']}>
+          <AddLinkForm 
+            categoryId={parseInt(activeTab.id)} 
+            onSuccess={refetch}
+          />
+        </RoleBasedContent>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {links?.map((link) => (
           <a

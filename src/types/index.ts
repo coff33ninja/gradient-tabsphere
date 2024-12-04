@@ -30,3 +30,8 @@ export interface Link {
   last_scraped_at?: string | null;
   scraping_error?: string | null;
 }
+
+export interface Category {
+  id: number;
+  name: string;
+}
