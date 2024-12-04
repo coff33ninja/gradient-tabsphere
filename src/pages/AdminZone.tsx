@@ -48,7 +48,7 @@ export default function Credentials() {
   }));
 
   const filteredCredentials = credentials?.filter(cred => 
-    !selectedCategory || SERVICE_CONFIGS[cred.service].category === categories[parseInt(selectedCategory.toString()) - 1]
+    !selectedCategory || SERVICE_CONFIGS[cred.service].category === categories[Number(selectedCategory) - 1]
   );
 
   if (isLoading) {
