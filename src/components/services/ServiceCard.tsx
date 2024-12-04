@@ -22,13 +22,27 @@ export const ServiceCard = ({ credentials }: Props) => {
     const fetchServiceIcon = async () => {
       try {
         setIsLoading(true);
+        // Try to load custom icon first
+        try {
+          const customIconUrl = `/custom-icons/${credentials.service}.png`;
+          const response = await fetch(customIconUrl);
+          if (response.ok) {
+            setIconUrl(customIconUrl);
+            setIsLoading(false);
+            return;
+          }
+        } catch (error) {
+          console.debug("No custom icon found, falling back to scraping");
+        }
+
+        // Fall back to scraping if no custom icon
         const scrapedIconUrl = await scrapeAndDownloadIcon(credentials.url);
         setIconUrl(scrapedIconUrl);
       } catch (error) {
         console.error("Error fetching service icon:", error);
         toast({
           title: "Error fetching service icon",
-          description: "Using default icon instead",
+          description: "Using default icon instead. Consider adding a custom icon in /custom-icons/",
           variant: "destructive",
         });
       } finally {
@@ -37,7 +51,7 @@ export const ServiceCard = ({ credentials }: Props) => {
     };
 
     fetchServiceIcon();
-  }, [credentials.url, toast]);
+  }, [credentials.url, credentials.service, toast]);
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 border border-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 bg-white/5 backdrop-blur-sm">
@@ -54,7 +68,7 @@ export const ServiceCard = ({ credentials }: Props) => {
                 e.currentTarget.style.display = 'none';
                 toast({
                   title: "Error loading custom icon",
-                  description: "Using default icon instead",
+                  description: "Using default icon instead. Check icon format and path.",
                   variant: "destructive",
                 });
               }}
