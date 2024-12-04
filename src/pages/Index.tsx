@@ -50,7 +50,7 @@ const Index = () => {
   } as Tab : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16 pb-36">
       <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
         <div className="flex justify-between items-center">
           <SearchBar />
