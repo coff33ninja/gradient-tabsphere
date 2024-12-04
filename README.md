@@ -6,10 +6,21 @@ A modern web application for managing and accessing your self-hosted services. W
 
 - **Service Management**: Easily manage your self-hosted services
 - **Custom Icons**: Support for custom service icons (authenticated users only)
-- **Responsive Design**: Works on desktop and mobile devices
+- **Responsive Design**: 
+  - Works seamlessly on desktop and mobile devices
+  - Mobile-friendly navigation with hamburger menu
+  - Adaptive category view with back navigation
 - **Dark Mode**: Built-in dark mode support
 - **Authentication**: Secure access to your services
-- **Curated Website List**: Access a carefully selected collection of useful websites and tools from the home page
+- **Category Management**: 
+  - Organize links into categories
+  - Add new categories on the fly
+  - Mobile-optimized category navigation
+- **Link Management**:
+  - Add links directly within categories
+  - Automatic metadata scraping
+  - Custom icon support
+  - Edit and update link details
 - **Home Page Customization**: Authenticated users can customize the home page content
 
 ## Authentication Features 🔐
@@ -17,6 +28,8 @@ A modern web application for managing and accessing your self-hosted services. W
 The following features require authentication:
 - Managing and configuring services
 - Adding custom service icons
+- Adding and editing categories
+- Managing links within categories
 - Editing home page content
 - Accessing protected services
 
@@ -33,12 +46,17 @@ Authenticated users can add custom icons for their services by following these g
 
 ## Home Page 🏠
 
-The home page features a curated list of useful websites and tools for:
-- Developers
-- Designers
-- Self-hosting enthusiasts
-- Learning resources
-- Productivity tools
+The home page features:
+- Responsive category navigation
+- Mobile-friendly interface with back navigation
+- Organized link display within categories
+- Quick access to frequently used services
+- Curated list of useful websites and tools for:
+  - Developers
+  - Designers
+  - Self-hosting enthusiasts
+  - Learning resources
+  - Productivity tools
 
 Note: Editing the home page content is restricted to authenticated users.
 
@@ -48,6 +66,7 @@ WEBLIB is an open community project!
 1. Suggest new websites by opening an [issue](https://github.com/coff33ninja/WEBLIB/issues)
 2. Submit a pull request with your additions or improvements
 3. Share your custom icons with the community
+4. Contribute to category organization
 
 ## Getting Started 🏁
 
