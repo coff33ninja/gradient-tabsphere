@@ -5,11 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { CredentialDialog } from "@/components/CredentialDialog";
 import { useState } from "react";
-import { Loader } from "lucide-react";
-import AddShowForm from "@/components/AddShowForm";
-import AddMovieForm from "@/components/AddMovieForm";
-import AddIndexerForm from "@/components/AddIndexerForm";
-import AddTorrentForm from "@/components/AddTorrentForm";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { SonarrSection } from "@/components/services/SonarrSection";
+import { RadarrSection } from "@/components/services/RadarrSection";
+import { ProwlarrSection } from "@/components/services/ProwlarrSection";
+import { QbittorrentSection } from "@/components/services/QbittorrentSection";
 
 export default function Services() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -39,11 +39,7 @@ export default function Services() {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   const getCredentialsByService = (service) => {
@@ -63,46 +59,10 @@ export default function Services() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {sonarrCreds && (
-          <div className="p-4 rounded-lg border">
-            <h2 className="text-xl font-semibold mb-4">Sonarr</h2>
-            <AddShowForm 
-              sonarrApiUrl={sonarrCreds.url} 
-              sonarrApiKey={sonarrCreds.api_key} 
-            />
-          </div>
-        )}
-
-        {radarrCreds && (
-          <div className="p-4 rounded-lg border">
-            <h2 className="text-xl font-semibold mb-4">Radarr</h2>
-            <AddMovieForm 
-              radarrApiUrl={radarrCreds.url} 
-              radarrApiKey={radarrCreds.api_key} 
-            />
-          </div>
-        )}
-
-        {prowlarrCreds && (
-          <div className="p-4 rounded-lg border">
-            <h2 className="text-xl font-semibold mb-4">Prowlarr</h2>
-            <AddIndexerForm 
-              prowlarrApiUrl={prowlarrCreds.url} 
-              prowlarrApiKey={prowlarrCreds.api_key} 
-            />
-          </div>
-        )}
-
-        {qbittorrentCreds && (
-          <div className="p-4 rounded-lg border">
-            <h2 className="text-xl font-semibold mb-4">qBittorrent</h2>
-            <AddTorrentForm 
-              qbittorrentApiUrl={qbittorrentCreds.url}
-              username={qbittorrentCreds.username}
-              password={qbittorrentCreds.password}
-            />
-          </div>
-        )}
+        {sonarrCreds && <SonarrSection credentials={sonarrCreds} />}
+        {radarrCreds && <RadarrSection credentials={radarrCreds} />}
+        {prowlarrCreds && <ProwlarrSection credentials={prowlarrCreds} />}
+        {qbittorrentCreds && <QbittorrentSection credentials={qbittorrentCreds} />}
       </div>
 
       <CredentialDialog
