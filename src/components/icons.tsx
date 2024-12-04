@@ -1,10 +1,10 @@
 import {
-  Activity,
-  BookOpen,
+  ActivitySquare,
+  BookText,
   Download,
   Film,
   Languages as LanguagesIcon,
-  Music,
+  Music2,
   Play,
   Search,
   Tv2,
@@ -13,12 +13,12 @@ import {
 } from "lucide-react";
 
 export const Icons = {
-  activity: Activity,
-  book: BookOpen,
+  activity: ActivitySquare,
+  book: BookText,
   download: Download,
   film: Film,
   languages: LanguagesIcon,
-  music: Music,
+  music: Music2,
   play: Play,
   search: Search,
   tv: Tv2,

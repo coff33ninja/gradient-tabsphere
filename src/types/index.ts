@@ -27,4 +27,6 @@ export interface Link {
   category_id: number | null;
   icon_url?: string | null;
   icon_backup_url?: string | null;
+  last_scraped_at?: string | null;
+  scraping_error?: string | null;
 }
