@@ -65,14 +65,18 @@ export const Settings = () => {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Ensure the Dialog is above the Footer */}
       <Dialog open={isThemeDialogOpen} onOpenChange={setIsThemeDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto z-60"> {/* Added z-60 */}
           <DialogHeader>
             <DialogTitle>Theme Settings</DialogTitle>
           </DialogHeader>
           <ThemeSettings />
         </DialogContent>
       </Dialog>
+
+      {/* Footer should be rendered after the Dialog */}
+      <Footer /> {/* Ensure the footer is rendered after the dialog */}
     </>
   );
 };
