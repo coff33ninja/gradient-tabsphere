@@ -29,7 +29,6 @@ export const AppShortcuts = ({ apps }: AppShortcutsProps) => {
               rel="noopener noreferrer"
               className="flex items-center gap-2 w-full"
             >
-              <span>{app.icon}</span>
               {app.name}
             </a>
           </DropdownMenuItem>

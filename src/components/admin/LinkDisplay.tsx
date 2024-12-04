@@ -27,13 +27,6 @@ export const LinkDisplay = ({
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
-        {link.icon_url && (
-          <img 
-            src={link.icon_url} 
-            alt="Link Icon" 
-            className="w-12 h-12 rounded"
-          />
-        )}
         <div>
           <h3 className="font-semibold">{link.title}</h3>
           <p className="text-muted-foreground">{link.url}</p>

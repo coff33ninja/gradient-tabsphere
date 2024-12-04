@@ -14,23 +14,12 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
       {results.map((result) => (
         <a
           key={result.id}
-          href={result.url}
+          href={result.url || '#'}
           target="_blank"
           rel="noopener noreferrer"
           className="block p-4 hover:bg-white/10 transition-colors border-b border-white/5 last:border-0"
         >
           <div className="flex items-center gap-3">
-            {result.icon_url && (
-              <img 
-                src={result.icon_url} 
-                alt="" 
-                className="w-6 h-6 rounded"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = result.icon_backup_url || '/placeholder.svg';
-                }}
-              />
-            )}
             <div>
               <h4 className="font-medium text-foreground/90">{result.title}</h4>
               {result.description && (

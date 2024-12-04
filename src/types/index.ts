@@ -2,12 +2,14 @@ export interface Tab {
   id: string;
   title: string;
   content?: string;
+  icon?: string;
 }
 
 export interface AppShortcut {
   id: string;
   name: string;
   url: string;
+  icon?: string;
 }
 
 export interface SearchResult {
@@ -23,4 +25,6 @@ export interface Link {
   url: string | null;
   description: string | null;
   category_id: number | null;
+  icon_url?: string | null;
+  icon_backup_url?: string | null;
 }
