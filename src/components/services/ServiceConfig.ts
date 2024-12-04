@@ -8,6 +8,7 @@ export interface ServiceConfig {
   defaultPort: number;
   requiresApiKey: boolean;
   requiresAuth: boolean;
+  baseUrlPath?: string;
 }
 
 export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
@@ -37,7 +38,8 @@ export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
     icon: "download",
     defaultPort: 8080,
     requiresApiKey: false,
-    requiresAuth: true
+    requiresAuth: true,
+    baseUrlPath: '/api'
   },
   lidarr: {
     category: "Media",
@@ -58,21 +60,24 @@ export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
     icon: "download",
     defaultPort: 9091,
     requiresApiKey: false,
-    requiresAuth: true
+    requiresAuth: true,
+    baseUrlPath: '/transmission/rpc'
   },
   deluge: {
     category: "Downloads",
     icon: "download",
     defaultPort: 8112,
     requiresApiKey: false,
-    requiresAuth: true
+    requiresAuth: true,
+    baseUrlPath: '/json'
   },
   rtorrent: {
     category: "Downloads",
     icon: "download",
-    defaultPort: 8080,
+    defaultPort: 8000,
     requiresApiKey: false,
-    requiresAuth: true
+    requiresAuth: true,
+    baseUrlPath: '/RPC2'
   },
   bazarr: {
     category: "Media",

@@ -7,32 +7,14 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import { SERVICE_CONFIGS } from "./services/ServiceConfig";
 
-type ServiceType = Database["public"]["Enums"]["service_type"];
+type ServiceType = keyof typeof SERVICE_CONFIGS;
 
 interface CredentialDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-interface ServiceConfig {
-  defaultPort: number;
-  requiresApiKey: boolean;
-  requiresAuth: boolean;
-  baseUrlPath?: string;
-}
-
-const SERVICE_CONFIGS: Record<ServiceType, ServiceConfig> = {
-  sonarr: { defaultPort: 8989, requiresApiKey: true, requiresAuth: false },
-  radarr: { defaultPort: 7878, requiresApiKey: true, requiresAuth: false },
-  prowlarr: { defaultPort: 9696, requiresApiKey: true, requiresAuth: false },
-  lidarr: { defaultPort: 8686, requiresApiKey: true, requiresAuth: false },
-  readarr: { defaultPort: 8787, requiresApiKey: true, requiresAuth: false },
-  qbittorrent: { defaultPort: 8080, requiresApiKey: false, requiresAuth: true, baseUrlPath: '/api' },
-  transmission: { defaultPort: 9091, requiresApiKey: false, requiresAuth: true, baseUrlPath: '/transmission/rpc' },
-  deluge: { defaultPort: 8112, requiresApiKey: false, requiresAuth: true, baseUrlPath: '/json' },
-  rtorrent: { defaultPort: 8000, requiresApiKey: false, requiresAuth: true, baseUrlPath: '/RPC2' },
-};
 
 export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -126,15 +108,11 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
               onChange={(e) => setSelectedService(e.target.value as ServiceType)}
               aria-label="Select a service"
             >
-              <option value="sonarr">Sonarr</option>
-              <option value="radarr">Radarr</option>
-              <option value="prowlarr">Prowlarr</option>
-              <option value="lidarr">Lidarr</option>
-              <option value="readarr">Readarr</option>
-              <option value="qbittorrent">qBittorrent</option>
-              <option value="transmission">Transmission</option>
-              <option value="deluge">Deluge</option>
-              <option value="rtorrent">rTorrent</option>
+              {Object.keys(SERVICE_CONFIGS).map((service) => (
+                <option key={service} value={service}>
+                  {service.charAt(0).toUpperCase() + service.slice(1)}
+                </option>
+              ))}
             </select>
           </div>
 
