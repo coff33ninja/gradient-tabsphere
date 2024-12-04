@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryList } from '@/components/CategoryList';
 import { LinkGrid } from '@/components/LinkGrid';

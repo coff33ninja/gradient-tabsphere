@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { Loader } from 'lucide-react';
 
-const CategoryList = ({ categories, isLoading }) => {
+export const CategoryList = ({ categories, isLoading }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <Loader2 className="animate-spin h-6 w-6" />
+        <Loader className="animate-spin h-6 w-6" />
       </div>
     );
   }
@@ -23,5 +23,3 @@ const CategoryList = ({ categories, isLoading }) => {
     </div>
   );
 };
-
-export default CategoryList;
