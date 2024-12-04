@@ -157,6 +157,16 @@ export type Database = {
         | "transmission"
         | "deluge"
         | "rtorrent"
+        | "bazarr"
+        | "nzbget"
+        | "sabnzbd"
+        | "jackett"
+        | "plex"
+        | "jellyfin"
+        | "emby"
+        | "tautulli"
+        | "overseerr"
+        | "ombi"
       user_role: "viewer" | "moderator" | "admin"
     }
     CompositeTypes: {

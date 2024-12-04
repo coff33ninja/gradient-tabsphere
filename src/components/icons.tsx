@@ -1,3 +1,4 @@
+import { LucideProps } from "lucide-react";
 import {
   Activity,
   Book,
@@ -9,10 +10,8 @@ import {
   Search,
   Tv,
   Inbox,
-  type Icon as LucideIcon,
+  Loader2,
 } from "lucide-react";
-
-export type Icon = LucideIcon;
 
 export const Icons = {
   activity: Activity,
@@ -25,4 +24,7 @@ export const Icons = {
   search: Search,
   tv: Tv,
   inbox: Inbox,
+  spinner: Loader2,
 } as const;
+
+export type Icon = keyof typeof Icons;

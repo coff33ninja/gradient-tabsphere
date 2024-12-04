@@ -1,4 +1,6 @@
-import type { ServiceType } from "@/integrations/supabase/types";
+import type { Database } from "@/integrations/supabase/types";
+
+type ServiceType = Database["public"]["Enums"]["service_type"];
 
 export interface ServiceConfig {
   defaultPort: number;

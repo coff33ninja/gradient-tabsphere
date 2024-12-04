@@ -9,7 +9,7 @@ type Props = {
 
 export const ServiceCard = ({ credentials }: Props) => {
   const config = SERVICE_CONFIGS[credentials.service];
-  const Icon = Icons[config.icon];
+  const Icon = Icons[config.icon as keyof typeof Icons];
 
   return (
     <Card className="hover:shadow-lg transition-shadow">
