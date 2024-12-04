@@ -24,7 +24,7 @@ export const CategoryList = ({
   }
 
   return (
-    <div className="flex flex-col space-y-1 w-full md:w-64 bg-secondary/20 p-4 rounded-lg h-auto md:h-[calc(100vh-12rem)] overflow-y-auto">
+    <div className="flex flex-col space-y-1 w-full md:w-64 bg-secondary/20 p-4 rounded-lg h-[calc(100vh-12rem)] overflow-y-auto">
       {categories.map((category) => (
         <button
           key={category.id}
