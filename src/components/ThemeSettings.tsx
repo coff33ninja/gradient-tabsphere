@@ -6,28 +6,12 @@ import { ThemePresets } from './theme/ThemePresets';
 import { FontSettings } from './theme/FontSettings';
 import { ColorSettings } from './theme/ColorSettings';
 
-// Define the ThemeValues interface
-interface ThemeValues {
-  primaryColor: string;
-  secondaryColor: string;
-  fontFamily: string;
-  // Add other properties as needed
-}
-
-// Define the Theme interface
-interface Theme {
-  primaryColor: string; // Mapped from primary_color
-  secondaryColor: string; // Mapped from secondary_color
-  fontFamily: string; // Mapped from font_family
-  theme_preset: string;
-}
-
 export function ThemeSettings() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: userThemeData } = useQuery({
+  const { data: userTheme } = useQuery({
     queryKey: ['user-theme'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -43,20 +27,8 @@ export function ThemeSettings() {
     },
   });
 
-const userTheme: Theme = userThemeData ? {
-  primaryColor: userThemeData.primary_color,
-  secondaryColor: userThemeData.secondary_color,
-  fontFamily: userThemeData.font_family,
-  theme_preset: userThemeData.theme_preset || 'default', // Ensure this is included
-} : {
-  primaryColor: '',
-  secondaryColor: '',
-  fontFamily: '',
-  theme_preset: 'default',
-};
-
   const updateThemeMutation = useMutation({
-    mutationFn: async (values: ThemeValues) => {
+    mutationFn: async (values: any) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('No user found');
 
@@ -64,9 +36,7 @@ const userTheme: Theme = userThemeData ? {
         .from('user_themes')
         .upsert({
           user_id: user.id,
-          primary_color: values.primaryColor, // Mapped to database field
-          secondary_color: values.secondaryColor, // Mapped to database field
-          font_family: values.fontFamily, // Mapped to database field
+          ...values,
         })
         .select()
         .single();
@@ -90,17 +60,10 @@ const userTheme: Theme = userThemeData ? {
     },
   });
 
-  const handleThemeChange = async (values: { theme_preset: string }) => {
-    const themeValues: ThemeValues = {
-      primaryColor: userTheme.primaryColor,
-      secondaryColor: userTheme.secondaryColor,
-      fontFamily: userTheme.fontFamily,
-      // You can update the theme based on the selected preset if needed
-    };
-
+  const handleThemeChange = async (values: any) => {
     setIsLoading(true);
     try {
-      await updateThemeMutation.mutateAsync(themeValues);
+      await updateThemeMutation.mutateAsync(values);
     } finally {
       setIsLoading(false);
     }

@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { ThemeSettings } from './ThemeSettings';
-import { Footer } from './Footer';
 
 export const Settings = () => {
   const navigate = useNavigate();

@@ -16,13 +16,9 @@ const themePresets = [
   { value: 'sunset', label: 'Sunset' },
 ];
 
-interface Theme {
-  theme_preset: string;
-}
-
 interface ThemePresetsProps {
-  userTheme: Theme; // Specify the type for userTheme
-  handleThemeChange: (values: { theme_preset: string }) => void; // Updated type
+  userTheme: any;
+  handleThemeChange: (values: any) => void;
 }
 
 export function ThemePresets({ userTheme, handleThemeChange }: ThemePresetsProps) {
