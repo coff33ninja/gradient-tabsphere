@@ -6,6 +6,8 @@ import { Tab } from '@/types';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
+  const [categories] = useState([]);
+  const [isLoading] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16">
@@ -14,8 +16,8 @@ const Index = () => {
         
         <div className="flex flex-col md:flex-row gap-4 md:gap-8">
           <CategoryList 
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
+            categories={categories}
+            isLoading={isLoading}
           />
           <LinkGrid activeTab={activeTab} />
         </div>

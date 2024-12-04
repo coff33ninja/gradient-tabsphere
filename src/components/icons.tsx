@@ -1,28 +1,27 @@
-import { LucideProps } from "lucide-react";
 import {
-  Activity,
-  Book,
+  ActivitySquare,
+  BookOpen,
   Download,
   Film,
   Languages,
   Music,
   Play,
   Search,
-  Tv,
+  Tv2,
   Inbox,
   Loader2,
 } from "lucide-react";
 
 export const Icons = {
-  activity: Activity,
-  book: Book,
+  activity: ActivitySquare,
+  book: BookOpen,
   download: Download,
   film: Film,
   languages: Languages,
   music: Music,
   play: Play,
   search: Search,
-  tv: Tv,
+  tv: Tv2,
   inbox: Inbox,
   spinner: Loader2,
 } as const;
