@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Tab } from '@/types';
-import { LoaderCircle } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { TabNavigation } from './TabNavigation';
 
 interface CategoryListProps {
@@ -31,7 +31,7 @@ export const CategoryList = ({ activeTab, setActiveTab }: CategoryListProps) => 
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
+        <Loader className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
-import { LoaderCircle } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -45,7 +45,7 @@ const Credentials = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
+        <Loader className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
