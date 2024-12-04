@@ -45,7 +45,7 @@ export const Settings = () => {
           <Button
             variant="outline"
             size="icon"
-            className="fixed bottom-4 right-4"
+            className="fixed bottom-24 right-4 z-50 bg-background/95 backdrop-blur-sm shadow-lg border border-border/50 hover:bg-accent"
           >
             <Settings2 className="h-[1.2rem] w-[1.2rem]" />
           </Button>
