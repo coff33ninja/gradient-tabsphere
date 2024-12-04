@@ -1,10 +1,15 @@
 import { cn } from '@/lib/utils';
 import { Icons } from './icons';
 
+type Category = {
+  id: number;
+  name: string;
+};
+
 type CategoryListProps = {
-  categories: any[];
+  categories: Category[];
   isLoading: boolean;
-  activeCategory?: number | null;
+  activeCategory: number | null;
   onCategorySelect: (categoryId: number) => void;
 }
 
