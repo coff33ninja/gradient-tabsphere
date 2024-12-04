@@ -27,7 +27,8 @@ export function MainNav() {
     // Check initial auth state
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (!session && location.pathname !== '/auth') {
+      // Only redirect if trying to access protected routes
+      if (!session && isProtectedRoute(location.pathname)) {
         navigate('/auth');
       }
     });
@@ -35,7 +36,8 @@ export function MainNav() {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      if (!session && location.pathname !== '/auth') {
+      // Only redirect if trying to access protected routes
+      if (!session && isProtectedRoute(location.pathname)) {
         navigate('/auth');
         toast({
           title: "Session expired",
@@ -47,28 +49,36 @@ export function MainNav() {
     return () => subscription.unsubscribe();
   }, [navigate, location.pathname, toast]);
 
+  // Helper function to check if a route requires authentication
+  const isProtectedRoute = (path: string): boolean => {
+    const protectedRoutes = ['/admin'];
+    return protectedRoutes.includes(path);
+  };
+
   const navItems = [
     { path: "/", label: "Home" },
-    { path: "/admin", label: "Admin Zone" },
+    { path: "/admin", label: "Admin Zone", protected: true },
   ];
 
   const NavLinks = () => (
     <>
       {navItems.map((item) => (
-        <Button
-          key={item.path}
-          variant="ghost"
-          className={cn(
-            "bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-bold hover:from-purple-500 hover:to-pink-600 transition-all duration-300",
-            location.pathname === item.path && "bg-accent/50"
-          )}
-          onClick={() => {
-            navigate(item.path);
-            setIsMobileMenuOpen(false);
-          }}
-        >
-          {item.label}
-        </Button>
+        (!item.protected || user) && (
+          <Button
+            key={item.path}
+            variant="ghost"
+            className={cn(
+              "bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-bold hover:from-purple-500 hover:to-pink-600 transition-all duration-300",
+              location.pathname === item.path && "bg-accent/50"
+            )}
+            onClick={() => {
+              navigate(item.path);
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            {item.label}
+          </Button>
+        )
       ))}
     </>
   );
