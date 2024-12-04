@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { CredentialDialog } from "@/components/CredentialDialog";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import AddShowForm from "@/components/AddShowForm";
+import AddMovieForm from "@/components/AddMovieForm";
+import AddIndexerForm from "@/components/AddIndexerForm";
+import AddTorrentForm from "@/components/AddTorrentForm";
 
 export default function Services() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -42,6 +46,15 @@ export default function Services() {
     );
   }
 
+  const getCredentialsByService = (service) => {
+    return credentials?.find(cred => cred.service === service) || null;
+  };
+
+  const sonarrCreds = getCredentialsByService('sonarr');
+  const radarrCreds = getCredentialsByService('radarr');
+  const prowlarrCreds = getCredentialsByService('prowlarr');
+  const qbittorrentCreds = getCredentialsByService('qbittorrent');
+
   return (
     <div className="container mx-auto p-4 space-y-6 pt-16">
       <div className="flex items-center justify-between">
@@ -49,21 +62,47 @@ export default function Services() {
         <Button onClick={() => setIsDialogOpen(true)}>Add Service</Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {credentials?.map((cred) => (
-          <a
-            key={cred.id}
-            href={cred.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-4 rounded-lg bg-card hover:bg-accent transition-colors"
-          >
-            <h3 className="font-semibold mb-2">{cred.name}</h3>
-            <p className="text-sm text-muted-foreground">
-              Service: {cred.service}
-            </p>
-          </a>
-        ))}
+      <div className="grid gap-4 md:grid-cols-2">
+        {sonarrCreds && (
+          <div className="p-4 rounded-lg border">
+            <h2 className="text-xl font-semibold mb-4">Sonarr</h2>
+            <AddShowForm 
+              sonarrApiUrl={sonarrCreds.url} 
+              sonarrApiKey={sonarrCreds.api_key} 
+            />
+          </div>
+        )}
+
+        {radarrCreds && (
+          <div className="p-4 rounded-lg border">
+            <h2 className="text-xl font-semibold mb-4">Radarr</h2>
+            <AddMovieForm 
+              radarrApiUrl={radarrCreds.url} 
+              radarrApiKey={radarrCreds.api_key} 
+            />
+          </div>
+        )}
+
+        {prowlarrCreds && (
+          <div className="p-4 rounded-lg border">
+            <h2 className="text-xl font-semibold mb-4">Prowlarr</h2>
+            <AddIndexerForm 
+              prowlarrApiUrl={prowlarrCreds.url} 
+              prowlarrApiKey={prowlarrCreds.api_key} 
+            />
+          </div>
+        )}
+
+        {qbittorrentCreds && (
+          <div className="p-4 rounded-lg border">
+            <h2 className="text-xl font-semibold mb-4">qBittorrent</h2>
+            <AddTorrentForm 
+              qbittorrentApiUrl={qbittorrentCreds.url}
+              username={qbittorrentCreds.username}
+              password={qbittorrentCreds.password}
+            />
+          </div>
+        )}
       </div>
 
       <CredentialDialog
