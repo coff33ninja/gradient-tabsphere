@@ -6,8 +6,8 @@ import { buttonVariants } from "./buttonVariants"; // Updated import
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"; // Updated type
-  size?: "default" | "sm" | "lg" | "icon"; // Updated type for size
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  size?: "default" | "sm" | "lg" | "icon";
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -24,4 +24,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button };
+export { Button, buttonVariants };
