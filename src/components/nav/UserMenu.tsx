@@ -55,8 +55,8 @@ export const UserMenu = ({ user }: UserMenuProps) => {
           <DropdownMenuItem onClick={() => navigate("/services")}>
             Services
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate("/credentials")}>
-            Credentials
+          <DropdownMenuItem onClick={() => navigate("/admin")}>
+            Admin Zone
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>

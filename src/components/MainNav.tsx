@@ -27,7 +27,7 @@ export function MainNav() {
   const navItems = [
     { path: "/", label: "Home" },
     { path: "/services", label: "Services" },
-    { path: "/credentials", label: "Account" },
+    { path: "/admin", label: "Admin Zone" },
   ];
 
   return (
