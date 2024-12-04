@@ -12,7 +12,7 @@ import { CategoryList } from "@/components/CategoryList";
 
 export default function Credentials() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function Credentials() {
   }));
 
   const filteredCredentials = credentials?.filter(cred => 
-    !selectedCategory || SERVICE_CONFIGS[cred.service].category === categories[Number(selectedCategory) - 1]
+    !selectedCategory || SERVICE_CONFIGS[cred.service].category === categories[selectedCategory - 1]
   );
 
   if (isLoading) {
@@ -65,7 +65,7 @@ export default function Credentials() {
             categories={categoryList}
             isLoading={isLoading}
             activeCategory={selectedCategory}
-            onCategorySelect={(category) => setSelectedCategory(category)}
+            onCategorySelect={setSelectedCategory}
           />
 
           <div className="flex-1 space-y-6">

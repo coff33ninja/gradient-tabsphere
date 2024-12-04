@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Plus, X } from 'lucide-react';
+import { Icons } from './icons';
 import { toast } from './ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ export const AdminLinkManager = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [isAddingCategory, setIsAddingCategory] = useState(false);
-  
+
   const { data: linksData, isLoading } = useLinks();
   const { 
     updateLinkMutation, 
@@ -155,7 +155,7 @@ export const AdminLinkManager = () => {
               onClick={() => setIsAddingCategory(true)}
               className="gap-2"
             >
-              <Plus className="h-4 w-4" /> Add Category
+              <Icons.plus className="h-4 w-4" /> Add Category
             </Button>
           ) : (
             <div className="flex items-center gap-2">
@@ -176,7 +176,7 @@ export const AdminLinkManager = () => {
                   setNewCategoryName('');
                 }}
               >
-                <X className="h-4 w-4" />
+                <Icons.close className="h-4 w-4" />
               </Button>
             </div>
           )}

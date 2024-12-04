@@ -10,7 +10,7 @@ import {
   FileText,
   Github,
   HelpCircle,
-  ImageIcon,
+  Image as ImageIcon,
   Laptop,
   Loader2,
   Moon,
