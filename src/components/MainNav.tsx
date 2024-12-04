@@ -7,6 +7,7 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 import { UserMenu } from "./nav/UserMenu";
 import { cn } from "@/lib/utils";
 import { Icons } from "./icons";
+import { useToast } from "./ui/use-toast";
 import {
   Sheet,
   SheetContent,
@@ -20,18 +21,31 @@ export function MainNav() {
   const location = useLocation();
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
+    // Check initial auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (!session && location.pathname !== '/auth') {
+        navigate('/auth');
+      }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      if (!session && location.pathname !== '/auth') {
+        navigate('/auth');
+        toast({
+          title: "Session expired",
+          description: "Please sign in again to continue.",
+        });
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [navigate, location.pathname, toast]);
 
   const navItems = [
     { path: "/", label: "Home" },
