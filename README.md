@@ -5,14 +5,24 @@ A modern web application for managing and accessing your self-hosted services. W
 ## Features 🌟
 
 - **Service Management**: Easily manage your self-hosted services
-- **Custom Icons**: Support for custom service icons
+- **Custom Icons**: Support for custom service icons (authenticated users only)
 - **Responsive Design**: Works on desktop and mobile devices
 - **Dark Mode**: Built-in dark mode support
 - **Authentication**: Secure access to your services
+- **Curated Website List**: Access a carefully selected collection of useful websites and tools from the home page
+- **Home Page Customization**: Authenticated users can customize the home page content
+
+## Authentication Features 🔐
+
+The following features require authentication:
+- Managing and configuring services
+- Adding custom service icons
+- Editing home page content
+- Accessing protected services
 
 ## Custom Icons 🎨
 
-You can add custom icons for your services by following these guidelines:
+Authenticated users can add custom icons for their services by following these guidelines:
 
 1. Create a folder named `custom-icons` in your project root
 2. Name your icons using the service name: `{service-name}.png` (e.g., `sonarr.png`)
@@ -20,6 +30,17 @@ You can add custom icons for your services by following these guidelines:
    - Format: PNG or SVG
    - Size: 32x32px or 64x64px
    - Background: Transparent
+
+## Home Page 🏠
+
+The home page features a curated list of useful websites and tools for:
+- Developers
+- Designers
+- Self-hosting enthusiasts
+- Learning resources
+- Productivity tools
+
+Note: Editing the home page content is restricted to authenticated users.
 
 ## Contribute 🚀
 
@@ -32,9 +53,10 @@ WEBLIB is an open community project!
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Configure your services in the dashboard
-4. Add custom icons (optional)
-5. Start using WEBLIB!
+3. Create an account and authenticate
+4. Configure your services in the dashboard
+5. Add custom icons (optional)
+6. Start using WEBLIB!
 
 ## Stay Updated 📰
 Bookmark this page and check back regularly for new updates.  
