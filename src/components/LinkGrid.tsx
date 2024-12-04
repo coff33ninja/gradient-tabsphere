@@ -4,12 +4,17 @@ import { Tab } from '@/types';
 import { Icons } from './icons';
 import { AddLinkForm } from './admin/AddLinkForm';
 import { RoleBasedContent } from './RoleBasedContent';
+import { Button } from './ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { useState } from 'react';
 
 interface LinkGridProps {
   activeTab: Tab | null;
 }
 
 export const LinkGrid = ({ activeTab }: LinkGridProps) => {
+  const [isAddLinkOpen, setIsAddLinkOpen] = useState(false);
+  
   const { data: links, refetch } = useQuery({
     queryKey: ['links', activeTab?.id],
     enabled: !!activeTab?.id,
@@ -33,10 +38,26 @@ export const LinkGrid = ({ activeTab }: LinkGridProps) => {
           {activeTab.title}
         </h2>
         <RoleBasedContent allowedRoles={['admin', 'moderator']}>
-          <AddLinkForm 
-            categoryId={parseInt(activeTab.id)} 
-            onSuccess={refetch}
-          />
+          <Dialog open={isAddLinkOpen} onOpenChange={setIsAddLinkOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Icons.plus className="h-4 w-4" />
+                Add Link
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Link to {activeTab.title}</DialogTitle>
+              </DialogHeader>
+              <AddLinkForm 
+                categoryId={parseInt(activeTab.id)} 
+                onSuccess={() => {
+                  refetch();
+                  setIsAddLinkOpen(false);
+                }}
+              />
+            </DialogContent>
+          </Dialog>
         </RoleBasedContent>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
