@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Search } from 'lucide-react';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -51,7 +50,18 @@ export const SearchBar = () => {
               }
             }}
           />
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/70" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/70"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
         </div>
         
         <DropdownMenu>
@@ -63,7 +73,18 @@ export const SearchBar = () => {
                        border border-white/10 hover:bg-white/10 
                        transition-all duration-300"
             >
-              <Search className="h-5 w-5" />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-5 w-5"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-sm border border-white/10">
