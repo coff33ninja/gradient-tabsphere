@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Palette } from 'lucide-react';
+import { SwatchBook } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
@@ -48,7 +48,7 @@ export const Settings = () => {
             size="icon"
             className="fixed bottom-24 right-4 z-50 bg-background/95 backdrop-blur-sm shadow-lg border border-border/50 hover:bg-accent"
           >
-            <Palette className="h-[1.2rem] w-[1.2rem] text-primary animate-gradient" />
+            <SwatchBook className="h-[1.2rem] w-[1.2rem] text-primary animate-gradient" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
