@@ -1,3 +1,6 @@
+import React from 'react';
+import { useIconMetadata } from '@/hooks/useIconMetadata';
+
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
 }
@@ -8,8 +11,8 @@ const defaultIconProps: React.SVGProps<SVGSVGElement> = {
   fill: "none",
   stroke: "currentColor",
   strokeWidth: "2",
-  strokeLinecap: "round" as "round",
-  strokeLinejoin: "round" as "round",
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
 };
 
 export const IconDictionary = {
@@ -47,6 +50,29 @@ export const IconDictionary = {
       <line x1="4" y1="18" x2="20" y2="18" />
     </svg>
   ),
+};
+
+export const IconMetadataDisplay = () => {
+  const { data: icons, isLoading } = useIconMetadata();
+
+  if (isLoading) return <div>Loading icons metadata...</div>;
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {icons?.map((icon) => (
+        <div key={icon.id} className="p-4 border rounded-lg">
+          <h3 className="font-medium">{icon.name}</h3>
+          <p className="text-sm text-muted-foreground">{icon.description}</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Category: {icon.category}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Path: {icon.file_path}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export type IconName = keyof typeof IconDictionary;

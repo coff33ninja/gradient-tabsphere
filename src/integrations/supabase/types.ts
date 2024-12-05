@@ -71,6 +71,36 @@ export type Database = {
           },
         ]
       }
+      icon_metadata: {
+        Row: {
+          category: Database["public"]["Enums"]["icon_category"]
+          created_at: string
+          description: string | null
+          file_path: string
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["icon_category"]
+          created_at?: string
+          description?: string | null
+          file_path: string
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["icon_category"]
+          created_at?: string
+          description?: string | null
+          file_path?: string
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       links: {
         Row: {
           category_id: number | null
@@ -194,6 +224,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      icon_category:
+        | "navigation"
+        | "action"
+        | "status"
+        | "media"
+        | "social"
+        | "misc"
       service_type:
         | "sonarr"
         | "radarr"

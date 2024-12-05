@@ -1,4 +1,5 @@
 import { IconType } from "react-icons";
+import { IconDictionary, IconName } from './icons/IconDictionary';
 import { 
   RiCommandLine,
   RiFileTextLine,
@@ -38,24 +39,26 @@ import {
 export type Icon = IconType;
 
 export const Icons = {
+  chevronDown: IconDictionary.ChevronDown,
+  chevronUp: IconDictionary.ChevronUp,
+  check: IconDictionary.Check,
+  search: IconDictionary.Search,
+  plus: IconDictionary.Plus,
+  menu: IconDictionary.Menu,
   logo: RiCommandLine,
   close: RiCloseLine,
   spinner: RiLoader2Line,
   chevronLeft: RiArrowLeftLine,
   chevronRight: RiArrowRightLine,
-  chevronDown: RiArrowDownLine,
   chevronsUpDown: RiArrowDownLine,
   trash: RiCloseLine,
   settings: RiSettings2Line,
   user: RiCircleLine,
-  plus: RiAddLine,
-  menu: RiMenuLine,
   moon: RiMoonLine,
   sun: RiSunLine,
   help: RiQuestionLine,
   pizza: RiRestaurantLine,
   twitter: RiTwitterLine,
-  check: RiCheckLine,
   circle: RiCircleLine,
   file: RiFileTextLine,
   fileText: RiFileTextLine,
