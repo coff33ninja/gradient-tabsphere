@@ -11,6 +11,7 @@ import { SERVICE_CONFIGS } from "./services/ServiceConfig";
 import { ServiceSelect } from "./credentials/ServiceSelect";
 import { ConnectionFields } from "./credentials/ConnectionFields";
 import { AuthFields } from "./credentials/AuthFields";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type ServiceType = Database["public"]["Enums"]["service_type"];
 
@@ -43,54 +44,63 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
     e.preventDefault();
     setIsLoading(true);
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Error saving credentials",
+          description: "You must be logged in to save credentials",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const formData = new FormData(e.currentTarget);
+      const url = constructUrl(
+        formData.get("domain") as string,
+        formData.get("port") as string,
+        selectedService
+      );
+
+      const credential = {
+        service: selectedService,
+        name: formData.get("name") as string,
+        url,
+        username: formData.get("username") as string || null,
+        password: formData.get("password") as string || null,
+        api_key: formData.get("api_key") as string || null,
+        user_id: user.id,
+      };
+
+      const { error } = await supabase
+        .from("credentials")
+        .insert(credential);
+
+      if (error) {
+        console.error("Error saving credentials:", error);
+        toast({
+          title: "Error saving credentials",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Credentials saved",
+          description: "Your credentials have been saved successfully.",
+        });
+        queryClient.invalidateQueries({ queryKey: ["credentials"] });
+        onOpenChange(false);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
       toast({
         title: "Error saving credentials",
-        description: "You must be logged in to save credentials",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    const formData = new FormData(e.currentTarget);
-    const url = constructUrl(
-      formData.get("domain") as string,
-      formData.get("port") as string,
-      selectedService
-    );
-
-    const credential = {
-      service: selectedService,
-      name: formData.get("name") as string,
-      url,
-      username: formData.get("username") as string | null,
-      password: formData.get("password") as string | null,
-      api_key: formData.get("api_key") as string | null,
-      user_id: user.id,
-    };
-
-    const { error } = await supabase
-      .from("credentials")
-      .insert(credential);
-
-    if (error) {
-      toast({
-        title: "Error saving credentials",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Credentials saved",
-        description: "Your credentials have been saved successfully.",
-      });
-      queryClient.invalidateQueries({ queryKey: ["credentials"] });
-      onOpenChange(false);
-    }
-
-    setIsLoading(false);
   };
 
   const serviceConfig = SERVICE_CONFIGS[selectedService];
@@ -129,11 +139,19 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isLoading}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save"}
+            <Button type="submit" disabled={isLoading} className="min-w-[100px]">
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <LoadingSpinner size="sm" />
+                  <span>Saving...</span>
+                </div>
+              ) : (
+                "Save"
+              )}
             </Button>
           </div>
         </form>
