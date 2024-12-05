@@ -33,7 +33,8 @@ import {
   RiTvLine,
   RiCloseLine,
   RiArrowLeftLine,
-  RiArrowDownLine
+  RiArrowDownLine,
+  RiFolderLine
 } from 'react-icons/ri';
 
 export type Icon = IconType;
@@ -42,7 +43,7 @@ export const Icons = {
   chevronDown: IconDictionary.ChevronDown,
   chevronUp: IconDictionary.ChevronUp,
   check: IconDictionary.Check,
-  search: IconDictionary.Search,  // Keeping the first definition
+  search: IconDictionary.Search,
   plus: IconDictionary.Plus,
   menu: IconDictionary.Menu,
   logo: RiCommandLine,
@@ -77,5 +78,6 @@ export const Icons = {
   activity: RiHeartPulseLine,
   inbox: RiInboxLine,
   languages: RiTranslate2,
-  tv: RiTvLine
+  tv: RiTvLine,
+  folder: RiFolderLine
 };
