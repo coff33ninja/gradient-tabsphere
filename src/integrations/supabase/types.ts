@@ -11,14 +11,17 @@ export type Database = {
     Tables: {
       categories: {
         Row: {
+          icon_url: string | null
           id: number
           name: string
         }
         Insert: {
+          icon_url?: string | null
           id?: number
           name: string
         }
         Update: {
+          icon_url?: string | null
           id?: number
           name?: string
         }

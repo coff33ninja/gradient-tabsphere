@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Icons } from '@/components/icons';
 import { toast } from '@/components/ui/use-toast';
+import { CategoryIconUpload } from './CategoryIconUpload';
 
 interface CategoryManagerProps {
   categories: any[];
@@ -53,25 +54,48 @@ export const CategoryManager = ({
     }
   };
 
+  const handleIconUpdate = async (categoryId: number, iconUrl: string) => {
+    // Refresh the categories list after icon update
+    onCategorySelect(categoryId);
+  };
+
   return (
-    <div className="flex flex-wrap gap-2 items-center">
-      <Button
-        variant="outline"
-        onClick={() => onCategorySelect(null)}
-        className={!selectedCategory ? 'bg-primary/20' : ''}
-      >
-        All Categories
-      </Button>
-      {categories.map((category) => (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2 items-center">
         <Button
-          key={category.id}
           variant="outline"
-          onClick={() => onCategorySelect(category.id)}
-          className={selectedCategory === category.id ? 'bg-primary/20' : ''}
+          onClick={() => onCategorySelect(null)}
+          className={!selectedCategory ? 'bg-primary/20' : ''}
         >
-          {category.name}
+          All Categories
         </Button>
-      ))}
+        {categories.map((category) => (
+          <div key={category.id} className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => onCategorySelect(category.id)}
+              className={selectedCategory === category.id ? 'bg-primary/20' : ''}
+            >
+              {category.icon_url && (
+                <img 
+                  src={category.icon_url} 
+                  alt="" 
+                  className="w-4 h-4 mr-2 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              )}
+              {category.name}
+            </Button>
+            <CategoryIconUpload 
+              categoryId={category.id}
+              onSuccess={(iconUrl) => handleIconUpdate(category.id, iconUrl)}
+            />
+          </div>
+        ))}
+      </div>
+
       {!isAddingCategory ? (
         <Button
           variant="outline"

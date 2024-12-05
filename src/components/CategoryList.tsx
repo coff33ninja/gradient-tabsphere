@@ -4,6 +4,7 @@ import { Icons } from './icons';
 type Category = {
   id: number;
   name: string;
+  icon_url?: string | null;
 };
 
 type CategoryListProps = {
@@ -34,13 +35,25 @@ export const CategoryList = ({
           key={category.id}
           onClick={() => onCategorySelect(category.id)}
           className={cn(
-            "w-full px-4 py-3 rounded-md transition-all duration-300 text-left",
+            "w-full px-4 py-3 rounded-md transition-all duration-300 text-left flex items-center gap-2",
             "hover:bg-secondary/40",
             activeCategory === category.id
               ? "bg-primary/20 text-primary relative gradient-border"
               : "text-muted-foreground"
           )}
         >
+          {category.icon_url ? (
+            <img 
+              src={category.icon_url} 
+              alt="" 
+              className="w-5 h-5 object-contain"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          ) : (
+            <Icons.folder className="w-5 h-5" />
+          )}
           <span className="relative z-10">
             {category.name}
           </span>
