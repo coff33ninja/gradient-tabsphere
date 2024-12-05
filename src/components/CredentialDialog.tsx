@@ -146,7 +146,7 @@ export function CredentialDialog({ open, onOpenChange }: CredentialDialogProps) 
             <Button type="submit" disabled={isLoading} className="min-w-[100px]">
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <LoadingSpinner size="sm" />
+                  <LoadingSpinner className="h-4 w-4" />
                   <span>Saving...</span>
                 </div>
               ) : (

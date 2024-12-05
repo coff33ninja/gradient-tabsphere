@@ -19,10 +19,10 @@ const AddIndexerForm = ({ prowlarrApiUrl, prowlarrApiKey }) => {
         description: 'Indexer added to Prowlarr!',
       });
       setIndexerName('');
-    } catch (error) {
+    } catch (error: unknown) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unknown error occurred',
         variant: 'destructive',
       });
     }

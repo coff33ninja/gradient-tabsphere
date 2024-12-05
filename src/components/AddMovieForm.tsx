@@ -19,10 +19,10 @@ const AddMovieForm = ({ radarrApiUrl, radarrApiKey }) => {
         description: 'Movie added to Radarr!',
       });
       setMovieName('');
-    } catch (error) {
+    } catch (error: unknown) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unknown error occurred',
         variant: 'destructive',
       });
     }

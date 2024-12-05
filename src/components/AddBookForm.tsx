@@ -19,10 +19,10 @@ const AddBookForm = ({ readarrApiUrl, readarrApiKey }) => {
         description: 'Book added to Readarr!',
       });
       setBookTitle('');
-    } catch (error) {
+    } catch (error: unknown) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unknown error occurred',
         variant: 'destructive',
       });
     }
