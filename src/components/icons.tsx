@@ -42,7 +42,7 @@ export const Icons = {
   chevronDown: IconDictionary.ChevronDown,
   chevronUp: IconDictionary.ChevronUp,
   check: IconDictionary.Check,
-  search: IconDictionary.Search,
+  search: IconDictionary.Search,  // Keeping the first definition
   plus: IconDictionary.Plus,
   menu: IconDictionary.Menu,
   logo: RiCommandLine,
@@ -73,7 +73,6 @@ export const Icons = {
   download: RiDownloadLine,
   music: RiMusicLine,
   book: RiBookOpenLine,
-  search: RiSearchLine,
   play: RiPlayCircleLine,
   activity: RiHeartPulseLine,
   inbox: RiInboxLine,
