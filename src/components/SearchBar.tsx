@@ -11,11 +11,12 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { searchEngines, handleSearch } from './search/SearchEngines';
 import { SearchResults } from './search/SearchResults';
+import { Link } from '@/types';
 
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
 
-  const { data: searchResults } = useQuery({
+  const { data: searchResults = [] } = useQuery({
     queryKey: ['search', query],
     queryFn: async () => {
       if (!query.trim()) return [];
@@ -26,7 +27,7 @@ export const SearchBar = () => {
         .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
         .limit(5);
       
-      return links || [];
+      return (links || []) as Link[];
     },
     enabled: query.length > 2
   });

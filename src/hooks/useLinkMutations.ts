@@ -10,6 +10,10 @@ export const useLinkMutations = () => {
 
   const updateLinkMutation = useMutation({
     mutationFn: async (updatedLink: Partial<Link>) => {
+      if (!updatedLink.id) {
+        throw new Error('Link ID is required');
+      }
+
       const { error } = await supabase
         .from('links')
         .update(updatedLink)
@@ -98,7 +102,7 @@ export const useLinkMutations = () => {
     },
     onError: (error) => {
       toast({
-        title: 'Error Rescaping Metadata',
+        title: 'Error Rescraping Metadata',
         description: error instanceof Error ? error.message : 'An unknown error occurred',
         variant: 'destructive',
       });

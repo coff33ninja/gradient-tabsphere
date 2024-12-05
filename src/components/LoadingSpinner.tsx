@@ -1,9 +1,16 @@
-import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
 
-export const LoadingSpinner = () => {
+interface LoadingSpinnerProps {
+  className?: string;
+}
+
+export const LoadingSpinner = ({ className }: LoadingSpinnerProps) => {
   return (
-    <div className="flex justify-center items-center h-32">
-      <Icons.spinner className="h-8 w-8 animate-spin" />
-    </div>
+    <div
+      className={cn(
+        "animate-spin rounded-full border-2 border-current border-t-transparent h-4 w-4",
+        className
+      )}
+    />
   );
 };

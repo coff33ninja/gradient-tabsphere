@@ -15,17 +15,19 @@ interface LinkGridProps {
 export const LinkGrid = ({ activeTab }: LinkGridProps) => {
   const [isAddLinkOpen, setIsAddLinkOpen] = useState(false);
   
-  const { data: links, refetch } = useQuery({
+  const { data: links = [], refetch } = useQuery({
     queryKey: ['links', activeTab?.id],
     enabled: !!activeTab?.id,
     queryFn: async () => {
+      if (!activeTab?.id) return [];
+      
       const { data, error } = await supabase
         .from('links')
         .select('*')
-        .eq('category_id', activeTab?.id);
+        .eq('category_id', parseInt(activeTab.id));
       
       if (error) throw error;
-      return data;
+      return data || [];
     }
   });
 

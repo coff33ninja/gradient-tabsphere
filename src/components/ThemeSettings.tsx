@@ -11,7 +11,6 @@ interface ThemeValues {
   primaryColor: string;
   secondaryColor: string;
   fontFamily: string;
-  // Add other properties as needed
 }
 
 // Define the Theme interface
@@ -19,7 +18,7 @@ interface Theme {
   primaryColor: string; // Mapped from primary_color
   secondaryColor: string; // Mapped from secondary_color
   fontFamily: string; // Mapped from font_family
-  theme_preset: string;
+  theme_preset: string; // Mapped from theme_preset
 }
 
 export function ThemeSettings() {
@@ -43,17 +42,17 @@ export function ThemeSettings() {
     },
   });
 
-const userTheme: Theme = userThemeData ? {
-  primaryColor: userThemeData.primary_color,
-  secondaryColor: userThemeData.secondary_color,
-  fontFamily: userThemeData.font_family,
-  theme_preset: userThemeData.theme_preset || 'default', // Ensure this is included
-} : {
-  primaryColor: '',
-  secondaryColor: '',
-  fontFamily: '',
-  theme_preset: 'default',
-};
+  const userTheme: Theme = userThemeData ? {
+    primaryColor: userThemeData.primary_color || '',
+    secondaryColor: userThemeData.secondary_color || '',
+    fontFamily: userThemeData.font_family || '',
+    theme_preset: userThemeData.theme_preset || 'default', // Ensure this is included
+  } : {
+    primaryColor: '',
+    secondaryColor: '',
+    fontFamily: '',
+    theme_preset: 'default',
+  };
 
   const updateThemeMutation = useMutation({
     mutationFn: async (values: ThemeValues) => {
