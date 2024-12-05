@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Settings2 } from 'lucide-react';
+import { Palette } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
@@ -48,7 +48,7 @@ export const Settings = () => {
             size="icon"
             className="fixed bottom-24 right-4 z-50 bg-background/95 backdrop-blur-sm shadow-lg border border-border/50 hover:bg-accent"
           >
-            <Settings2 className="h-[1.2rem] w-[1.2rem]" />
+            <Palette className="h-[1.2rem] w-[1.2rem] text-primary animate-gradient" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
@@ -66,9 +66,8 @@ export const Settings = () => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* Ensure the Dialog is above the Footer */}
       <Dialog open={isThemeDialogOpen} onOpenChange={setIsThemeDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto z-60"> {/* Added z-60 */}
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto z-60">
           <DialogHeader>
             <DialogTitle>Theme Settings</DialogTitle>
           </DialogHeader>
@@ -76,8 +75,7 @@ export const Settings = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Footer should be rendered after the Dialog */}
-      <Footer /> {/* Ensure the footer is rendered after the dialog */}
+      <Footer />
     </>
   );
 };
