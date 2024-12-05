@@ -3,7 +3,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Check, X } from 'lucide-react';
 import { Link } from '@/types';
 
 interface LinkEditorProps {
@@ -59,14 +58,39 @@ export const LinkEditor = ({ link, categories, onSave, onCancel, onChange }: Lin
           onClick={onSave}
           className="flex items-center gap-2"
         >
-          <Check className="h-4 w-4" /> Save
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          Save
         </Button>
         <Button 
           variant="outline" 
           onClick={onCancel}
           className="flex items-center gap-2"
         >
-          <X className="h-4 w-4" /> Cancel
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+          Cancel
         </Button>
       </div>
     </div>
