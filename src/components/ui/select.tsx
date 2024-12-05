@@ -2,14 +2,8 @@
 
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
-
 import { cn } from "@/lib/utils"
-
-const Select = SelectPrimitive.Root
-
-const SelectGroup = SelectPrimitive.Group
-
-const SelectValue = SelectPrimitive.Value
+import { IconDictionary } from "../icons/IconDictionary"
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
@@ -24,18 +18,9 @@ const SelectTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-4 w-4 opacity-50"
-    >
-      <path d="m6 9 6 6 6-6"/>
-    </svg>
+    <SelectPrimitive.Icon asChild>
+      <IconDictionary.ChevronDown className="h-4 w-4 opacity-50" />
+    </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
@@ -52,18 +37,7 @@ const SelectScrollUpButton = React.forwardRef<
     )}
     {...props}
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-4 w-4"
-    >
-      <path d="m18 15-6-6-6 6"/>
-    </svg>
+    <IconDictionary.ChevronUp className="h-4 w-4" />
   </SelectPrimitive.ScrollUpButton>
 ))
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
@@ -80,18 +54,7 @@ const SelectScrollDownButton = React.forwardRef<
     )}
     {...props}
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-4 w-4"
-    >
-      <path d="m6 9 6 6 6-6"/>
-    </svg>
+    <IconDictionary.ChevronDown className="h-4 w-4" />
   </SelectPrimitive.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName =
@@ -155,18 +118,7 @@ const SelectItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-        >
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+        <IconDictionary.Check className="h-4 w-4" />
       </SelectPrimitive.ItemIndicator>
     </span>
 
