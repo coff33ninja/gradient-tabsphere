@@ -1,15 +1,7 @@
 import { createContext, useContext, ReactNode } from 'react';
+import { Theme, ThemePreset } from '@/types/theme';
 
-type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
-
-interface ThemeContextType {
-  primaryColor: string;
-  secondaryColor: string;
-  fontFamily: string;
-  themePreset: ThemePreset;
-}
-
-const ThemeContext = createContext<ThemeContextType | null>(null);
+const ThemeContext = createContext<Theme | null>(null);
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
@@ -21,7 +13,7 @@ export const useTheme = () => {
 
 interface ThemeProviderProps {
   children: ReactNode;
-  value: ThemeContextType;
+  value: Theme;
 }
 
 export const ThemeProvider = ({ children, value }: ThemeProviderProps) => (

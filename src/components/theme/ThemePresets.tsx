@@ -1,5 +1,6 @@
 import { Label } from '@/components/ui/label';
 import { useTheme } from './ThemeContext';
+import { Theme, ThemePreset } from '@/types/theme';
 import {
   Select,
   SelectContent,
@@ -7,8 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
 
 const themePresets = [
   { value: 'default' as ThemePreset, label: 'Default' },

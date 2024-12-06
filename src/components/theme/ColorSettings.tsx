@@ -1,6 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTheme } from './ThemeContext';
+import { Theme } from '@/types/theme';
 
 interface ColorSettingsProps {
   onThemeChange: (values: Partial<Theme>) => void;

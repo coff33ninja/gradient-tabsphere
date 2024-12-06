@@ -6,15 +6,7 @@ import { ThemePresets } from './theme/ThemePresets';
 import { FontSettings } from './theme/FontSettings';
 import { ColorSettings } from './theme/ColorSettings';
 import { ThemeProvider } from './theme/ThemeContext';
-
-type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
-
-interface Theme {
-  primaryColor: string;
-  secondaryColor: string;
-  fontFamily: string;
-  themePreset: ThemePreset;
-}
+import { Theme, ThemePreset } from '@/types/theme';
 
 export function ThemeSettings() {
   const { toast } = useToast();
