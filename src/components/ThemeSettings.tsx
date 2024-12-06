@@ -6,6 +6,8 @@ import { ThemePresets } from './theme/ThemePresets';
 import { FontSettings } from './theme/FontSettings';
 import { ColorSettings } from './theme/ColorSettings';
 
+type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
+
 // Define the ThemeValues interface
 interface ThemeValues {
   primaryColor: string;
@@ -18,7 +20,7 @@ interface Theme {
   primaryColor: string;
   secondaryColor: string;
   fontFamily: string;
-  theme_preset: string;
+  theme_preset: ThemePreset;
 }
 
 export function ThemeSettings() {
@@ -46,7 +48,7 @@ export function ThemeSettings() {
           primary_color: '#000000',
           secondary_color: '#000000',
           font_family: 'inter',
-          theme_preset: 'default',
+          theme_preset: 'default' as ThemePreset,
         };
 
         const { data: newTheme, error: insertError } = await supabase
@@ -68,7 +70,7 @@ export function ThemeSettings() {
     primaryColor: userThemeData.primary_color || '',
     secondaryColor: userThemeData.secondary_color || '',
     fontFamily: userThemeData.font_family || '',
-    theme_preset: userThemeData.theme_preset || 'default',
+    theme_preset: (userThemeData.theme_preset as ThemePreset) || 'default',
   } : {
     primaryColor: '',
     secondaryColor: '',
@@ -112,7 +114,7 @@ export function ThemeSettings() {
     },
   });
 
-  const handleThemeChange = async (values: { theme_preset: string }) => {
+  const handleThemeChange = async (values: { theme_preset: ThemePreset }) => {
     const themeValues: ThemeValues = {
       primaryColor: userTheme.primaryColor,
       secondaryColor: userTheme.secondaryColor,
