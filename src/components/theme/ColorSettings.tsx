@@ -1,12 +1,14 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTheme } from './ThemeContext';
 
 interface ColorSettingsProps {
-  userTheme: any;
-  handleThemeChange: (values: any) => void;
+  onThemeChange: (values: any) => void;
 }
 
-export function ColorSettings({ userTheme, handleThemeChange }: ColorSettingsProps) {
+export function ColorSettings({ onThemeChange }: ColorSettingsProps) {
+  const theme = useTheme();
+
   return (
     <div className="space-y-2">
       <Label>Colors</Label>
@@ -15,8 +17,8 @@ export function ColorSettings({ userTheme, handleThemeChange }: ColorSettingsPro
           <Label>Primary</Label>
           <Input
             type="color"
-            value={userTheme?.primary_color || '#000000'}
-            onChange={(e) => handleThemeChange({ primary_color: e.target.value })}
+            value={theme.primaryColor || '#000000'}
+            onChange={(e) => onThemeChange({ primary_color: e.target.value })}
             className="h-10 p-1"
           />
         </div>
@@ -24,17 +26,8 @@ export function ColorSettings({ userTheme, handleThemeChange }: ColorSettingsPro
           <Label>Secondary</Label>
           <Input
             type="color"
-            value={userTheme?.secondary_color || '#000000'}
-            onChange={(e) => handleThemeChange({ secondary_color: e.target.value })}
-            className="h-10 p-1"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label>Accent</Label>
-          <Input
-            type="color"
-            value={userTheme?.accent_color || '#000000'}
-            onChange={(e) => handleThemeChange({ accent_color: e.target.value })}
+            value={theme.secondaryColor || '#000000'}
+            onChange={(e) => onThemeChange({ secondary_color: e.target.value })}
             className="h-10 p-1"
           />
         </div>
