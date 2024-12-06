@@ -53,7 +53,7 @@ const AdminZone = () => {
         const { data, error } = await supabase
           .from("categories")
           .select("*");
-        
+
         if (error) throw error;
         return data || [];
       } catch (error) {
@@ -75,7 +75,7 @@ const AdminZone = () => {
         .from("credentials")
         .select("*")
         .order("service");
-      
+
       if (error) throw error;
       return data || [];
     },
@@ -126,11 +126,6 @@ const AdminZone = () => {
       title: "Icon Management",
       icon: "image"
     },
-    {
-      id: "categories",
-      title: "Category Management",
-      icon: "folder"
-    }
   ];
 
   const renderTabContent = () => {
@@ -177,7 +172,7 @@ const AdminZone = () => {
               />
             </div>
           </aside>
-          
+
           <main className="flex-1 min-h-[calc(100vh-8rem)]">
             <div className="bg-background/60 backdrop-blur-lg rounded-lg border p-6">
               {renderTabContent()}
