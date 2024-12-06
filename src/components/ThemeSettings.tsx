@@ -15,10 +15,10 @@ interface ThemeValues {
 
 // Define the Theme interface
 interface Theme {
-  primaryColor: string; // Mapped from primary_color
-  secondaryColor: string; // Mapped from secondary_color
-  fontFamily: string; // Mapped from font_family
-  theme_preset: string; // Mapped from theme_preset
+  primaryColor: string;
+  secondaryColor: string;
+  fontFamily: string;
+  theme_preset: string;
 }
 
 export function ThemeSettings() {
@@ -26,19 +26,41 @@ export function ThemeSettings() {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: userThemeData } = useQuery({
+  const { data: userThemeData, isError } = useQuery({
     queryKey: ['user-theme'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('user_themes')
         .select('*')
-        .eq('user_id', user.id)
-        .single();
+        .eq('user_id', user.id);
 
-      return data;
+      if (error) throw error;
+      
+      // If no theme exists, create a default one
+      if (!data || data.length === 0) {
+        const defaultTheme = {
+          user_id: user.id,
+          primary_color: '#000000',
+          secondary_color: '#000000',
+          font_family: 'inter',
+          theme_preset: 'default',
+        };
+
+        const { data: newTheme, error: insertError } = await supabase
+          .from('user_themes')
+          .insert(defaultTheme)
+          .select()
+          .single();
+
+        if (insertError) throw insertError;
+        return newTheme;
+      }
+
+      // Return the first theme if multiple exist (shouldn't happen due to RLS)
+      return data[0];
     },
   });
 
@@ -46,7 +68,7 @@ export function ThemeSettings() {
     primaryColor: userThemeData.primary_color || '',
     secondaryColor: userThemeData.secondary_color || '',
     fontFamily: userThemeData.font_family || '',
-    theme_preset: userThemeData.theme_preset || 'default', // Ensure this is included
+    theme_preset: userThemeData.theme_preset || 'default',
   } : {
     primaryColor: '',
     secondaryColor: '',
@@ -63,9 +85,9 @@ export function ThemeSettings() {
         .from('user_themes')
         .upsert({
           user_id: user.id,
-          primary_color: values.primaryColor, // Mapped to database field
-          secondary_color: values.secondaryColor, // Mapped to database field
-          font_family: values.fontFamily, // Mapped to database field
+          primary_color: values.primaryColor,
+          secondary_color: values.secondaryColor,
+          font_family: values.fontFamily,
         })
         .select()
         .single();
@@ -81,6 +103,7 @@ export function ThemeSettings() {
       });
     },
     onError: (error) => {
+      console.error('Theme update error:', error);
       toast({
         title: 'Error updating theme',
         description: error.message,
@@ -94,7 +117,6 @@ export function ThemeSettings() {
       primaryColor: userTheme.primaryColor,
       secondaryColor: userTheme.secondaryColor,
       fontFamily: userTheme.fontFamily,
-      // You can update the theme based on the selected preset if needed
     };
 
     setIsLoading(true);
@@ -104,6 +126,14 @@ export function ThemeSettings() {
       setIsLoading(false);
     }
   };
+
+  if (isError) {
+    toast({
+      title: 'Error loading theme',
+      description: 'Failed to load your theme preferences.',
+      variant: 'destructive',
+    });
+  }
 
   return (
     <div className="space-y-6 p-4">
