@@ -3,7 +3,7 @@ import { Label } from '@/components/ui/label';
 import { useTheme } from './ThemeContext';
 
 interface ColorSettingsProps {
-  onThemeChange: (values: any) => void;
+  onThemeChange: (values: Partial<Theme>) => void;
 }
 
 export function ColorSettings({ onThemeChange }: ColorSettingsProps) {
@@ -18,7 +18,7 @@ export function ColorSettings({ onThemeChange }: ColorSettingsProps) {
           <Input
             type="color"
             value={theme.primaryColor || '#000000'}
-            onChange={(e) => onThemeChange({ primary_color: e.target.value })}
+            onChange={(e) => onThemeChange({ primaryColor: e.target.value })}
             className="h-10 p-1"
           />
         </div>
@@ -27,7 +27,7 @@ export function ColorSettings({ onThemeChange }: ColorSettingsProps) {
           <Input
             type="color"
             value={theme.secondaryColor || '#000000'}
-            onChange={(e) => onThemeChange({ secondary_color: e.target.value })}
+            onChange={(e) => onThemeChange({ secondaryColor: e.target.value })}
             className="h-10 p-1"
           />
         </div>

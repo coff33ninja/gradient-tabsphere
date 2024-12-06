@@ -17,7 +17,7 @@ const fontOptions = [
 ];
 
 interface FontSettingsProps {
-  onThemeChange: (values: any) => void;
+  onThemeChange: (values: Partial<Theme>) => void;
 }
 
 export function FontSettings({ onThemeChange }: FontSettingsProps) {
@@ -29,7 +29,7 @@ export function FontSettings({ onThemeChange }: FontSettingsProps) {
         <Label>Font Family</Label>
         <Select
           value={theme.fontFamily || 'inter'}
-          onValueChange={(value) => onThemeChange({ font_family: value })}
+          onValueChange={(value) => onThemeChange({ fontFamily: value })}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select a font" />

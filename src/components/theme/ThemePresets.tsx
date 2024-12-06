@@ -20,7 +20,7 @@ const themePresets = [
 ];
 
 interface ThemePresetsProps {
-  onThemeChange: (values: { theme_preset: ThemePreset }) => void;
+  onThemeChange: (values: Partial<Theme>) => void;
 }
 
 export function ThemePresets({ onThemeChange }: ThemePresetsProps) {
@@ -31,7 +31,7 @@ export function ThemePresets({ onThemeChange }: ThemePresetsProps) {
       <Label>Theme Preset</Label>
       <Select
         value={theme.themePreset || 'default'}
-        onValueChange={(value: ThemePreset) => onThemeChange({ theme_preset: value })}
+        onValueChange={(value: ThemePreset) => onThemeChange({ themePreset: value })}
       >
         <SelectTrigger>
           <SelectValue placeholder="Select a theme" />
