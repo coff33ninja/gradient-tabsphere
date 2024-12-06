@@ -7,6 +7,7 @@ import { IconManager } from "@/components/admin/IconManager";
 import { CategoryManager } from "@/components/admin/CategoryManager";
 import { ThemeManager } from "@/components/admin/ThemeManager";
 import { LinkManager } from "@/components/admin/LinkManager";
+import { ServiceGrid } from "@/components/services/ServiceGrid";
 import { Tab } from "@/types";
 import { useState } from "react";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -67,6 +68,19 @@ const AdminZone = () => {
     },
   });
 
+  const { data: credentials } = useQuery({
+    queryKey: ["credentials"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("credentials")
+        .select("*")
+        .order("service");
+      
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
   if (isRoleLoading) {
     return <LoadingSpinner />;
   }
@@ -103,6 +117,11 @@ const AdminZone = () => {
       icon: "link"
     },
     {
+      id: "services",
+      title: "Service Management",
+      icon: "settings"
+    },
+    {
       id: "icons",
       title: "Icon Management",
       icon: "image"
@@ -125,6 +144,8 @@ const AdminZone = () => {
         return <ThemeManager />;
       case "links":
         return <LinkManager />;
+      case "services":
+        return <ServiceGrid credentials={credentials || []} />;
       case "icons":
         return <IconManager />;
       case "categories":
