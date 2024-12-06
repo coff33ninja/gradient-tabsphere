@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { TabNavigation } from "@/components/TabNavigation";
-import { ThemeSettings } from "@/components/ThemeSettings";
 import { IconManager } from "@/components/admin/IconManager";
 import { CategoryManager } from "@/components/admin/CategoryManager";
+import { ThemeManager } from "@/components/admin/ThemeManager";
+import { LinkManager } from "@/components/admin/LinkManager";
 import { Tab } from "@/types";
 import { useState } from "react";
-import { Icons } from "@/components/icons";
 import { useUserRole } from "@/hooks/useUserRole";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
@@ -46,6 +46,11 @@ const AdminZone = () => {
       icon: "palette"
     },
     {
+      id: "links",
+      title: "Link Management",
+      icon: "link"
+    },
+    {
       id: "icons",
       title: "Icon Management",
       icon: "image"
@@ -74,7 +79,9 @@ const AdminZone = () => {
 
     switch (activeTab.id) {
       case "theme":
-        return <ThemeSettings />;
+        return <ThemeManager />;
+      case "links":
+        return <LinkManager />;
       case "icons":
         return <IconManager />;
       case "categories":
