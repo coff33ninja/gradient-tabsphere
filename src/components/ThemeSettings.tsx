@@ -8,14 +8,12 @@ import { ColorSettings } from './theme/ColorSettings';
 
 type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
 
-// Define the ThemeValues interface
 interface ThemeValues {
   primaryColor: string;
   secondaryColor: string;
   fontFamily: string;
 }
 
-// Define the Theme interface
 interface Theme {
   primaryColor: string;
   secondaryColor: string;
@@ -41,7 +39,6 @@ export function ThemeSettings() {
 
       if (error) throw error;
       
-      // If no theme exists, create a default one
       if (!data || data.length === 0) {
         const defaultTheme = {
           user_id: user.id,
@@ -61,7 +58,6 @@ export function ThemeSettings() {
         return newTheme;
       }
 
-      // Return the first theme if multiple exist (shouldn't happen due to RLS)
       return data[0];
     },
   });

@@ -7,22 +7,24 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
+
 const themePresets = [
-  { value: 'default', label: 'Default' },
-  { value: 'dark', label: 'Dark' },
-  { value: 'light', label: 'Light' },
-  { value: 'forest', label: 'Forest' },
-  { value: 'ocean', label: 'Ocean' },
-  { value: 'sunset', label: 'Sunset' },
+  { value: 'default' as ThemePreset, label: 'Default' },
+  { value: 'dark' as ThemePreset, label: 'Dark' },
+  { value: 'light' as ThemePreset, label: 'Light' },
+  { value: 'forest' as ThemePreset, label: 'Forest' },
+  { value: 'ocean' as ThemePreset, label: 'Ocean' },
+  { value: 'sunset' as ThemePreset, label: 'Sunset' },
 ];
 
 interface Theme {
-  theme_preset: string;
+  theme_preset: ThemePreset;
 }
 
 interface ThemePresetsProps {
-  userTheme: Theme; // Specify the type for userTheme
-  handleThemeChange: (values: { theme_preset: string }) => void; // Updated type
+  userTheme: Theme;
+  handleThemeChange: (values: { theme_preset: ThemePreset }) => void;
 }
 
 export function ThemePresets({ userTheme, handleThemeChange }: ThemePresetsProps) {
@@ -31,7 +33,7 @@ export function ThemePresets({ userTheme, handleThemeChange }: ThemePresetsProps
       <Label>Theme Preset</Label>
       <Select
         value={userTheme?.theme_preset || 'default'}
-        onValueChange={(value) => handleThemeChange({ theme_preset: value })}
+        onValueChange={(value: ThemePreset) => handleThemeChange({ theme_preset: value })}
       >
         <SelectTrigger>
           <SelectValue placeholder="Select a theme" />
