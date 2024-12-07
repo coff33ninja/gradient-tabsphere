@@ -54,14 +54,14 @@ const Index = () => {
       <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
         <div className="flex justify-between items-center">
           <SearchBar />
-          <RoleBasedContent allowedRoles={['admin']}>
+          {<RoleBasedContent allowedRoles={['admin']}>
             <Button 
               onClick={() => setIsAdminDialogOpen(true)}
               className="bg-gradient-to-r from-purple-400 to-pink-500 text-white hover:opacity-90"
             >
               Manage Links
             </Button>
-          </RoleBasedContent>
+          </RoleBasedContent>}
         </div>
         
         <div className="flex flex-col md:flex-row gap-4 md:gap-8 relative">
