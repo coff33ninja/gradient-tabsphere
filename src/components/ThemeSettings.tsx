@@ -66,21 +66,44 @@ export function ThemeSettings() {
 
       // Map the Theme interface values to database column names
       const dbValues = {
-        user_id: user.id,
         primary_color: values.primaryColor,
         secondary_color: values.secondaryColor,
         font_family: values.fontFamily,
         theme_preset: values.themePreset,
       };
 
-      console.log('Mapped DB values:', dbValues);
+      console.log('Mapped DB values:', { user_id: user.id, ...dbValues });
 
-      const { error } = await supabase
+      // First check if a theme exists for this user
+      const { data: existingTheme } = await supabase
         .from('user_themes')
-        .upsert({
-          ...dbValues,
-          updated_at: new Date().toISOString(),
-        });
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      let error;
+      if (existingTheme) {
+        // Update existing theme
+        const { error: updateError } = await supabase
+          .from('user_themes')
+          .update({
+            ...dbValues,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', user.id);
+        error = updateError;
+      } else {
+        // Insert new theme
+        const { error: insertError } = await supabase
+          .from('user_themes')
+          .insert({
+            user_id: user.id,
+            ...dbValues,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+        error = insertError;
+      }
 
       if (error) {
         console.error('Theme update error:', error);
