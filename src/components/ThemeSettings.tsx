@@ -13,7 +13,7 @@ export function ThemeSettings() {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: userThemeData } = useQuery({
+  const { data: userThemeData, error: themeError } = useQuery({
     queryKey: ['user-theme'],
     queryFn: async () => {
       console.log('Fetching user theme data');
@@ -37,6 +37,16 @@ export function ThemeSettings() {
       return data;
     },
   });
+
+  // If there's an error fetching the theme, show a toast
+  if (themeError) {
+    console.error('Theme fetch error:', themeError);
+    toast({
+      title: 'Error loading theme',
+      description: 'Your theme preferences could not be loaded. Using default theme.',
+      variant: 'destructive',
+    });
+  }
 
   const userTheme: Theme = {
     primaryColor: userThemeData?.primary_color || '',
