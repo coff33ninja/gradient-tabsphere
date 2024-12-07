@@ -1,6 +1,6 @@
 export const lightTheme = {
   background: "0 0% 100%",
-  foreground: "222.2 84% 4.9%",
+  foreground: "222.2 84% 4.9%", // Dark text for readability
   card: "0 0% 100%",
   cardForeground: "222.2 84% 4.9%",
   popover: "0 0% 100%",
@@ -18,4 +18,6 @@ export const lightTheme = {
   border: "214.3 31.8% 91.4%",
   input: "214.3 31.8% 91.4%",
   ring: "262.1 83.3% 57.8%",
+  gradientFrom: "262.1 83.3% 57.8%",
+  gradientTo: "316.6 70.2% 50.1%"
 };

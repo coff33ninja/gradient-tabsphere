@@ -18,4 +18,6 @@ export const sunsetTheme = {
   border: "20 50% 15%",
   input: "20 50% 15%",
   ring: "20.5 90.2% 48.2%",
+  gradientFrom: "20.5 90.2% 48.2%",
+  gradientTo: "48.5 96.2% 53.2%"
 };

@@ -18,4 +18,6 @@ export const forestTheme = {
   border: "150 20% 15%",
   input: "150 20% 15%",
   ring: "142.1 70.6% 45.3%",
+  gradientFrom: "142.1 70.6% 45.3%",
+  gradientTo: "168.1 83.8% 48.2%"
 };

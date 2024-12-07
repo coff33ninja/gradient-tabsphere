@@ -18,4 +18,6 @@ export const oceanTheme = {
   border: "200 50% 15%",
   input: "200 50% 15%",
   ring: "199 89% 48%",
+  gradientFrom: "199 89% 48%",
+  gradientTo: "217 91% 60%"
 };

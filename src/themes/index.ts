@@ -21,7 +21,8 @@ export const applyTheme = (themeName: Theme['themePreset']) => {
 
   const root = document.documentElement;
   Object.entries(theme).forEach(([key, value]) => {
-    root.style.setProperty(`--${key}`, value);
+    const cssVar = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+    root.style.setProperty(`--${cssVar}`, value);
   });
 
   // Save the theme preference to localStorage

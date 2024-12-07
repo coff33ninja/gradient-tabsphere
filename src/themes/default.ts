@@ -18,4 +18,6 @@ export const defaultTheme = {
   border: "217.2 32.6% 17.5%",
   input: "217.2 32.6% 17.5%",
   ring: "212.7 26.8% 83.9%",
+  gradientFrom: "252 87% 74%",
+  gradientTo: "316.6 70.2% 50.1%"
 };

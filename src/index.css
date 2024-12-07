@@ -31,6 +31,9 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    --gradient-from: 252 87% 74%;
+    --gradient-to: 316.6 70.2% 50.1%;
  
     --radius: 0.5rem;
   }
@@ -38,11 +41,15 @@
 
 @layer utilities {
   .gradient-border {
-    @apply relative before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-[#8B5CF6] before:via-[#D946EF] before:to-[#8B5CF6] before:animate-gradient before:bg-[length:200%_200%];
+    @apply relative before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-[hsl(var(--gradient-from))] before:via-[hsl(var(--gradient-to))] before:to-[hsl(var(--gradient-from))] before:animate-gradient before:bg-[length:200%_200%];
   }
 
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out;
+  }
+
+  .bg-gradient-custom {
+    @apply bg-gradient-to-br from-[hsl(var(--gradient-from))] to-[hsl(var(--gradient-to))];
   }
 }
 
