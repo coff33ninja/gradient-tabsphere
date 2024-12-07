@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { MainNav } from '@/components/MainNav';
 import AdminZone from '@/pages/AdminZone';
-import AuthPage from '@/pages/AuthPage';
-import HomePage from '@/pages/HomePage';
+import Auth from '@/pages/Auth';
+import Index from '@/pages/Index';
 
 const queryClient = new QueryClient();
 
@@ -21,9 +21,9 @@ function App() {
         <div className="min-h-screen bg-background text-foreground">
           <MainNav />
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Index />} />
             <Route path="/admin" element={<AdminZone />} />
-            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/auth" element={<Auth />} />
           </Routes>
         </div>
         <Toaster />
