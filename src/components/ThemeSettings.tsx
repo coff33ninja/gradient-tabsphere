@@ -16,8 +16,12 @@ export function ThemeSettings() {
   const { data: userThemeData } = useQuery({
     queryKey: ['user-theme'],
     queryFn: async () => {
+      console.log('Fetching user theme data');
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
+      if (!user) {
+        console.log('No user found');
+        return null;
+      }
 
       const { data, error } = await supabase
         .from('user_themes')
@@ -25,7 +29,11 @@ export function ThemeSettings() {
         .eq('user_id', user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching theme:', error);
+        throw error;
+      }
+      console.log('Theme data fetched:', data);
       return data;
     },
   });
@@ -39,19 +47,38 @@ export function ThemeSettings() {
 
   const updateThemeMutation = useMutation({
     mutationFn: async (values: Partial<Theme>) => {
+      console.log('Updating theme with values:', values);
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No user found');
+      if (!user) {
+        console.log('No user found during update');
+        throw new Error('No user found');
+      }
+
+      // Map the Theme interface values to database column names
+      const dbValues = {
+        user_id: user.id,
+        primary_color: values.primaryColor,
+        secondary_color: values.secondaryColor,
+        font_family: values.fontFamily,
+        theme_preset: values.themePreset,
+      };
+
+      console.log('Mapped DB values:', dbValues);
 
       const { error } = await supabase
         .from('user_themes')
         .upsert({
-          user_id: user.id,
-          ...values,
+          ...dbValues,
+          updated_at: new Date().toISOString(),
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Theme update error:', error);
+        throw error;
+      }
     },
     onSuccess: () => {
+      console.log('Theme updated successfully');
       queryClient.invalidateQueries({ queryKey: ['user-theme'] });
       toast({
         title: 'Theme updated',
@@ -62,7 +89,7 @@ export function ThemeSettings() {
       console.error('Theme update error:', error);
       toast({
         title: 'Error updating theme',
-        description: 'Failed to update theme preferences.',
+        description: 'Failed to update theme preferences. Please try again.',
         variant: 'destructive',
       });
     },
