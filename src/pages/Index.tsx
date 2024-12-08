@@ -10,6 +10,8 @@ import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { Button } from '@/components/ui/button';
 import { Tab } from '@/types';
 import { Footer } from '@/components/Footer';
+import { Icons } from '@/components/icons';
+import { cn } from '@/lib/utils';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
