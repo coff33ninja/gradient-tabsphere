@@ -18,12 +18,12 @@ export interface Theme {
     heading3: string;
     small: string;
   };
-  borderRadius: string;
   spacing: {
     small: string;
     medium: string;
     large: string;
   };
+  borderRadius: string;
   themePreset: ThemePreset;
 }
 

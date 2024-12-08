@@ -1,24 +1,6 @@
-export type ThemeColors = {
-  primaryColor: string;
-  secondaryColor: string;
-  accentColor: string;
-  backgroundColor: string;
-  foregroundColor: string;
-  headingColor: string;
-  textColor: string;
-  linkColor: string;
-  borderColor: string;
-  fontFamily: string;
-  fontSize: {
-    base: string;
-    heading1: string;
-    heading2: string;
-    heading3: string;
-    small: string;
-  };
-};
+import { Theme } from '@/types/theme';
 
-export const generateThemeCSS = (theme: ThemeColors): string => {
+export const generateThemeCSS = (theme: Theme): string => {
   return `
 :root {
   --primary: ${theme.primaryColor};
@@ -38,6 +20,10 @@ export const generateThemeCSS = (theme: ThemeColors): string => {
   --font-size-h2: ${theme.fontSize?.heading2 || '1.5rem'};
   --font-size-h3: ${theme.fontSize?.heading3 || '1.25rem'};
   --font-size-small: ${theme.fontSize?.small || '0.875rem'};
+  --spacing-small: ${theme.spacing?.small || '0.5rem'};
+  --spacing-medium: ${theme.spacing?.medium || '1rem'};
+  --spacing-large: ${theme.spacing?.large || '2rem'};
+  --border-radius: ${theme.borderRadius || '0.5rem'};
 }
 
 body {
@@ -75,7 +61,7 @@ const getLightOrDarkText = (backgroundColor: string): string => {
   return luminance > 0.5 ? '#000000' : '#ffffff';
 };
 
-export const saveThemeLocally = (theme: ThemeColors) => {
+export const saveThemeLocally = (theme: Theme) => {
   const css = generateThemeCSS(theme);
   
   // Create a style element if it doesn't exist
@@ -93,7 +79,7 @@ export const saveThemeLocally = (theme: ThemeColors) => {
   localStorage.setItem('custom-theme', JSON.stringify(theme));
 };
 
-export const loadLocalTheme = (): ThemeColors | null => {
+export const loadLocalTheme = (): Theme | null => {
   const savedTheme = localStorage.getItem('custom-theme');
   if (savedTheme) {
     const theme = JSON.parse(savedTheme);
