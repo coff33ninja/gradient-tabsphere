@@ -1,85 +1,76 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ThemePresets } from './ThemePresets';
 import { FontSettings } from './FontSettings';
 import { ColorSettings } from './ColorSettings';
 import { ThemeProvider } from './ThemeContext';
+import { Theme, ThemePreset } from '@/types/theme';
+import { saveThemeLocally, loadLocalTheme } from '@/utils/themeManager';
 
-type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
-
-interface Theme {
-  primaryColor: string;
-  secondaryColor: string;
-  fontFamily: string;
-  themePreset: ThemePreset;
-}
+const defaultTheme: Theme = {
+  primaryColor: '#646cff',
+  secondaryColor: '#535bf2',
+  accentColor: '#747bff',
+  backgroundColor: '#242424',
+  foregroundColor: '#ffffff',
+  headingColor: '#ffffff',
+  textColor: '#ffffff',
+  linkColor: '#646cff',
+  borderColor: '#ffffff1a',
+  fontFamily: 'system-ui',
+  fontSize: {
+    base: '1rem',
+    heading1: '2rem',
+    heading2: '1.5rem',
+    heading3: '1.25rem',
+    small: '0.875rem'
+  },
+  spacing: {
+    small: '0.5rem',
+    medium: '1rem',
+    large: '2rem'
+  },
+  borderRadius: '0.5rem',
+  themePreset: 'default' as ThemePreset,
+};
 
 export function ThemeSettings() {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
+  const [userTheme, setUserTheme] = useState<Theme>(defaultTheme);
 
-  const { data: userThemeData } = useQuery({
-    queryKey: ['user-theme'],
-    queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
-
-      const { data, error } = await supabase
-        .from('user_themes')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const userTheme: Theme = {
-    primaryColor: userThemeData?.primary_color || '',
-    secondaryColor: userThemeData?.secondary_color || '',
-    fontFamily: userThemeData?.font_family || '',
-    themePreset: (userThemeData?.theme_preset as ThemePreset) || 'default',
-  };
-
-  const updateThemeMutation = useMutation({
-    mutationFn: async (values: Partial<Theme>) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No user found');
-
-      const { error } = await supabase
-        .from('user_themes')
-        .upsert({
-          user_id: user.id,
-          ...values,
-        });
-
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-theme'] });
-      toast({
-        title: 'Theme updated',
-        description: 'Your theme preferences have been saved.',
-      });
-    },
-    onError: (error) => {
-      console.error('Theme update error:', error);
-      toast({
-        title: 'Error updating theme',
-        description: 'Failed to update theme preferences.',
-        variant: 'destructive',
-      });
-    },
-  });
+  useEffect(() => {
+    const savedTheme = loadLocalTheme();
+    if (savedTheme) {
+      setUserTheme(prev => ({
+        ...prev,
+        ...savedTheme
+      }));
+    }
+  }, []);
 
   const handleThemeChange = async (values: Partial<Theme>) => {
     setIsLoading(true);
     try {
-      await updateThemeMutation.mutateAsync(values);
+      const newTheme = {
+        ...userTheme,
+        ...values
+      };
+      
+      saveThemeLocally(newTheme);
+      setUserTheme(newTheme);
+      
+      toast({
+        title: 'Theme updated',
+        description: 'Your theme preferences have been saved.',
+      });
+    } catch (error) {
+      console.error('Theme update error:', error);
+      toast({
+        title: 'Error updating theme',
+        description: 'Failed to update theme preferences. Please try again.',
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }
