@@ -1,6 +1,24 @@
 import { Theme } from '@/types/theme';
 
+// Helper to determine if text should be light or dark based on background
+const getLightOrDarkText = (backgroundColor: string): string => {
+  // Convert hex to RGB
+  const hex = backgroundColor.replace('#', '');
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+  
+  // Calculate relative luminance
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  
+  // Return white for dark backgrounds, dark gray for light backgrounds
+  return luminance > 0.5 ? '#1a1a1a' : '#ffffff';
+};
+
 export const generateThemeCSS = (theme: Theme): string => {
+  // Automatically determine text colors based on background
+  const textColor = getLightOrDarkText(theme.backgroundColor);
+  
   return `
 :root {
   --primary: ${theme.primaryColor};
@@ -9,9 +27,9 @@ export const generateThemeCSS = (theme: Theme): string => {
   --secondary-foreground: ${getLightOrDarkText(theme.secondaryColor)};
   --accent: ${theme.accentColor};
   --background: ${theme.backgroundColor};
-  --foreground: ${theme.foregroundColor};
-  --heading: ${theme.headingColor};
-  --text: ${theme.textColor};
+  --foreground: ${textColor};
+  --heading: ${textColor};
+  --text: ${textColor};
   --link: ${theme.linkColor};
   --border: ${theme.borderColor};
   --font-family: ${theme.fontFamily || 'system-ui'};
@@ -50,21 +68,10 @@ a {
 }`;
 };
 
-// Helper to determine if text should be light or dark based on background
-const getLightOrDarkText = (backgroundColor: string): string => {
-  // Simple luminance calculation
-  const hex = backgroundColor.replace('#', '');
-  const r = parseInt(hex.substr(0, 2), 16);
-  const g = parseInt(hex.substr(2, 2), 16);
-  const b = parseInt(hex.substr(4, 2), 16);
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return luminance > 0.5 ? '#000000' : '#ffffff';
-};
-
 export const saveThemeLocally = (theme: Theme) => {
   const css = generateThemeCSS(theme);
   
-  // Create a style element if it doesn't exist
+  // Create or update style element
   let styleElement = document.getElementById('custom-theme');
   if (!styleElement) {
     styleElement = document.createElement('style');
@@ -72,10 +79,9 @@ export const saveThemeLocally = (theme: Theme) => {
     document.head.appendChild(styleElement);
   }
   
-  // Update the CSS
   styleElement.textContent = css;
   
-  // Also save to localStorage for persistence
+  // Save to localStorage
   localStorage.setItem('custom-theme', JSON.stringify(theme));
 };
 
