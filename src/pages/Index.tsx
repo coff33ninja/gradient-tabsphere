@@ -9,8 +9,7 @@ import { AdminLinkManager } from '@/components/AdminLinkManager';
 import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { Button } from '@/components/ui/button';
 import { Tab } from '@/types';
-import { Icons } from '@/components/icons';
-import { cn } from '@/lib/utils';
+import { Footer } from '@/components/Footer';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
@@ -50,18 +49,18 @@ const Index = () => {
   } as Tab : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16 pb-36">
+    <div className="min-h-screen bg-gradient-custom pt-16 pb-36">
       <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
         <div className="flex justify-between items-center">
           <SearchBar />
-          {/*<RoleBasedContent allowedRoles={['admin']}>
+          <RoleBasedContent allowedRoles={['admin']}>
             <Button 
               onClick={() => setIsAdminDialogOpen(true)}
-              className="bg-gradient-to-r from-purple-400 to-pink-500 text-white hover:opacity-90"
+              className="bg-gradient-custom text-foreground hover:opacity-90"
             >
               Manage Links
             </Button>
-          </RoleBasedContent>*/}
+          </RoleBasedContent>
         </div>
         
         <div className="flex flex-col md:flex-row gap-4 md:gap-8 relative">
@@ -157,6 +156,7 @@ const Index = () => {
           </DialogContent>
         </Dialog>
       </div>
+      <Footer />
     </div>
   );
 };
