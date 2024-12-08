@@ -13,7 +13,7 @@
     --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
  
-    --primary: 252 87% 74%;
+    --primary: var(--gradient-from);
     --primary-foreground: 222 47.4% 11.2%;
  
     --secondary: 217.2 32.6% 17.5%;
@@ -30,7 +30,7 @@
  
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: var(--gradient-from);
 
     --gradient-from: 252 87% 74%;
     --gradient-to: 316.6 70.2% 50.1%;
@@ -58,7 +58,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-custom text-foreground min-h-screen;
   }
 }
 
