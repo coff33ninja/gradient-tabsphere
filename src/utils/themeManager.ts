@@ -1,7 +1,21 @@
 export type ThemeColors = {
   primaryColor: string;
   secondaryColor: string;
+  accentColor: string;
+  backgroundColor: string;
+  foregroundColor: string;
+  headingColor: string;
+  textColor: string;
+  linkColor: string;
+  borderColor: string;
   fontFamily: string;
+  fontSize: {
+    base: string;
+    heading1: string;
+    heading2: string;
+    heading3: string;
+    small: string;
+  };
 };
 
 export const generateThemeCSS = (theme: ThemeColors): string => {
@@ -11,11 +25,42 @@ export const generateThemeCSS = (theme: ThemeColors): string => {
   --primary-foreground: ${getLightOrDarkText(theme.primaryColor)};
   --secondary: ${theme.secondaryColor};
   --secondary-foreground: ${getLightOrDarkText(theme.secondaryColor)};
+  --accent: ${theme.accentColor};
+  --background: ${theme.backgroundColor};
+  --foreground: ${theme.foregroundColor};
+  --heading: ${theme.headingColor};
+  --text: ${theme.textColor};
+  --link: ${theme.linkColor};
+  --border: ${theme.borderColor};
   --font-family: ${theme.fontFamily || 'system-ui'};
+  --font-size-base: ${theme.fontSize?.base || '1rem'};
+  --font-size-h1: ${theme.fontSize?.heading1 || '2rem'};
+  --font-size-h2: ${theme.fontSize?.heading2 || '1.5rem'};
+  --font-size-h3: ${theme.fontSize?.heading3 || '1.25rem'};
+  --font-size-small: ${theme.fontSize?.small || '0.875rem'};
 }
 
 body {
   font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--text);
+  background: var(--background);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading);
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+
+a {
+  color: var(--link);
+}
+
+.text-small {
+  font-size: var(--font-size-small);
 }`;
 };
 
