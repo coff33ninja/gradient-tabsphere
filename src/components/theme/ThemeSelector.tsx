@@ -1,38 +1,31 @@
-import { useState } from 'react';
-import { useTheme } from './ThemeContext';
 import { Theme } from '@/types/theme';
-import { cn } from '@/lib/utils';
 import { Icons } from '../icons';
 
-const templates = [
-  {
-    id: 'modern',
-    name: 'Modern',
-    preview: '/templates/modern.png',
-    theme: 'default' as Theme['themePreset']
-  },
-  {
-    id: 'dashboard-ui-1',
-    name: 'Dashboard UI 1',
-    preview: '/templates/dashboard1.png',
-    theme: 'dark' as Theme['themePreset']
-  },
-  {
-    id: 'responsive-dashboard',
-    name: 'Responsive Dashboard',
-    preview: '/templates/responsive.png',
-    theme: 'light' as Theme['themePreset']
-  }
-];
+interface ThemeSelectorProps {
+  onThemeChange: (theme: Partial<Theme>) => void;
+}
 
-export function ThemeSelector() {
-  const { userTheme, handleThemeChange } = useTheme();
-  const [activeTemplate, setActiveTemplate] = useState(templates[0].id);
-
-  const handleTemplateChange = (template: typeof templates[0]) => {
-    setActiveTemplate(template.id);
-    handleThemeChange({ themePreset: template.theme });
-  };
+export function ThemeSelector({ onThemeChange }: ThemeSelectorProps) {
+  const templates = [
+    {
+      id: 'modern',
+      name: 'Modern',
+      preview: '/templates/modern.png',
+      theme: 'default' as const
+    },
+    {
+      id: 'dashboard-ui-1',
+      name: 'Dashboard UI 1',
+      preview: '/templates/dashboard1.png',
+      theme: 'dark' as const
+    },
+    {
+      id: 'responsive-dashboard',
+      name: 'Responsive Dashboard',
+      preview: '/templates/responsive.png',
+      theme: 'light' as const
+    }
+  ];
 
   return (
     <div className="theme-selector">
@@ -41,11 +34,8 @@ export function ThemeSelector() {
         {templates.map((template) => (
           <div
             key={template.id}
-            className={cn(
-              "theme-option",
-              activeTemplate === template.id && "active"
-            )}
-            onClick={() => handleTemplateChange(template)}
+            className="theme-option"
+            onClick={() => onThemeChange({ themePreset: template.theme })}
           >
             <div className="theme-preview">
               {template.preview ? (
