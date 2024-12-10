@@ -1,11 +1,13 @@
 import { Theme } from '@/types/theme';
 import { Icons } from '../icons';
+import { cn } from '@/lib/utils';
 
 interface ThemeSelectorProps {
   onThemeChange: (theme: Partial<Theme>) => void;
+  currentTheme?: Theme['themePreset'];
 }
 
-export function ThemeSelector({ onThemeChange }: ThemeSelectorProps) {
+export function ThemeSelector({ onThemeChange, currentTheme }: ThemeSelectorProps) {
   const templates = [
     {
       id: 'modern',
@@ -29,33 +31,30 @@ export function ThemeSelector({ onThemeChange }: ThemeSelectorProps) {
 
   return (
     <div className="theme-selector">
-      <h3 className="text-lg font-semibold mb-4">Template Style</h3>
-      <div className="space-y-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {templates.map((template) => (
           <div
             key={template.id}
-            className="theme-option"
+            className={cn(
+              "theme-option cursor-pointer p-4 rounded-lg border transition-all",
+              currentTheme === template.theme && "border-primary bg-primary/10"
+            )}
             onClick={() => onThemeChange({ themePreset: template.theme })}
           >
-            <div className="theme-preview">
+            <div className="theme-preview relative aspect-video rounded-md overflow-hidden border mb-2">
               {template.preview ? (
-                <img
-                  src={template.preview}
+                <img 
+                  src={template.preview} 
                   alt={template.name}
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-secondary/20">
-                  <Icons.image className="w-6 h-6 text-muted-foreground" />
+                <div className="flex items-center justify-center h-full bg-muted">
+                  <Icons.image className="h-10 w-10 text-muted-foreground" />
                 </div>
               )}
             </div>
-            <div>
-              <h4 className="font-medium">{template.name}</h4>
-              <p className="text-sm text-muted-foreground">
-                {template.theme} theme
-              </p>
-            </div>
+            <h3 className="font-medium text-sm">{template.name}</h3>
           </div>
         ))}
       </div>
