@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useUserRole } from "@/hooks/useUserRole";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useToast } from "@/components/ui/use-toast";
+import { Footer } from "@/components/Footer";
 
 const AdminZone = () => {
   const navigate = useNavigate();
@@ -157,12 +158,12 @@ const AdminZone = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400/20 via-pink-500/20 to-purple-600/20 pt-16">
+    <div className="min-h-screen bg-gradient-custom pt-16">
       <div className="container mx-auto p-4 md:p-8">
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-64">
             <div className="sticky top-20">
-              <h1 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold mb-6 text-foreground">
                 Admin Settings
               </h1>
               <TabNavigation
@@ -180,6 +181,7 @@ const AdminZone = () => {
           </main>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
