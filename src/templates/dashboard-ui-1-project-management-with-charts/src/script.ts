@@ -34,7 +34,7 @@ class Charts {
 	}
 	
 	initRadar(): void {
-		var ctxD = $('#radarChartDark'),
+		var ctxD = $('#radarChartDark') as JQuery<HTMLCanvasElement>,
 			 chartData = {
 				type: 'radar',
 				data: {
@@ -90,7 +90,7 @@ class Charts {
 		}
 
 	initBarHorizontal(): void {
-		var ctxD = $("#barChartHDark"),
+		var ctxD = $("#barChartHDark") as JQuery<HTMLCanvasElement>,
 			 chartData = {
 				type: 'horizontalBar',
 				data: {
@@ -143,7 +143,7 @@ class Charts {
 	}
 	
 	initDoughnut(): void {
-		var ctxD = $('#doughnutChartDark'),
+		var ctxD = $('#doughnutChartDark') as JQuery<HTMLCanvasElement>,
 			 chartData = {
 				type: 'doughnut',
 				data: {
