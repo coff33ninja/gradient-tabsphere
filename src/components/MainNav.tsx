@@ -83,7 +83,7 @@ export function MainNav() {
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="modern-nav">
       <div className="container flex h-14 items-center">
         {/* Mobile Menu */}
         <div className="md:hidden">
@@ -93,7 +93,7 @@ export function MainNav() {
                 <Icons.menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
+            <SheetContent side="left" className="bg-background/95 backdrop-blur-lg">
               <SheetHeader>
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
@@ -109,7 +109,7 @@ export function MainNav() {
           <NavLinks />
         </div>
 
-        {/* Auth Section - Always Visible */}
+        {/* Auth Section */}
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           {user ? (
             <UserMenu user={user} />
@@ -118,21 +118,9 @@ export function MainNav() {
               variant="ghost" 
               size="sm" 
               onClick={() => navigate("/auth")}
-              className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-bold hover:from-purple-500 hover:to-pink-600"
+              className="bg-primary/10 hover:bg-primary/20 text-primary"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mr-2 h-4 w-4"
-              >
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-                <polyline points="10 17 15 12 10 7" />
-                <line x1="15" y1="12" x2="3" y2="12" />
-              </svg>
+              <Icons.login className="mr-2 h-4 w-4" />
               Login
             </Button>
           )}

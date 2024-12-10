@@ -4,8 +4,9 @@ import { ThemePresets } from './ThemePresets';
 import { FontSettings } from './FontSettings';
 import { ColorSettings } from './ColorSettings';
 import { ThemeProvider } from './ThemeContext';
-import { Theme, ThemePreset } from '@/types/theme';
+import { Theme } from '@/types/theme';
 import { saveThemeLocally, loadLocalTheme } from '@/utils/themeManager';
+import { ThemeSelector } from './ThemeSelector';
 
 const defaultTheme: Theme = {
   primaryColor: '#646cff',
@@ -87,6 +88,7 @@ export function ThemeSettings() {
         </div>
 
         <div className="grid gap-4">
+          <ThemeSelector />
           <ThemePresets onThemeChange={handleThemeChange} />
           <FontSettings onThemeChange={handleThemeChange} />
           <ColorSettings onThemeChange={handleThemeChange} />
