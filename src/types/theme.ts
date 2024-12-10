@@ -1,4 +1,4 @@
-export type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
+export type ThemePreset = 'default' | 'dark' | 'light' | 'forest' | 'ocean' | 'sunset';
 
 export interface Theme {
   primaryColor: string;
@@ -26,7 +26,3 @@ export interface Theme {
   borderRadius: string;
   themePreset: ThemePreset;
 }
-
-export type FontSize = 'small' | 'base' | 'large' | 'xl' | '2xl' | '3xl';
-export type FontWeight = 'normal' | 'medium' | 'semibold' | 'bold';
-export type BorderRadius = 'none' | 'small' | 'medium' | 'large' | 'full';

@@ -32,7 +32,7 @@ const defaultTheme: Theme = {
     large: '2rem'
   },
   borderRadius: '0.5rem',
-  themePreset: 'default' as ThemePreset,
+  themePreset: 'default' as const,
 };
 
 export function ThemeSettings() {
@@ -88,7 +88,10 @@ export function ThemeSettings() {
         </div>
 
         <div className="grid gap-4">
-          <ThemeSelector />
+          <ThemeSelector 
+            onThemeChange={handleThemeChange}
+            currentTheme={userTheme.themePreset}
+          />
           <ThemePresets onThemeChange={handleThemeChange} />
           <FontSettings onThemeChange={handleThemeChange} />
           <ColorSettings onThemeChange={handleThemeChange} />
