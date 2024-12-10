@@ -36,6 +36,11 @@
     --gradient-to: 316.6 70.2% 50.1%;
  
     --radius: 0.5rem;
+
+    /* New theme variables */
+    --heading: var(--foreground);
+    --text: var(--foreground);
+    --link: var(--primary);
   }
 }
 
@@ -58,7 +63,22 @@
     @apply border-border;
   }
   body {
-    @apply bg-gradient-custom text-foreground min-h-screen;
+    @apply bg-gradient-custom text-foreground min-h-screen font-[var(--font-family)];
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-[color:var(--heading)] font-semibold;
+  }
+  h1 {
+    @apply text-[length:var(--font-size-h1)];
+  }
+  h2 {
+    @apply text-[length:var(--font-size-h2)];
+  }
+  h3 {
+    @apply text-[length:var(--font-size-h3)];
+  }
+  .text-small {
+    @apply text-[length:var(--font-size-small)];
   }
 }
 

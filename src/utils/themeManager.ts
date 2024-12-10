@@ -1,21 +1,52 @@
-export type ThemeColors = {
-  primaryColor: string;
-  secondaryColor: string;
-  fontFamily: string;
-};
+import { Theme } from '@/types/theme';
 
-export const generateThemeCSS = (theme: ThemeColors): string => {
+export const generateThemeCSS = (theme: Theme): string => {
   return `
 :root {
   --primary: ${theme.primaryColor};
   --primary-foreground: ${getLightOrDarkText(theme.primaryColor)};
   --secondary: ${theme.secondaryColor};
   --secondary-foreground: ${getLightOrDarkText(theme.secondaryColor)};
+  --accent: ${theme.accentColor};
+  --background: ${theme.backgroundColor};
+  --foreground: ${theme.foregroundColor};
+  --heading: ${theme.headingColor};
+  --text: ${theme.textColor};
+  --link: ${theme.linkColor};
+  --border: ${theme.borderColor};
   --font-family: ${theme.fontFamily || 'system-ui'};
+  --font-size-base: ${theme.fontSize?.base || '1rem'};
+  --font-size-h1: ${theme.fontSize?.heading1 || '2rem'};
+  --font-size-h2: ${theme.fontSize?.heading2 || '1.5rem'};
+  --font-size-h3: ${theme.fontSize?.heading3 || '1.25rem'};
+  --font-size-small: ${theme.fontSize?.small || '0.875rem'};
+  --spacing-small: ${theme.spacing?.small || '0.5rem'};
+  --spacing-medium: ${theme.spacing?.medium || '1rem'};
+  --spacing-large: ${theme.spacing?.large || '2rem'};
+  --border-radius: ${theme.borderRadius || '0.5rem'};
 }
 
 body {
   font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--text);
+  background: var(--background);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading);
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+
+a {
+  color: var(--link);
+}
+
+.text-small {
+  font-size: var(--font-size-small);
 }`;
 };
 
@@ -30,7 +61,7 @@ const getLightOrDarkText = (backgroundColor: string): string => {
   return luminance > 0.5 ? '#000000' : '#ffffff';
 };
 
-export const saveThemeLocally = (theme: ThemeColors) => {
+export const saveThemeLocally = (theme: Theme) => {
   const css = generateThemeCSS(theme);
   
   // Create a style element if it doesn't exist
@@ -48,7 +79,7 @@ export const saveThemeLocally = (theme: ThemeColors) => {
   localStorage.setItem('custom-theme', JSON.stringify(theme));
 };
 
-export const loadLocalTheme = (): ThemeColors | null => {
+export const loadLocalTheme = (): Theme | null => {
   const savedTheme = localStorage.getItem('custom-theme');
   if (savedTheme) {
     const theme = JSON.parse(savedTheme);

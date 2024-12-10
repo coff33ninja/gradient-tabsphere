@@ -7,15 +7,37 @@ import { ThemeProvider } from './theme/ThemeContext';
 import { Theme, ThemePreset } from '@/types/theme';
 import { saveThemeLocally, loadLocalTheme } from '@/utils/themeManager';
 
+const defaultTheme: Theme = {
+  primaryColor: '#646cff',
+  secondaryColor: '#535bf2',
+  accentColor: '#747bff',
+  backgroundColor: '#242424',
+  foregroundColor: '#ffffff',
+  headingColor: '#ffffff',
+  textColor: '#ffffff',
+  linkColor: '#646cff',
+  borderColor: '#ffffff1a',
+  fontFamily: 'system-ui',
+  fontSize: {
+    base: '1rem',
+    heading1: '2rem',
+    heading2: '1.5rem',
+    heading3: '1.25rem',
+    small: '0.875rem'
+  },
+  spacing: {
+    small: '0.5rem',
+    medium: '1rem',
+    large: '2rem'
+  },
+  borderRadius: '0.5rem',
+  themePreset: 'default' as ThemePreset,
+};
+
 export function ThemeSettings() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [userTheme, setUserTheme] = useState<Theme>({
-    primaryColor: '',
-    secondaryColor: '',
-    fontFamily: '',
-    themePreset: 'default' as ThemePreset,
-  });
+  const [userTheme, setUserTheme] = useState<Theme>(defaultTheme);
 
   useEffect(() => {
     // Load theme from localStorage on component mount
@@ -36,13 +58,7 @@ export function ThemeSettings() {
         ...values
       };
       
-      // Save theme locally
-      saveThemeLocally({
-        primaryColor: newTheme.primaryColor,
-        secondaryColor: newTheme.secondaryColor,
-        fontFamily: newTheme.fontFamily,
-      });
-      
+      saveThemeLocally(newTheme);
       setUserTheme(newTheme);
       
       toast({
