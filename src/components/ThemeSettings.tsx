@@ -1,137 +1,61 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ThemePresets } from './theme/ThemePresets';
 import { FontSettings } from './theme/FontSettings';
 import { ColorSettings } from './theme/ColorSettings';
 import { ThemeProvider } from './theme/ThemeContext';
 import { Theme, ThemePreset } from '@/types/theme';
+import { saveThemeLocally, loadLocalTheme } from '@/utils/themeManager';
 
 export function ThemeSettings() {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-
-  const { data: userThemeData, error: themeError } = useQuery({
-    queryKey: ['user-theme'],
-    queryFn: async () => {
-      console.log('Fetching user theme data');
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        console.log('No user found');
-        return null;
-      }
-
-      const { data, error } = await supabase
-        .from('user_themes')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        console.error('Error fetching theme:', error);
-        throw error;
-      }
-      console.log('Theme data fetched:', data);
-      return data;
-    },
+  const [userTheme, setUserTheme] = useState<Theme>({
+    primaryColor: '',
+    secondaryColor: '',
+    fontFamily: '',
+    themePreset: 'default' as ThemePreset,
   });
 
-  // If there's an error fetching the theme, show a toast
-  if (themeError) {
-    console.error('Theme fetch error:', themeError);
-    toast({
-      title: 'Error loading theme',
-      description: 'Your theme preferences could not be loaded. Using default theme.',
-      variant: 'destructive',
-    });
-  }
+  useEffect(() => {
+    // Load theme from localStorage on component mount
+    const savedTheme = loadLocalTheme();
+    if (savedTheme) {
+      setUserTheme(prev => ({
+        ...prev,
+        ...savedTheme
+      }));
+    }
+  }, []);
 
-  const userTheme: Theme = {
-    primaryColor: userThemeData?.primary_color || '',
-    secondaryColor: userThemeData?.secondary_color || '',
-    fontFamily: userThemeData?.font_family || '',
-    themePreset: (userThemeData?.theme_preset as ThemePreset) || 'default',
-  };
-
-  const updateThemeMutation = useMutation({
-    mutationFn: async (values: Partial<Theme>) => {
-      console.log('Updating theme with values:', values);
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        console.log('No user found during update');
-        throw new Error('No user found');
-      }
-
-      // Map the Theme interface values to database column names
-      const dbValues = {
-        primary_color: values.primaryColor,
-        secondary_color: values.secondaryColor,
-        font_family: values.fontFamily,
-        theme_preset: values.themePreset,
+  const handleThemeChange = async (values: Partial<Theme>) => {
+    setIsLoading(true);
+    try {
+      const newTheme = {
+        ...userTheme,
+        ...values
       };
-
-      console.log('Mapped DB values:', { user_id: user.id, ...dbValues });
-
-      // First check if a theme exists for this user
-      const { data: existingTheme } = await supabase
-        .from('user_themes')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
-
-      let error;
-      if (existingTheme) {
-        // Update existing theme
-        const { error: updateError } = await supabase
-          .from('user_themes')
-          .update({
-            ...dbValues,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('user_id', user.id);
-        error = updateError;
-      } else {
-        // Insert new theme
-        const { error: insertError } = await supabase
-          .from('user_themes')
-          .insert({
-            user_id: user.id,
-            ...dbValues,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          });
-        error = insertError;
-      }
-
-      if (error) {
-        console.error('Theme update error:', error);
-        throw error;
-      }
-    },
-    onSuccess: () => {
-      console.log('Theme updated successfully');
-      queryClient.invalidateQueries({ queryKey: ['user-theme'] });
+      
+      // Save theme locally
+      saveThemeLocally({
+        primaryColor: newTheme.primaryColor,
+        secondaryColor: newTheme.secondaryColor,
+        fontFamily: newTheme.fontFamily,
+      });
+      
+      setUserTheme(newTheme);
+      
       toast({
         title: 'Theme updated',
         description: 'Your theme preferences have been saved.',
       });
-    },
-    onError: (error) => {
+    } catch (error) {
       console.error('Theme update error:', error);
       toast({
         title: 'Error updating theme',
         description: 'Failed to update theme preferences. Please try again.',
         variant: 'destructive',
       });
-    },
-  });
-
-  const handleThemeChange = async (values: Partial<Theme>) => {
-    setIsLoading(true);
-    try {
-      await updateThemeMutation.mutateAsync(values);
     } finally {
       setIsLoading(false);
     }
