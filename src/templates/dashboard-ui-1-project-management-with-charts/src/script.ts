@@ -137,9 +137,8 @@ class Charts {
             stacked: true,
             ticks: {
               color: this.tickColor,
-              min: 0,
-              max: 175,
-              stepSize: 25
+              stepSize: 25,
+              max: 175
             }
           }
         },
