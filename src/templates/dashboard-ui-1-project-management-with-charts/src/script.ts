@@ -137,9 +137,9 @@ class Charts {
             stacked: true,
             ticks: {
               color: this.tickColor,
-              stepSize: 25,
-              max: 175
-            }
+              stepSize: 25
+            },
+            suggestedMax: 175
           }
         },
         plugins: {
