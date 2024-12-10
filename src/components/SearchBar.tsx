@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { searchEngines, handleSearch } from './search/SearchEngines';
 import { SearchResults } from './search/SearchResults';
 import { Link } from '@/types';
+import { Icons } from './icons';
 
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -32,36 +33,22 @@ export const SearchBar = () => {
   });
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto">
+    <div className="search-container">
       <div className="relative flex gap-2 items-center">
-        <div className="relative flex-1 gradient-border">
+        <div className="relative flex-1">
           <input
             type="text"
             placeholder="Search anywhere..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-background/40 backdrop-blur-sm 
-                     border border-white/10 focus:border-primary/50 focus:ring-2 
-                     focus:ring-primary/20 outline-none transition-all duration-300
-                     text-lg placeholder:text-muted-foreground/50"
+            className="search-input"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 handleSearch(searchEngines[0].url, query);
               }
             }}
           />
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/70"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
+          <Icons.search className="search-icon" />
         </div>
         
         <DropdownMenu>
@@ -73,18 +60,7 @@ export const SearchBar = () => {
                        border border-white/10 hover:bg-white/10 
                        transition-all duration-300"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-5 w-5"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
+              <Icons.search className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-sm border border-white/10">
