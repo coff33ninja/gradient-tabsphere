@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import { Chart } from 'chart.js/auto';
+import 'selectric';
+
 class Selectize {
 	constructor() {
 		this.init();
@@ -82,7 +86,7 @@ class Charts {
 				}
 			},
 			 
-			 myDarkRadarChart = new Chart(ctxD, chartData);
+			 myDarkRadarChart = new Chart(ctxD[0], chartData);
 		}
 
 	initBarHorizontal(): void {
@@ -135,8 +139,9 @@ class Charts {
 				}
 			},
 			 
-			 myDarkRadarChart = new Chart(ctxD, chartData);
+			 myDarkRadarChart = new Chart(ctxD[0], chartData);
 	}
+	
 	initDoughnut(): void {
 		var ctxD = $('#doughnutChartDark'),
 			 chartData = {
@@ -171,10 +176,10 @@ class Charts {
 				}
 			},
 			 
-			myDarkRadarChart = new Chart(ctxD, chartData);
+			myDarkRadarChart = new Chart(ctxD[0], chartData);
 	}
 	
-	convertHex(hex, opacity) {
+	convertHex(hex: string, opacity: number): string {
 		hex = hex.replace('#','');
 		var r = parseInt(hex.substring(0,2), 16);
 		var g = parseInt(hex.substring(2,4), 16);
