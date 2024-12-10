@@ -1,7 +1,7 @@
 import { Theme } from '@/types/theme';
 
 // Helper to determine if text should be light or dark based on background
-const getLightOrDarkText = (backgroundColor: string): string => {
+const getLightOrDarkText = (backgroundColor: string = '#242424'): string => {
   // Convert hex to RGB
   const hex = backgroundColor.replace('#', '');
   const r = parseInt(hex.substr(0, 2), 16);
@@ -16,32 +16,60 @@ const getLightOrDarkText = (backgroundColor: string): string => {
 };
 
 export const generateThemeCSS = (theme: Theme): string => {
+  // Ensure we have default values for all theme properties
+  const safeTheme = {
+    primaryColor: theme.primaryColor || '#646cff',
+    secondaryColor: theme.secondaryColor || '#535bf2',
+    accentColor: theme.accentColor || '#747bff',
+    backgroundColor: theme.backgroundColor || '#242424',
+    foregroundColor: theme.foregroundColor || '#ffffff',
+    headingColor: theme.headingColor || '#ffffff',
+    textColor: theme.textColor || '#ffffff',
+    linkColor: theme.linkColor || '#646cff',
+    borderColor: theme.borderColor || '#ffffff1a',
+    fontFamily: theme.fontFamily || 'system-ui',
+    fontSize: {
+      base: theme.fontSize?.base || '1rem',
+      heading1: theme.fontSize?.heading1 || '2rem',
+      heading2: theme.fontSize?.heading2 || '1.5rem',
+      heading3: theme.fontSize?.heading3 || '1.25rem',
+      small: theme.fontSize?.small || '0.875rem'
+    },
+    spacing: {
+      small: theme.spacing?.small || '0.5rem',
+      medium: theme.spacing?.medium || '1rem',
+      large: theme.spacing?.large || '2rem'
+    },
+    borderRadius: theme.borderRadius || '0.5rem',
+    themePreset: theme.themePreset || 'default'
+  };
+
   // Automatically determine text colors based on background
-  const textColor = getLightOrDarkText(theme.backgroundColor);
+  const textColor = getLightOrDarkText(safeTheme.backgroundColor);
   
   return `
 :root {
-  --primary: ${theme.primaryColor};
-  --primary-foreground: ${getLightOrDarkText(theme.primaryColor)};
-  --secondary: ${theme.secondaryColor};
-  --secondary-foreground: ${getLightOrDarkText(theme.secondaryColor)};
-  --accent: ${theme.accentColor};
-  --background: ${theme.backgroundColor};
+  --primary: ${safeTheme.primaryColor};
+  --primary-foreground: ${getLightOrDarkText(safeTheme.primaryColor)};
+  --secondary: ${safeTheme.secondaryColor};
+  --secondary-foreground: ${getLightOrDarkText(safeTheme.secondaryColor)};
+  --accent: ${safeTheme.accentColor};
+  --background: ${safeTheme.backgroundColor};
   --foreground: ${textColor};
   --heading: ${textColor};
   --text: ${textColor};
-  --link: ${theme.linkColor};
-  --border: ${theme.borderColor};
-  --font-family: ${theme.fontFamily || 'system-ui'};
-  --font-size-base: ${theme.fontSize?.base || '1rem'};
-  --font-size-h1: ${theme.fontSize?.heading1 || '2rem'};
-  --font-size-h2: ${theme.fontSize?.heading2 || '1.5rem'};
-  --font-size-h3: ${theme.fontSize?.heading3 || '1.25rem'};
-  --font-size-small: ${theme.fontSize?.small || '0.875rem'};
-  --spacing-small: ${theme.spacing?.small || '0.5rem'};
-  --spacing-medium: ${theme.spacing?.medium || '1rem'};
-  --spacing-large: ${theme.spacing?.large || '2rem'};
-  --border-radius: ${theme.borderRadius || '0.5rem'};
+  --link: ${safeTheme.linkColor};
+  --border: ${safeTheme.borderColor};
+  --font-family: ${safeTheme.fontFamily};
+  --font-size-base: ${safeTheme.fontSize.base};
+  --font-size-h1: ${safeTheme.fontSize.heading1};
+  --font-size-h2: ${safeTheme.fontSize.heading2};
+  --font-size-h3: ${safeTheme.fontSize.heading3};
+  --font-size-small: ${safeTheme.fontSize.small};
+  --spacing-small: ${safeTheme.spacing.small};
+  --spacing-medium: ${safeTheme.spacing.medium};
+  --spacing-large: ${safeTheme.spacing.large};
+  --border-radius: ${safeTheme.borderRadius};
 }
 
 body {
@@ -69,6 +97,8 @@ a {
 };
 
 export const saveThemeLocally = (theme: Theme) => {
+  if (!theme) return;
+  
   const css = generateThemeCSS(theme);
   
   // Create or update style element
@@ -86,11 +116,15 @@ export const saveThemeLocally = (theme: Theme) => {
 };
 
 export const loadLocalTheme = (): Theme | null => {
-  const savedTheme = localStorage.getItem('custom-theme');
-  if (savedTheme) {
-    const theme = JSON.parse(savedTheme);
-    saveThemeLocally(theme); // Reapply the theme
-    return theme;
+  try {
+    const savedTheme = localStorage.getItem('custom-theme');
+    if (savedTheme) {
+      const theme = JSON.parse(savedTheme);
+      saveThemeLocally(theme); // Reapply the theme
+      return theme;
+    }
+  } catch (error) {
+    console.error('Error loading theme:', error);
   }
   return null;
 };

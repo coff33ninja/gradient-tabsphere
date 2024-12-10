@@ -6,6 +6,7 @@ import { ColorSettings } from './theme/ColorSettings';
 import { ThemeProvider } from './theme/ThemeContext';
 import { Theme, ThemePreset } from '@/types/theme';
 import { saveThemeLocally, loadLocalTheme } from '@/utils/themeManager';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const defaultTheme: Theme = {
   primaryColor: '#646cff',
@@ -78,21 +79,23 @@ export function ThemeSettings() {
   };
 
   return (
-    <ThemeProvider value={userTheme}>
-      <div className="space-y-6 p-4">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold">Theme Settings</h2>
-          <p className="text-muted-foreground">
-            Customize your application's appearance
-          </p>
-        </div>
+    <TooltipProvider>
+      <ThemeProvider value={userTheme}>
+        <div className="space-y-6 p-4">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold">Theme Settings</h2>
+            <p className="text-muted-foreground">
+              Customize your application's appearance
+            </p>
+          </div>
 
-        <div className="grid gap-4">
-          <ThemePresets onThemeChange={handleThemeChange} />
-          <FontSettings onThemeChange={handleThemeChange} />
-          <ColorSettings onThemeChange={handleThemeChange} />
+          <div className="grid gap-4">
+            <ThemePresets onThemeChange={handleThemeChange} />
+            <FontSettings onThemeChange={handleThemeChange} />
+            <ColorSettings onThemeChange={handleThemeChange} />
+          </div>
         </div>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </TooltipProvider>
   );
 }
