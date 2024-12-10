@@ -1,4 +1,6 @@
 import { Label } from '@/components/ui/label';
+import { useTheme } from './ThemeContext';
+import { Theme, ThemePreset } from '@/types/theme';
 import {
   Select,
   SelectContent,
@@ -6,8 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
 
 const themePresets = [
   { value: 'default' as ThemePreset, label: 'Default' },
@@ -18,22 +18,19 @@ const themePresets = [
   { value: 'sunset' as ThemePreset, label: 'Sunset' },
 ];
 
-interface Theme {
-  theme_preset: ThemePreset;
-}
-
 interface ThemePresetsProps {
-  userTheme: Theme;
-  handleThemeChange: (values: { theme_preset: ThemePreset }) => void;
+  onThemeChange: (values: Partial<Theme>) => void;
 }
 
-export function ThemePresets({ userTheme, handleThemeChange }: ThemePresetsProps) {
+export function ThemePresets({ onThemeChange }: ThemePresetsProps) {
+  const theme = useTheme();
+
   return (
     <div className="space-y-2">
       <Label>Theme Preset</Label>
       <Select
-        value={userTheme?.theme_preset || 'default'}
-        onValueChange={(value: ThemePreset) => handleThemeChange({ theme_preset: value })}
+        value={theme.themePreset || 'default'}
+        onValueChange={(value: ThemePreset) => onThemeChange({ themePreset: value })}
       >
         <SelectTrigger>
           <SelectValue placeholder="Select a theme" />

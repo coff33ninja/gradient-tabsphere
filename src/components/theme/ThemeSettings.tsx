@@ -2,11 +2,19 @@ import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ThemePresets } from './theme/ThemePresets';
-import { FontSettings } from './theme/FontSettings';
-import { ColorSettings } from './theme/ColorSettings';
-import { ThemeProvider } from './theme/ThemeContext';
-import { Theme, ThemePreset } from '@/types/theme';
+import { ThemePresets } from './ThemePresets';
+import { FontSettings } from './FontSettings';
+import { ColorSettings } from './ColorSettings';
+import { ThemeProvider } from './ThemeContext';
+
+type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
+
+interface Theme {
+  primaryColor: string;
+  secondaryColor: string;
+  fontFamily: string;
+  themePreset: ThemePreset;
+}
 
 export function ThemeSettings() {
   const { toast } = useToast();
