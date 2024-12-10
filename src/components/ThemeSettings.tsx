@@ -1,98 +1,152 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ThemePresets } from './theme/ThemePresets';
 import { FontSettings } from './theme/FontSettings';
 import { ColorSettings } from './theme/ColorSettings';
-import { ThemeProvider } from './theme/ThemeContext';
-import { Theme, ThemePreset } from '@/types/theme';
-import { saveThemeLocally, loadLocalTheme } from '@/utils/themeManager';
 
-const defaultTheme: Theme = {
-  primaryColor: '#646cff',
-  secondaryColor: '#535bf2',
-  accentColor: '#747bff',
-  backgroundColor: '#242424',
-  foregroundColor: '#ffffff',
-  headingColor: '#ffffff',
-  textColor: '#ffffff',
-  linkColor: '#646cff',
-  borderColor: '#ffffff1a',
-  fontFamily: 'system-ui',
-  fontSize: {
-    base: '1rem',
-    heading1: '2rem',
-    heading2: '1.5rem',
-    heading3: '1.25rem',
-    small: '0.875rem'
-  },
-  spacing: {
-    small: '0.5rem',
-    medium: '1rem',
-    large: '2rem'
-  },
-  borderRadius: '0.5rem',
-  themePreset: 'default' as ThemePreset,
-};
+type ThemePreset = "default" | "dark" | "light" | "forest" | "ocean" | "sunset";
+
+interface ThemeValues {
+  primaryColor: string;
+  secondaryColor: string;
+  fontFamily: string;
+}
+
+interface Theme {
+  primaryColor: string;
+  secondaryColor: string;
+  fontFamily: string;
+  theme_preset: ThemePreset;
+}
 
 export function ThemeSettings() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-  const [userTheme, setUserTheme] = useState<Theme>(defaultTheme);
 
-  useEffect(() => {
-    // Load theme from localStorage on component mount
-    const savedTheme = loadLocalTheme();
-    if (savedTheme) {
-      setUserTheme(prev => ({
-        ...prev,
-        ...savedTheme
-      }));
-    }
-  }, []);
+  const { data: userThemeData, isError } = useQuery({
+    queryKey: ['user-theme'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
 
-  const handleThemeChange = async (values: Partial<Theme>) => {
-    setIsLoading(true);
-    try {
-      const newTheme = {
-        ...userTheme,
-        ...values
-      };
+      const { data, error } = await supabase
+        .from('user_themes')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (error) throw error;
       
-      saveThemeLocally(newTheme);
-      setUserTheme(newTheme);
-      
+      if (!data || data.length === 0) {
+        const defaultTheme = {
+          user_id: user.id,
+          primary_color: '#000000',
+          secondary_color: '#000000',
+          font_family: 'inter',
+          theme_preset: 'default' as ThemePreset,
+        };
+
+        const { data: newTheme, error: insertError } = await supabase
+          .from('user_themes')
+          .insert(defaultTheme)
+          .select()
+          .single();
+
+        if (insertError) throw insertError;
+        return newTheme;
+      }
+
+      return data[0];
+    },
+  });
+
+  const userTheme: Theme = userThemeData ? {
+    primaryColor: userThemeData.primary_color || '',
+    secondaryColor: userThemeData.secondary_color || '',
+    fontFamily: userThemeData.font_family || '',
+    theme_preset: (userThemeData.theme_preset as ThemePreset) || 'default',
+  } : {
+    primaryColor: '',
+    secondaryColor: '',
+    fontFamily: '',
+    theme_preset: 'default',
+  };
+
+  const updateThemeMutation = useMutation({
+    mutationFn: async (values: ThemeValues) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('No user found');
+
+      const { data, error } = await supabase
+        .from('user_themes')
+        .upsert({
+          user_id: user.id,
+          primary_color: values.primaryColor,
+          secondary_color: values.secondaryColor,
+          font_family: values.fontFamily,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-theme'] });
       toast({
         title: 'Theme updated',
         description: 'Your theme preferences have been saved.',
       });
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error('Theme update error:', error);
       toast({
         title: 'Error updating theme',
-        description: 'Failed to update theme preferences. Please try again.',
+        description: error.message,
         variant: 'destructive',
       });
+    },
+  });
+
+  const handleThemeChange = async (values: { theme_preset: ThemePreset }) => {
+    const themeValues: ThemeValues = {
+      primaryColor: userTheme.primaryColor,
+      secondaryColor: userTheme.secondaryColor,
+      fontFamily: userTheme.fontFamily,
+    };
+
+    setIsLoading(true);
+    try {
+      await updateThemeMutation.mutateAsync(themeValues);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return (
-    <ThemeProvider value={userTheme}>
-      <div className="space-y-6 p-4">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold">Theme Settings</h2>
-          <p className="text-muted-foreground">
-            Customize your application's appearance
-          </p>
-        </div>
+  if (isError) {
+    toast({
+      title: 'Error loading theme',
+      description: 'Failed to load your theme preferences.',
+      variant: 'destructive',
+    });
+  }
 
-        <div className="grid gap-4">
-          <ThemePresets onThemeChange={handleThemeChange} />
-          <FontSettings onThemeChange={handleThemeChange} />
-          <ColorSettings onThemeChange={handleThemeChange} />
-        </div>
+  return (
+    <div className="space-y-6 p-4">
+      <div className="space-y-2">
+        <h2 className="text-2xl font-bold">Theme Settings</h2>
+        <p className="text-muted-foreground">
+          Customize your application's appearance
+        </p>
       </div>
-    </ThemeProvider>
+
+      <div className="grid gap-4">
+        <ThemePresets userTheme={userTheme} handleThemeChange={handleThemeChange} />
+        <FontSettings userTheme={userTheme} handleThemeChange={handleThemeChange} />
+        <ColorSettings userTheme={userTheme} handleThemeChange={handleThemeChange} />
+      </div>
+    </div>
   );
 }

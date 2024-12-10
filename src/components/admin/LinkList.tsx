@@ -34,7 +34,7 @@ export const LinkList = ({
       {links?.map((link) => (
         <div 
           key={link.id} 
-          className="border rounded-lg p-4 bg-background/80"
+          className="border rounded-lg p-4 bg-white/5 backdrop-blur-sm"
         >
           {editingLink?.id === link.id ? (
             <LinkEditor
