@@ -21,7 +21,6 @@ import {
   FiPlay,
   FiActivity,
   FiInbox,
-  FiGlobe2,
   FiMonitor
 } from "react-icons/fi";
 
@@ -48,7 +47,7 @@ export const Icons = {
   play: FiPlay,
   activity: FiActivity,
   inbox: FiInbox,
-  languages: FiGlobe2,
+  languages: FiGlobe,  // Replaced FiGlobe2 with FiGlobe
   tv: FiMonitor,
   close: FiX,
 } as const;
