@@ -6,7 +6,7 @@ import { oceanTheme } from './ocean';
 import { sunsetTheme } from './sunset';
 import { Theme } from '@/types/theme';
 
-export const themes: Record<Theme['themePreset'], Record<string, string>> = {
+export const themes: Record<Theme['theme_preset'], Record<string, string>> = {
   default: defaultTheme,
   dark: darkTheme,
   light: lightTheme,
@@ -15,7 +15,7 @@ export const themes: Record<Theme['themePreset'], Record<string, string>> = {
   sunset: sunsetTheme,
 };
 
-export const applyTheme = (themeName: Theme['themePreset']) => {
+export const applyTheme = (themeName: Theme['theme_preset']) => {
   const theme = themes[themeName];
   if (!theme) return;
 
@@ -31,7 +31,7 @@ export const applyTheme = (themeName: Theme['themePreset']) => {
 
 // Initialize theme from localStorage or default
 export const initializeTheme = () => {
-  const savedTheme = localStorage.getItem('theme-preset') as Theme['themePreset'] || 'default';
+  const savedTheme = localStorage.getItem('theme-preset') as Theme['theme_preset'] || 'default';
   applyTheme(savedTheme);
   return savedTheme;
 };

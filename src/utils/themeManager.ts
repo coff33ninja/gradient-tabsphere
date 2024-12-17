@@ -40,16 +40,16 @@ export const loadLocalTheme = async (): Promise<Theme | null> => {
 
       if (userTheme) {
         return {
-          primaryColor: userTheme.primary_color,
-          secondaryColor: userTheme.secondary_color,
-          accentColor: userTheme.accent_color,
-          backgroundColor: '#242424', // Default value
-          foregroundColor: '#ffffff', // Default value
-          headingColor: '#ffffff', // Default value
-          textColor: '#ffffff', // Default value
-          linkColor: '#646cff', // Default value
-          borderColor: '#ffffff1a', // Default value
-          fontFamily: userTheme.font_family,
+          primaryColor: userTheme.primary_color || '#646cff',
+          secondaryColor: userTheme.secondary_color || '#535bf2',
+          accentColor: userTheme.accent_color || '#747bff',
+          backgroundColor: '#242424',
+          foregroundColor: '#ffffff',
+          headingColor: '#ffffff',
+          textColor: '#ffffff',
+          linkColor: '#646cff',
+          borderColor: '#ffffff1a',
+          fontFamily: userTheme.font_family || 'system-ui',
           fontSize: userTheme.font_size ? JSON.parse(userTheme.font_size) : {
             base: '1rem',
             heading1: '2rem',

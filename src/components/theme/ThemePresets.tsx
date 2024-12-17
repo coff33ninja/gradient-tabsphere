@@ -26,16 +26,16 @@ interface ThemePresetsProps {
 export function ThemePresets({ onThemeChange }: ThemePresetsProps) {
   const theme = useTheme();
 
-  const handleThemeChange = (value: Theme['themePreset']) => {
+  const handleThemeChange = (value: Theme['theme_preset']) => {
     applyTheme(value);
-    onThemeChange({ themePreset: value });
+    onThemeChange({ theme_preset: value });
   };
 
   return (
     <div className="space-y-2">
       <Label>Theme Preset</Label>
       <Select
-        value={theme.themePreset || 'default'}
+        value={theme.theme_preset || 'default'}
         onValueChange={handleThemeChange}
       >
         <SelectTrigger className="w-full">

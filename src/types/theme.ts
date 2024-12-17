@@ -1,5 +1,19 @@
 export type ThemePreset = 'default' | 'dark' | 'light' | 'forest' | 'ocean' | 'sunset';
 
+export type FontSize = {
+  base: string;
+  heading1: string;
+  heading2: string;
+  heading3: string;
+  small: string;
+};
+
+export type FontWeight = {
+  normal: string;
+  medium: string;
+  bold: string;
+};
+
 export interface Theme {
   primaryColor: string;
   secondaryColor: string;
@@ -11,18 +25,12 @@ export interface Theme {
   linkColor: string;
   borderColor: string;
   fontFamily: string;
-  fontSize: {
-    base: string;
-    heading1: string;
-    heading2: string;
-    heading3: string;
-    small: string;
-  };
+  fontSize: FontSize;
   spacing: {
     small: string;
     medium: string;
     large: string;
   };
   borderRadius: string;
-  theme_preset: ThemePreset; // Changed from themePreset to theme_preset to match DB
+  theme_preset: ThemePreset;
 }
