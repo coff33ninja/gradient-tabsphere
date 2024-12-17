@@ -32,7 +32,7 @@ const defaultTheme: Theme = {
     large: '2rem'
   },
   borderRadius: '0.5rem',
-  themePreset: 'default' as ThemePreset,
+  theme_preset: 'default',
 };
 
 export function ThemeSettings() {
