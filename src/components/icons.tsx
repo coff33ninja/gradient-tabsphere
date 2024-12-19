@@ -85,4 +85,6 @@ export const Icons = {
   home: RiHome2Line,
   logIn: RiLoginBoxLine,
   logOut: RiLogoutBoxLine,
+  plus: RiAddLine,
+  check: RiCheckLine,
 };
