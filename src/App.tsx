@@ -8,6 +8,7 @@ import Services from '@/pages/Services';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
 import AdminZone from '@/pages/AdminZone';
+import '@/styles/app.css';
 
 const queryClient = new QueryClient();
 

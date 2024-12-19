@@ -1,0 +1,57 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Category button hover animation */
+.category-button {
+  position: relative;
+  transition: 1s;
+  border-radius: 0.3em;
+  cursor: pointer;
+}
+
+.category-button::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 3%;
+  width: 95%;
+  height: 40%;
+  background-color: hsl(var(--background));
+  transition: 0.5s;
+  transform-origin: center;
+  z-index: -1;
+}
+
+.category-button::before {
+  content: "";
+  transform-origin: center;
+  position: absolute;
+  top: 80%;
+  left: 3%;
+  width: 95%;
+  height: 40%;
+  background-color: hsl(var(--background));
+  transition: 0.5s;
+  z-index: -1;
+}
+
+.category-button:hover::before, 
+.category-button:hover::after {
+  transform: scale(0)
+}
+
+.category-button:hover {
+  box-shadow: inset 0px 0px 25px hsl(var(--primary));
+}

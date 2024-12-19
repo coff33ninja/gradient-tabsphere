@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Icons } from './icons';
+import '@/styles/animations.css';
 
 type Category = {
   id: number;
@@ -35,8 +36,8 @@ export const CategoryList = ({
           key={category.id}
           onClick={() => onCategorySelect(category.id)}
           className={cn(
-            "w-full px-4 py-3 rounded-md transition-all duration-300 text-left flex items-center gap-2",
-            "hover:bg-secondary/40",
+            "category-button w-full px-4 py-3 rounded-md transition-all duration-300 text-left flex items-center gap-2",
+            "hover:bg-secondary/40 border-2 border-primary/30",
             activeCategory === category.id
               ? "bg-primary/20 text-primary relative gradient-border"
               : "text-muted-foreground"
