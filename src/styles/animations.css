@@ -13,15 +13,17 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Category button hover animation */
-.category-button {
+/* Shared button hover animation */
+.hover-glow-button {
   position: relative;
   transition: 1s;
   border-radius: 0.3em;
   cursor: pointer;
+  background-color: hsl(var(--background));
+  border: 2px solid hsl(var(--primary) / 0.3);
 }
 
-.category-button::after {
+.hover-glow-button::after {
   content: "";
   position: absolute;
   top: -10px;
@@ -34,7 +36,7 @@
   z-index: -1;
 }
 
-.category-button::before {
+.hover-glow-button::before {
   content: "";
   transform-origin: center;
   position: absolute;
@@ -47,11 +49,22 @@
   z-index: -1;
 }
 
-.category-button:hover::before, 
-.category-button:hover::after {
+.hover-glow-button:hover::before, 
+.hover-glow-button:hover::after {
   transform: scale(0)
 }
 
-.category-button:hover {
+.hover-glow-button:hover {
   box-shadow: inset 0px 0px 25px hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+/* Admin zone specific animations */
+.admin-card {
+  @apply bg-background/60 backdrop-blur-lg rounded-lg border p-6 transition-all duration-300;
+}
+
+.admin-card:hover {
+  @apply shadow-lg border-primary/30;
+  box-shadow: 0 0 15px hsl(var(--primary) / 0.2);
 }

@@ -175,7 +175,7 @@ const AdminZone = () => {
           </aside>
 
           <main className="flex-1 min-h-[calc(100vh-8rem)]">
-            <div className="bg-background/60 backdrop-blur-lg rounded-lg border p-6">
+            <div className="admin-card">
               {renderTabContent()}
             </div>
           </main>
