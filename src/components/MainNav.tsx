@@ -48,15 +48,25 @@ export function MainNav() {
     return () => subscription.unsubscribe();
   }, [navigate, location.pathname, toast]);
 
-  // Helper function to check if a route requires authentication
   const isProtectedRoute = (path: string): boolean => {
     const protectedRoutes = ['/admin'];
     return protectedRoutes.includes(path);
   };
 
   const navItems = [
-    { path: "/", label: "Home" },
-    { path: "/admin", label: "Admin Zone", protected: true },
+    { 
+      path: "/", 
+      label: "Home",
+      icon: <Icons.home className="h-4 w-4" />,
+      tooltip: "Home"
+    },
+    { 
+      path: "/admin", 
+      label: "Admin Zone",
+      icon: <Icons.settings className="h-4 w-4" />,
+      tooltip: "Admin Zone",
+      protected: true 
+    },
   ];
 
   const NavLinks = () => (
@@ -74,8 +84,9 @@ export function MainNav() {
               navigate(item.path);
               setIsMobileMenuOpen(false);
             }}
+            title={item.tooltip}
           >
-            {item.label}
+            {item.icon}
           </Button>
         )
       ))}
@@ -109,7 +120,7 @@ export function MainNav() {
           <NavLinks />
         </div>
 
-        {/* Auth Section - Always Visible */}
+        {/* Auth Section */}
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           {user ? (
             <UserMenu user={user} />
@@ -120,19 +131,7 @@ export function MainNav() {
               onClick={() => navigate("/auth")}
               className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-bold hover:from-purple-500 hover:to-pink-600"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mr-2 h-4 w-4"
-              >
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-                <polyline points="10 17 15 12 10 7" />
-                <line x1="15" y1="12" x2="3" y2="12" />
-              </svg>
+              <Icons.logIn className="mr-2 h-4 w-4" />
               Login
             </Button>
           )}

@@ -1,6 +1,5 @@
 import { IconType } from "react-icons";
-import { IconDictionary, IconName } from './icons/IconDictionary';
-import { 
+import {
   RiCommandLine,
   RiFileTextLine,
   RiGithubLine,
@@ -36,18 +35,15 @@ import {
   RiArrowDownLine,
   RiFolderLine,
   RiEditLine,
-  RiUploadLine
+  RiUploadLine,
+  RiHome2Line,
+  RiLoginBoxLine,
+  RiLogoutBoxLine,
 } from 'react-icons/ri';
 
 export type Icon = IconType;
 
 export const Icons = {
-  chevronDown: IconDictionary.ChevronDown,
-  chevronUp: IconDictionary.ChevronUp,
-  check: IconDictionary.Check,
-  search: IconDictionary.Search,
-  plus: IconDictionary.Plus,
-  menu: IconDictionary.Menu,
   logo: RiCommandLine,
   close: RiCloseLine,
   spinner: RiLoader2Line,
@@ -71,11 +67,13 @@ export const Icons = {
   arrowRight: RiArrowRightLine,
   refresh: RiRefreshLine,
   globe: RiGlobalLine,
+  menu: RiMenuLine,
   alert: RiAlertLine,
   github: RiGithubLine,
   download: RiDownloadLine,
   music: RiMusicLine,
   book: RiBookOpenLine,
+  search: RiSearchLine,
   play: RiPlayCircleLine,
   activity: RiHeartPulseLine,
   inbox: RiInboxLine,
@@ -84,4 +82,7 @@ export const Icons = {
   folder: RiFolderLine,
   edit: RiEditLine,
   upload: RiUploadLine,
+  home: RiHome2Line,
+  logIn: RiLoginBoxLine,
+  logOut: RiLogoutBoxLine,
 };
