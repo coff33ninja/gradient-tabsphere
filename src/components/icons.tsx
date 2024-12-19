@@ -34,7 +34,9 @@ import {
   RiCloseLine,
   RiArrowLeftLine,
   RiArrowDownLine,
-  RiFolderLine
+  RiFolderLine,
+  RiEditLine,
+  RiUploadLine
 } from 'react-icons/ri';
 
 export type Icon = IconType;
@@ -79,5 +81,7 @@ export const Icons = {
   inbox: RiInboxLine,
   languages: RiTranslate2,
   tv: RiTvLine,
-  folder: RiFolderLine
+  folder: RiFolderLine,
+  edit: RiEditLine,
+  upload: RiUploadLine,
 };

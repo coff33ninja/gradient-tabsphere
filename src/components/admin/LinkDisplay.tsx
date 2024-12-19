@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { RoleBasedContent } from '@/components/RoleBasedContent';
 import { Link } from '@/types';
+import { Icons } from '@/components/icons'; // Add this import
 
 interface LinkDisplayProps {
   link: Link;
