@@ -19,6 +19,8 @@ export const saveThemeLocally = async (theme: Theme) => {
           accent_color: theme.accentColor,
           font_family: theme.fontFamily,
           font_size: JSON.stringify(theme.fontSize)
+        }, {
+          onConflict: 'user_id'
         });
       
       if (error) throw error;
