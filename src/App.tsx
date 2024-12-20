@@ -23,7 +23,6 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<AdminZone />} />
         </Routes>
-        <Settings />
         <Toaster />
       </Router>
     </QueryClientProvider>

@@ -14,6 +14,7 @@ import { useUserRole } from "@/hooks/useUserRole";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useToast } from "@/components/ui/use-toast";
 import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/button";
 
 const AdminZone = () => {
   const navigate = useNavigate();
@@ -46,6 +47,19 @@ const AdminZone = () => {
     };
     checkAuth();
   }, [navigate, toast]);
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: 'Error signing out',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+      navigate('/auth');
+    }
+  };
 
   const { data: categories, isLoading: isCategoriesLoading } = useQuery({
     queryKey: ["categories"],
@@ -163,9 +177,19 @@ const AdminZone = () => {
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-64">
             <div className="sticky top-20">
-              <h1 className="text-2xl font-bold mb-6 text-foreground">
-                Admin Settings
-              </h1>
+              <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold text-foreground">
+                  Admin Settings
+                </h1>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleSignOut}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  Sign out
+                </Button>
+              </div>
               <TabNavigation
                 tabs={tabs}
                 activeTab={activeTab}
