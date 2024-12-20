@@ -8,13 +8,15 @@ import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { Tab } from '@/types';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(true);
+  const { toast } = useToast();
   
-  const { data: categories = [], isLoading } = useQuery({
+  const { data: categories = [], isLoading: isCategoriesLoading, error: categoriesError } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -26,25 +28,18 @@ const Index = () => {
     }
   });
 
-  const { data: services = [], isLoading: isServicesLoading } = useQuery({
-    queryKey: ['credentials'],
-    queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return [];
-      
-      const { data, error } = await supabase
-        .from('credentials')
-        .select('*');
-      
-      if (error) throw error;
-      return data || [];
-    }
-  });
-
   const activeTab = activeCategory ? {
     id: activeCategory.toString(),
     title: categories.find(c => c.id === activeCategory)?.name || ''
   } as Tab : null;
+
+  if (categoriesError) {
+    toast({
+      title: "Error loading categories",
+      description: "Please try again later",
+      variant: "destructive",
+    });
+  }
 
   return (
     <div className="min-h-screen bg-gradient-custom pt-16 pb-36">
@@ -74,7 +69,7 @@ const Index = () => {
             )}>
               <CategoryList 
                 categories={categories}
-                isLoading={isLoading}
+                isLoading={isCategoriesLoading}
                 activeCategory={activeCategory}
                 onCategorySelect={setActiveCategory}
               />
@@ -95,7 +90,7 @@ const Index = () => {
           </Button>
 
           <div className={cn(
-            "flex-1",
+            "flex-1 transition-all duration-300",
             !activeCategory && 'hidden md:block'
           )}>
             {activeTab ? (
@@ -103,35 +98,15 @@ const Index = () => {
             ) : (
               !isCategoryMenuOpen && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 animate-fade-in">
-                  {services.length === 0 ? (
-                    <div className="col-span-full flex flex-col items-center justify-center p-8 text-center">
-                      <Icons.alert className="h-12 w-12 text-muted-foreground mb-4" />
-                      <h3 className="text-lg font-semibold text-muted-foreground">
-                        No services found
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Sign in to add and manage your services
-                      </p>
-                    </div>
-                  ) : (
-                    services.map((service) => (
-                      <div
-                        key={service.id}
-                        className="p-4 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group border border-white/10 hover:border-white/20"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div>
-                            <h3 className="font-medium group-hover:text-primary transition-colors">
-                              {service.name}
-                            </h3>
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                              {service.service}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
+                  <div className="col-span-full flex flex-col items-center justify-center p-8 text-center">
+                    <Icons.folder className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-semibold text-muted-foreground">
+                      Select a category to view links
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Choose a category from the sidebar to view its links
+                    </p>
+                  </div>
                 </div>
               )
             )}
