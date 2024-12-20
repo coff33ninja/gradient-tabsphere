@@ -1,26 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { TabNavigation } from "@/components/TabNavigation";
-import { IconManager } from "@/components/admin/IconManager";
-import { CategoryManager } from "@/components/admin/CategoryManager";
-import { ThemeManager } from "@/components/admin/ThemeManager";
-import { LinkManager } from "@/components/admin/LinkManager";
-import { ServiceGrid } from "@/components/services/ServiceGrid";
 import { Tab } from "@/types";
-import { useState } from "react";
 import { useUserRole } from "@/hooks/useUserRole";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useToast } from "@/components/ui/use-toast";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
+import { AdminHeader } from "@/components/admin/AdminHeader";
+import { AdminContent } from "@/components/admin/AdminContent";
 
 const AdminZone = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { data: userRole, isLoading: isRoleLoading, error: roleError } = useUserRole();
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
+  const { data: userRole, isLoading: isRoleLoading, error: roleError } = useUserRole();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -47,41 +42,6 @@ const AdminZone = () => {
     };
     checkAuth();
   }, [navigate, toast]);
-
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: 'Error signing out',
-        description: error.message,
-        variant: 'destructive',
-      });
-    } else {
-      navigate('/auth');
-    }
-  };
-
-  const { data: categories, isLoading: isCategoriesLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      try {
-        const { data, error } = await supabase
-          .from("categories")
-          .select("*");
-
-        if (error) throw error;
-        return data || [];
-      } catch (error) {
-        console.error("Categories fetch error:", error);
-        toast({
-          title: "Error loading categories",
-          description: "There was a problem loading the categories. Please try again.",
-          variant: "destructive",
-        });
-        return [];
-      }
-    },
-  });
 
   const { data: credentials } = useQuery({
     queryKey: ["credentials"],
@@ -143,53 +103,13 @@ const AdminZone = () => {
     },
   ];
 
-  const renderTabContent = () => {
-    if (!activeTab) {
-      setActiveTab(tabs[0]);
-      return null;
-    }
-
-    switch (activeTab.id) {
-      case "theme":
-        return <ThemeManager />;
-      case "links":
-        return <LinkManager />;
-      case "services":
-        return <ServiceGrid credentials={credentials || []} />;
-      case "icons":
-        return <IconManager />;
-      case "categories":
-        return (
-          <CategoryManager
-            categories={categories || []}
-            selectedCategory={null}
-            onCategorySelect={() => {}}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-custom pt-16">
       <div className="container mx-auto p-4 md:p-8">
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-64">
-            <div className="sticky top-20">
-              <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-foreground">
-                  Admin Settings
-                </h1>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={handleSignOut}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Sign out
-                </Button>
-              </div>
+            <div className="sticky top-20 space-y-6">
+              <AdminHeader />
               <TabNavigation
                 tabs={tabs}
                 activeTab={activeTab}
@@ -199,9 +119,10 @@ const AdminZone = () => {
           </aside>
 
           <main className="flex-1 min-h-[calc(100vh-8rem)]">
-            <div className="admin-card">
-              {renderTabContent()}
-            </div>
+            <AdminContent 
+              activeTab={activeTab} 
+              credentials={credentials || []} 
+            />
           </main>
         </div>
       </div>
