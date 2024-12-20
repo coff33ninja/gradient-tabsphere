@@ -7,6 +7,8 @@ import { LinkGrid } from '@/components/LinkGrid';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { Footer } from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { Tab } from '@/types';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
@@ -38,6 +40,11 @@ const Index = () => {
       return data || [];
     }
   });
+
+  const activeTab = activeCategory ? {
+    id: activeCategory.toString(),
+    title: categories.find(c => c.id === activeCategory)?.name || ''
+  } as Tab : null;
 
   return (
     <div className="min-h-screen bg-gradient-custom pt-16 pb-36">
