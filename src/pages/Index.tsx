@@ -4,18 +4,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryList } from '@/components/CategoryList';
 import { LinkGrid } from '@/components/LinkGrid';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { AdminLinkManager } from '@/components/AdminLinkManager';
-import { RoleBasedContent } from '@/components/RoleBasedContent';
-import { Button } from '@/components/ui/button';
-import { Tab } from '@/types';
-import { Footer } from '@/components/Footer';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
+import { Footer } from '@/components/Footer';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
-  const [isAdminDialogOpen, setIsAdminDialogOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(true);
   
   const { data: categories = [], isLoading } = useQuery({
@@ -45,25 +39,10 @@ const Index = () => {
     }
   });
 
-  const activeTab = activeCategory ? {
-    id: activeCategory.toString(),
-    title: categories.find(c => c.id === activeCategory)?.name || ''
-  } as Tab : null;
-
   return (
     <div className="min-h-screen bg-gradient-custom pt-16 pb-36">
       <div className="max-w-[2000px] mx-auto space-y-4 md:space-y-8 p-4 md:p-8">
-        <div className="flex justify-between items-center">
-          <SearchBar />
-          <RoleBasedContent allowedRoles={['admin']}>
-            <Button 
-              onClick={() => setIsAdminDialogOpen(true)}
-              className="bg-gradient-custom text-foreground hover:opacity-90"
-            >
-              Manage Links
-            </Button>
-          </RoleBasedContent>
-        </div>
+        <SearchBar />
         
         <div className="flex flex-col md:flex-row gap-4 md:gap-8 relative">
           {activeCategory && (
@@ -151,12 +130,6 @@ const Index = () => {
             )}
           </div>
         </div>
-
-        <Dialog open={isAdminDialogOpen} onOpenChange={setIsAdminDialogOpen}>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-            <AdminLinkManager />
-          </DialogContent>
-        </Dialog>
       </div>
       <Footer />
     </div>

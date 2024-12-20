@@ -77,7 +77,7 @@ export function MainNav() {
             key={item.path}
             variant="ghost"
             className={cn(
-              "bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-bold hover:from-purple-500 hover:to-pink-600 transition-all duration-300",
+              "flex items-center gap-2 text-foreground hover:bg-accent/50 transition-all duration-300",
               location.pathname === item.path && "bg-accent/50"
             )}
             onClick={() => {
@@ -87,6 +87,7 @@ export function MainNav() {
             title={item.tooltip}
           >
             {item.icon}
+            <span className="hidden md:inline">{item.label}</span>
           </Button>
         )
       ))}
